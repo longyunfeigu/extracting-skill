@@ -1,0 +1,60 @@
+# Structured output shape for a skill pattern extraction.
+# Use YAML or convert to JSON if the user asks for JSON.
+
+source:
+  name: ""
+  path: ""
+  kind: "single-skill | skill-package | batch"
+  files_read:
+    - path: ""
+      reason: ""
+
+human_summary:
+  wow_moment: ""
+  bad_result_prevented: ""
+  why_designed_this_way:
+    - ""
+  forces_agent_to:
+    - ""
+  blocks_agent_from:
+    - ""
+  run_flow:
+    - step: 1
+      name: ""
+      purpose: ""
+  package_layout:
+    skill_md: ""
+    references: ""
+    scripts: ""
+    examples: ""
+    tests: ""
+  too_heavy_when:
+    - ""
+
+patterns:
+  - name: ""
+    slug: ""
+    prevents: ""
+    use_when:
+      - ""
+    how_it_works:
+      - ""
+    usual_location:
+      - "SKILL.md"
+    costs:
+      - ""
+    combines_with:
+      - ""
+    example:
+      skill: ""
+      path: ""
+      note: ""
+
+pattern_combinations:
+  - use_case: ""
+    patterns:
+      - ""
+    why: ""
+
+gaps_or_risks:
+  - ""

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extract Skill Patterns"
+  short_description: "Turn one or many skills into reusable design patterns."
+  default_prompt: "Study this skill package and extract reusable skill design patterns."

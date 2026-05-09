@@ -34,7 +34,13 @@ human_summary:
 patterns:
   - name: ""
     slug: ""
+    status: "candidate | pattern"   # candidate = seen once; pattern = seen in 3+ unrelated skills
     prevents: ""
+    forces:                          # tensions that make this solution non-obvious; required for pattern status
+      - ""
+    evidence_of_recurrence:          # list the skills you have actually seen this in
+      - skill: ""
+        path: ""
     use_when:
       - ""
     how_it_works:
@@ -45,6 +51,8 @@ patterns:
       - ""
     combines_with:
       - ""
+    reflection_in_action_warning: "" # when blindly applying this would be worse than thinking from scratch
+    should_be_platform_feature: ""   # if every skill copies this, flag as deficiency, not pattern
     example:
       skill: ""
       path: ""
@@ -58,3 +66,8 @@ pattern_combinations:
 
 gaps_or_risks:
   - ""
+
+dimensions_resisting_rules:        # taste/aesthetic dimensions captured better by examples than rules
+  - dimension: ""
+    why_rules_fail: ""
+    suggested_examples: ""

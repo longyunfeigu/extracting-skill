@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">web-video-presentation 包结构图</title>
+  <desc id="desc">SKILL.md 是入口；4 份核心 reference 按 Phase 接管；THEMES + scaffold + templates 是工程基础设施。</desc>
+  <defs>
+    <marker id="arrow-pkg" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5d544a"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="12" fill="#f7f4ef"/>
+
+  <!-- L1: SKILL.md -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="40" y="40" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">L1 · 入口 + 路由</text>
+    <g transform="translate(420 60)">
+      <rect width="360" height="80" rx="10" fill="#2d4858" stroke="#2d4858"/>
+      <text x="180" y="34" text-anchor="middle" font-size="16" font-weight="720" fill="#ffffff" font-family="ui-monospace, Menlo, monospace">SKILL.md</text>
+      <text x="180" y="58" text-anchor="middle" font-size="12" fill="#dde6ec">4 阶段 + 2 硬节点 + 阶段必读表 + 硬性自检协议</text>
+    </g>
+  </g>
+
+  <!-- L1 → L2 fan-out -->
+  <g stroke="#a04018" stroke-width="1.8" fill="none" marker-end="url(#arrow-pkg)">
+    <path d="M480 140 L150 200" />
+    <path d="M540 140 L390 200" />
+    <path d="M600 140 L600 200" />
+    <path d="M660 140 L810 200" />
+    <path d="M720 140 L1050 200" />
+  </g>
+
+  <!-- L2: 5 phase接管 reference -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="40" y="184" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">L2 · 4 个 Phase 各接哪份 reference</text>
+
+    <g transform="translate(40 200)">
+      <rect width="220" height="80" rx="8" fill="#f5e3d6" stroke="#a04018"/>
+      <text x="110" y="26" text-anchor="middle" font-size="11" font-weight="720" fill="#1f1b16" letter-spacing="1">PHASE 1.2</text>
+      <text x="110" y="48" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">SCRIPT-STYLE.md</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5d544a" font-size="11">文章 → 口播稿规则</text>
+    </g>
+    <g transform="translate(280 200)">
+      <rect width="220" height="80" rx="8" fill="#f5e3d6" stroke="#a04018"/>
+      <text x="110" y="26" text-anchor="middle" font-size="11" font-weight="720" fill="#1f1b16" letter-spacing="1">PHASE 1.2</text>
+      <text x="110" y="48" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">OUTLINE-FORMAT.md</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5d544a" font-size="11">outline 字段 + 边界</text>
+    </g>
+    <g transform="translate(520 200)">
+      <rect width="220" height="80" rx="8" fill="#a04018" stroke="#a04018"/>
+      <text x="110" y="26" text-anchor="middle" font-size="11" font-weight="720" fill="#fbe6dc" letter-spacing="1">PHASE 2.4 ★ 每章必读</text>
+      <text x="110" y="48" text-anchor="middle" font-weight="660" fill="#ffffff" font-family="ui-monospace, Menlo, monospace" font-size="13">CHAPTER-CRAFT.md</text>
+      <text x="110" y="68" text-anchor="middle" fill="#fbe6dc" font-size="11">单一必读入口（Part 0-8）</text>
+    </g>
+    <g transform="translate(760 200)">
+      <rect width="160" height="80" rx="8" fill="#f5e3d6" stroke="#a04018"/>
+      <text x="80" y="26" text-anchor="middle" font-size="11" font-weight="720" fill="#1f1b16" letter-spacing="1">PHASE 3</text>
+      <text x="80" y="48" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">AUDIO.md</text>
+      <text x="80" y="68" text-anchor="middle" fill="#5d544a" font-size="11">narrations → mp3</text>
+    </g>
+    <g transform="translate(940 200)">
+      <rect width="200" height="80" rx="8" fill="#f5e3d6" stroke="#a04018"/>
+      <text x="100" y="26" text-anchor="middle" font-size="11" font-weight="720" fill="#1f1b16" letter-spacing="1">PHASE 4</text>
+      <text x="100" y="48" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">RECORDING.md</text>
+      <text x="100" y="68" text-anchor="middle" fill="#5d544a" font-size="11">Auto / Manual 录屏</text>
+    </g>
+  </g>
+
+  <!-- L3: 主题 + 工程基础设施 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="40" y="334" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">L3 · 跨阶段基础设施</text>
+  </g>
+
+  <!-- 主题系统 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <g transform="translate(40 350)">
+      <rect width="540" height="160" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="20" y="32" font-size="13" font-weight="660" fill="#a04018">主题系统（Checkpoint Plan 选 / 脚手架复制 / 章节消费）</text>
+      <g font-family="ui-monospace, Menlo, monospace" font-size="13">
+        <text x="20" y="62" font-weight="660" fill="#1f1b16">references/THEMES.md</text>
+        <text x="20" y="82" font-size="11" fill="#5d544a" font-family="ui-sans-serif, system-ui, sans-serif">完整 token 契约 + 内置主题清单 + 创作流程</text>
+        <text x="20" y="112" font-weight="660" fill="#1f1b16">themes/&lt;id&gt;/theme.json</text>
+        <text x="20" y="132" font-size="11" fill="#5d544a" font-family="ui-sans-serif, system-ui, sans-serif">nameZh / descriptionZh / bestFor / mood（agent 动态读，不硬编码）</text>
+      </g>
+    </g>
+
+    <g transform="translate(620 350)">
+      <rect width="520" height="160" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="20" y="32" font-size="13" font-weight="660" fill="#a04018">工程基础设施（Phase 2.1 一次性建好）</text>
+      <g font-family="ui-monospace, Menlo, monospace" font-size="13">
+        <text x="20" y="62" font-weight="660" fill="#1f1b16">scripts/scaffold.sh</text>
+        <text x="20" y="82" font-size="11" fill="#5d544a" font-family="ui-sans-serif, system-ui, sans-serif">Vite + React + TS / 16:9 舞台 / stepper / Auto / Audio / Manual</text>
+        <text x="20" y="112" font-weight="660" fill="#1f1b16">templates/src/{hooks, registry, scripts}</text>
+        <text x="20" y="132" font-size="11" fill="#5d544a" font-family="ui-sans-serif, system-ui, sans-serif">useStepper / useAudioPlayer / chapters.ts / extract-narrations.ts</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- L4: 工作产物 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="40" y="554" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">L4 · 用户当前目录的工作产物</text>
+  </g>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13">
+    <g transform="translate(40 570)">
+      <rect width="220" height="100" rx="10" fill="#f0eae0" stroke="#e0d6c5"/>
+      <text x="110" y="28" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">article.md</text>
+      <text x="110" y="50" text-anchor="middle" fill="#5d544a" font-size="11">用户原文（不删）</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5d544a" font-size="11">画面信息密度的细节源</text>
+    </g>
+    <g transform="translate(280 570)">
+      <rect width="220" height="100" rx="10" fill="#f0eae0" stroke="#e0d6c5"/>
+      <text x="110" y="28" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">script.md</text>
+      <text x="110" y="50" text-anchor="middle" fill="#5d544a" font-size="11">口播节拍稿</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5d544a" font-size="11">用 --- 切节拍</text>
+    </g>
+    <g transform="translate(520 570)">
+      <rect width="220" height="100" rx="10" fill="#f0eae0" stroke="#e0d6c5"/>
+      <text x="110" y="28" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace" font-size="13">outline.md</text>
+      <text x="110" y="50" text-anchor="middle" fill="#5d544a" font-size="11">网页开发计划</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5d544a" font-size="11">不写动画 / CSS</text>
+    </g>
+    <g transform="translate(760 570)">
+      <rect width="380" height="100" rx="10" fill="#2d4858" stroke="#2d4858"/>
+      <text x="190" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#f5e3d6" letter-spacing="2">★ 运行时真相源</text>
+      <text x="190" y="58" text-anchor="middle" font-weight="660" fill="#ffffff" font-family="ui-monospace, Menlo, monospace" font-size="13">presentation/src/chapters/&lt;NN&gt;/narrations.ts</text>
+      <text x="190" y="80" text-anchor="middle" fill="#dde6ec" font-size="11">step 数 + 口播文本的最终真相，运行时和音频从这里读</text>
+    </g>
+  </g>
+</svg>

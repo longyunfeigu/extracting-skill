@@ -2,108 +2,184 @@
 
 Use these templates as shapes, not forms to fill mechanically. Keep the language natural.
 
-The templates are ordered for **Reuser** audience by default. For **Author** audience, drop sections marked `(skip for Author)`. For **Learner** audience, expand the worked example.
+The templates are ordered for **想偷招的人** audience by default. For **skill 作者** audience, drop sections marked `(作者可跳)`. For **新手** audience, expand the worked example.
 
 ## Single Skill Package
 
 ```markdown
 ## Skill: <name>
 
-> **Audience:** <Author / Learner / Reuser> · **Source:** <path>
+> **给谁看：** <skill 作者 / 新手 / 想偷招的人> · **来源：** <path>
+
+### Domain primer (先用人话说一遍)
+
+<100~200 字。用 **0 行业黑话** 告诉读者：
+
+- **这个 skill 在做什么**（一句话）
+- **关键产物 / 文件 / 概念**（列名 + 一句解释；必要时画文件之间的关系图）
+- **它们之间什么关系**（A 是 B 的源 / A 派生出 B / A 喂给 B 之类）
+
+判断标准：把这一段单独抽出来给一个**完全没读过原 skill 的人**看，他能看懂这个 skill 在做什么吗？看不懂就重写。
+
+读者读完这段，应该已经认识 Quick Path / Flow / pattern card 里会出现的所有 domain 术语；剩下要消化的只是你抽出来的设计层概念。
+
+**这一段必须有**——哪怕受众是 skill 作者，它顺便检测原 skill 的入口段落是否对陌生人友好。>
+
+### Soul one-liner (一句话讲清这个 skill)
+
+<80~150 字。回答 **3 件事**：
+
+- **根信念是什么？** —— 用 "它把世界看作 X" / "它认为 Y 是错的" / "它的核心动作是 Z" 这种句式起头
+- **它把原料 / 流程 / 决策权拆成了几条独立轴？** —— 列轴的名字（用大白话，不要发明 "节奏轴 / 落地轴" 这种新词）
+- **谁是真相源，谁派生，谁允许漂？** —— 给一个明确的层级
+
+判断标准：如果只能给读者留**一段话**，这就是那一段。
+
+**写不清这段不是模板缺陷，是关于原 skill 的发现**——要在"老实承认的不足"段标"原 skill 没把设计哲学讲清楚"，不要伪装成"已经写了"。Domain primer 说"是什么"，Soul one-liner 说"为什么这样"。两段都要有。>
 
 ### Flow at a glance
 
 \`\`\`
-<≤ 20-line ASCII diagram. Show entry → phases → checkpoints → output.
-Mark cost cliffs (where rework gets expensive) and caps (max iteration).>
+<≤ 20 行 ASCII 图。展示入口 → 各阶段 → 节点 → 产出。
+标记返工最贵的位置和迭代上限。
+**仅时间序，仅此而已**——拓扑、信息流、决策来源在下一段。>
 \`\`\`
 
-### One worked example  *(skip for Author)*
+### Topology map (拓扑视图——非时间轴)
 
-**Input:** <a concrete user request>
+<至少一张**非时间轴关系图**。三选一（按 skill 性质选最能暴露其设计的那一种）：
 
-| Stage | Got | Did | Produced | Move learned |
+**A · 权威拓扑图**（哪些产物是源 / 谁派生 / 谁允许漂）
+
+\`\`\`
+<ASCII。单向箭头表示"喂给 →"或"以...为准 ▲"。每条边带一行注解说明
+"为什么是这个方向"。例如：
+
+  article.md ──喂给──► script.md ──切节拍──► narrations.ts (★真相源)
+                                                    ▲
+                            outline.md ──滞后允许── 同步
+   注解：narrations.ts 距离运行时最近 → 它胜；outline 给人编辑 → 允许漂>
+\`\`\`
+
+**B · 决策来源层级图**（根信念 → 推论 → pattern card）
+
+\`\`\`
+<ASCII 树。根信念在最上方 1~2 行，中间一层是推论决策，最下一层标 pattern
+card 编号。让读者看到 N 张 pattern card 之间的来源关系。例如：
+
+  根信念：这个决定让谁做——手头信息最全的那个人
+       │
+       ├── 推论 1：上游不抢下游决策     →  Pattern 4（大纲不写实现手段）
+       ├── 推论 2：分离不同维度的源     →  Pattern 1, 2（真相源 / 双源）
+       └── 推论 3：先做透一个再放手扇出  →  Pattern 3（第一章先做透）>
+\`\`\`
+
+**C · 信息流图**（原始素材如何被分离 / 每条轴管什么决策维度 / 落到哪个文件）
+
+\`\`\`
+<ASCII。从原始素材开始，分叉成几条独立轴。每条轴标注它管的"决策维度"
+和它的最终物化文件。例如：
+
+  article.md (原始素材)
+       │
+       ├── "什么时候说什么" ──→ script.md
+       ├── "画面挂多少细节" ──→ 信息池
+       └── "step 怎么切 / 音频怎么合" ──→ narrations.ts>
+\`\`\`
+
+**必须做**：至少一张。**仅有 Flow at a glance 不够** —— LLM 遇到难以可视化的结构会回退到文字堆砌。
+
+每个节点 / 箭头都要有一行"为什么这样"的注解，否则 ASCII 会变成空方框图。
+
+如果 skill 同时需要多种维度，可以**合并画一张图**（比如权威拓扑 + 信息流叠在一起），只要每种维度仍清晰可辨。>
+
+### One worked example  *(作者可跳)*
+
+**用户输入：** <一个具体的请求>
+
+| 阶段 | 这一步收到 | 这一步做了 | 产出 | 学到的招 |
 | --- | --- | --- | --- | --- |
 | <stage> | <input> | <action> | <output> | <reusable move> |
 
-### What bad result it prevents
-<The concrete failure. Make it specific. "AI writes fake expert voice made of quotes and vibes" beats "low quality output">
+### 它防什么坏结果
+<具体的失败。要具体。"AI 写假专家口气：堆名言堆 vibe" 比 "低质量输出" 强得多。>
 
-### Why the design has to be this heavy
-<List 2-4 force-pairs in tension and how the skill resolves each. Keep them specific to this skill, not generic.>
+### 为什么要做得这么重
+<列 2-4 组矛盾对，分别讲怎么解。要这个 skill 特有的具体矛盾，不要套路化。>
 
-### Distinctive patterns (only the moves unique-ish to this skill)
+### 这个 skill 独到的招
 
-<3-5 pattern cards using the Design Pattern Card template below. If a move is already in pattern-library.md, do NOT re-card it — list it under "Library hits" instead.>
+<3-5 张 pattern card，按下面 Pattern Card 模板写。如果某招已经在 pattern-library.md 里有了，**不要再发卡**——列在"用了已有的招"段。>
 
-### Library hits  *(one-liner each, no cards)*
-- **<existing pattern name>** — used in <where>, no new variation worth carding.
+### 用了已有的招（不重复发卡）
+- **<已有招的名字>** — 用在 <哪里>，没有新变体值得单独发卡。
 
-### Glossary  *(skip for Author)*
+### Glossary
+
+**Domain 术语**（原 skill 自己用的词；陌生读者必须先懂这层才能读后面。Domain primer 已经讲清楚的核心词不必重复，只列容易混淆 / 出现频率高 / primer 没空展开的）
+
+| 词 | 人话解释 | 在原 skill 哪里 |
+| --- | --- | --- |
+| <term> | <plain-language explanation, do not explain the term with itself> | <SKILL.md L# / references/X.md> |
+
+**设计层术语**（你从原 skill 抽出来的概念，pattern 卡片用的） *(作者可跳)*
+
 | 概念 | 人话解释 | 怎么判断 | 小例子 |
 | --- | --- | --- | --- |
-| <term> | <do not explain the term with itself> | <how to recognize it> | <example from the skill> |
+| <term> | <plain explanation> | <how to recognize it> | <example from the skill> |
 
-### What you can't write down  *(Polanyi edges)*
-| Dimension | Why rules fail here | How to learn it instead |
+### 写不下来的部分
+| 哪一维 | 为什么规则失效 | 怎么学 |
 | --- | --- | --- |
-| <dim> | <why> | <which examples to study, how many> |
+| <dim> | <why> | <看哪些例子，看几个> |
 
-### Where things live
-- `SKILL.md`: <what belongs here>
-- `references/`: <what belongs here>
-- `scripts/`: <what is automated>
-- `examples/`: <what examples prove or teach>
+### 各部分写在 skill 的哪里
+- `SKILL.md`: <写什么>
+- `references/`: <写什么>
+- `scripts/`: <自动化什么>
+- `examples/`: <例子证明 / 教什么>
 
-### Honest gaps  *(stand on giants' shoulders)*
-1. **<lens, e.g. Norvig>**: <specific gap>
-2. **<lens, e.g. Sweller / expertise reversal>**: <specific gap>
+### 老实承认的不足
+1. **<什么角度>**: <具体不足>
+2. **<什么角度>**: <具体不足>
 3. ...
 
-### Next action
-<One paragraph. What should the reader do tomorrow with this report?
-- For Author: which 1-2 changes to consider, in priority order.
-- For Learner: which 1-2 example files to read next, in order.
-- For Reuser: which 1-2 patterns to copy into the new skill, with file paths.>
+### 下一步
+<一段话。读者拿到这份报告该干嘛？
+- 给作者：考虑改的 1-2 件事，按优先级。
+- 给新手：接下来读的 1-2 个例子文件，按顺序。
+- 给想偷招的人：抄到新 skill 里的 1-2 个 pattern，带文件路径。>
 ```
 
-## Design Pattern Card
+## Pattern Card（6 主字段 + 2 可选）
 
 ```markdown
-### <Pattern name>  ·  status: candidate | pattern
+### <招的名字>  ·  状态：候选 | 已确认
 
-**Prevents:** <bad AI behavior or bad output, specific>
+**它防什么坏结果：** <具体的坏 AI 行为或坏产出>
 
-**Forces:** <the *specific* tensions making this solution non-obvious. If your forces could fit a sibling pattern in the same skill, they are too generic — find the real ones.>
+**为什么不能简单做：** <这个 skill 特有的、让简单解失败的具体矛盾。如果你写的矛盾能套到同 skill 另一招上，就是太套路化了——找真正的矛盾。>
 
-**Evidence of recurrence:** <skills (with paths) where you have actually seen this move. Default: candidate. Promote to pattern only with 2+ unrelated sightings — pattern-library.md does NOT count as a sighting.>
+**反例（看着像但不是这招）：** <一个具体动作，看着像这招但不是。没有反例边界就糊——保持"候选"状态。>
 
-**Anti-example (where this pattern stops):** <a concrete move that looks similar but is *not* this pattern. Without this, the boundary is vague — keep status: candidate.>
+**什么时候用 + 怎么用：** <触发场景 + 可复用的形（2-4 行）>
 
-**Use when:** <triggering situation, specific>
+**什么时候这招会坑你 / 代价：** <一个**具体场景**，照搬这招就会被坑。"别盲目使用"这种空话不算。再加一行写代价（时间 / token / 用户注意力 / 依赖项）。>
 
-**How:** <reusable shape, 2-4 lines>
+**在哪几个 skill 里见过 + 真实例子：** <列出你**亲眼**看到过这招的 skill 路径。默认"候选"。只有 2+ 个**不相关** skill 都见过才能升"已确认"——pattern-library.md 里有不算 sighting。再列 1 个具体例子，带行号（"<skill 路径> Lxx-yy"）。>
 
-**Lives in:** <SKILL.md / references / scripts / examples / tests>
+**（可选）这是设计选择还是平台该补的功能：** <如果每个 skill 都在重复打这个补丁，标"平台该补"。>
 
-**Cost:** <time, tokens, user attention, dependencies>
-
-**Combines with:** <other patterns>
-
-**Reflection-in-action warning:** <one *concrete* scenario where applying this pattern blindly misleads. Generic disclaimers fail this field.>
-
-**Norvig check:** <pattern, OR platform-deficiency-marker. Justify in one line.>
-
-**Real example:** <skill name + path + 1-2 line note>
+**（可选）和谁一起用：** <其它 pattern>
 ```
 
-## Quick Path Pattern Card (for experienced readers)
+## Quick Path Pattern Card（给已经熟悉的读者）
 
 ```markdown
-- **<Pattern name>** — <one-line gist>. ⚠️ <reflection-in-action warning, one line>.
+- **<招的名字>** — <一句话讲清楚>。⚠️ <什么时候这招会坑你，一行>。
 ```
 
-Use the quick path when the user already knows the territory. Skip worked examples; link to the full card only if asked.
+读者已经懂这套时用 Quick Path。跳过 worked example；只有用户问起才链接到完整卡。
 
 ## Batch Pattern Library
 
@@ -111,21 +187,21 @@ Use the quick path when the user already knows the territory. Skip worked exampl
 ## Skill 设计模式库
 
 ### 最大发现
-- <theme across many skills>
-- <theme across many skills>
+- <跨多个 skill 的共同主题>
+- <跨多个 skill 的共同主题>
 
 ### 模式
 
-<Pattern cards, grouped by purpose: triggering, research, synthesis, validation, packaging, output.>
+<Pattern card 按用途分组：触发与路由 / 研究与证据 / 综合 / 校验 / 打包 / 输出。>
 
 ### 组合用法
-- **For research-heavy skills:** <patterns>
-- **For discipline-enforcing skills:** <patterns>
-- **For creative generation skills:** <patterns>
-- **For tool-heavy skills:** <patterns>
+- **研究密集型 skill：** <patterns>
+- **强约束型 skill：** <patterns>
+- **创造性生成 skill：** <patterns>
+- **重工具型 skill：** <patterns>
 
 ### 发现的问题
-- <missing validation>
-- <unclear trigger>
-- <overloaded SKILL.md>
+- <缺校验>
+- <触发条件不清>
+- <SKILL.md 信息过载>
 ```

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">真相源拓扑：article / script / outline / narrations 各管什么</title>
+  <desc id="desc">非时间序拓扑：article 是细节源，script 是节奏源，outline 是计划，narrations.ts 是运行时真相源。计划允许滞后；运行时不允许漂。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a04018"/>
+    </marker>
+    <marker id="arrow-cool" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2d4858"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="760" rx="12" fill="#f7f4ef"/>
+
+  <!-- Layer labels -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" font-weight="720" letter-spacing="2">
+    <text x="40" y="40" fill="#a04018">L1 · 细节源</text>
+    <text x="40" y="200" fill="#a04018">L2 · 文本计划（允许滞后）</text>
+    <text x="40" y="380" fill="#a04018">L3 · 章节代码 + 运行时真相源（★ 不允许漂）</text>
+    <text x="40" y="600" fill="#a04018">L4 · 派生产物</text>
+  </g>
+
+  <!-- L1: article.md -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="14">
+    <g transform="translate(440 60)">
+      <rect width="320" height="100" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.5"/>
+      <text x="160" y="34" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace">article.md</text>
+      <text x="160" y="58" text-anchor="middle" fill="#5d544a" font-size="12">用户原文，是画面信息密度的细节源</text>
+      <text x="160" y="82" text-anchor="middle" fill="#5d544a" font-size="12">数字 / 引用 / 案例 / 出处住这里</text>
+    </g>
+  </g>
+
+  <!-- L1 → L2 (双源分工) -->
+  <g stroke="#a04018" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+    <path d="M520 160 L300 220" />
+    <path d="M680 160 L900 220" />
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#5d544a">
+    <text x="380" y="195">改写成能念的稿子</text>
+    <text x="780" y="195">抽信息池（每章首段）</text>
+  </g>
+
+  <!-- L2: script.md + outline.md -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="14">
+    <g transform="translate(120 220)">
+      <rect width="360" height="100" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.5"/>
+      <text x="180" y="34" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace">script.md</text>
+      <text x="180" y="58" text-anchor="middle" fill="#5d544a" font-size="12">口播节拍稿（管"什么时候说什么"）</text>
+      <text x="180" y="82" text-anchor="middle" fill="#5d544a" font-size="12">用 --- 切节拍，定步骤顺序</text>
+    </g>
+    <g transform="translate(720 220)">
+      <rect width="360" height="100" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.5"/>
+      <text x="180" y="34" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace">outline.md</text>
+      <text x="180" y="58" text-anchor="middle" fill="#5d544a" font-size="12">开发计划（章节 / step / 信息池）</text>
+      <text x="180" y="82" text-anchor="middle" fill="#5d544a" font-size="12">不写动画 / CSS / 毫秒级时长</text>
+    </g>
+  </g>
+
+  <!-- L2 → L3 -->
+  <g stroke="#a04018" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+    <path d="M300 320 L450 400" />
+    <path d="M900 320 L750 400" />
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#5d544a">
+    <text x="320" y="370">step 顺序 + 口播文本</text>
+    <text x="760" y="370">屏幕内容 + 信息池</text>
+  </g>
+
+  <!-- L3: Chapter.tsx + narrations.ts -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="14">
+    <g transform="translate(280 400)">
+      <rect width="320" height="120" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.5"/>
+      <text x="160" y="34" text-anchor="middle" font-weight="660" fill="#1f1b16" font-family="ui-monospace, Menlo, monospace">Chapter.tsx</text>
+      <text x="160" y="58" text-anchor="middle" fill="#5d544a" font-size="12">视觉实现：if (step === N) return ...</text>
+      <text x="160" y="82" text-anchor="middle" fill="#5d544a" font-size="12">最大 step + 1 必须等于</text>
+      <text x="160" y="100" text-anchor="middle" fill="#5d544a" font-size="12">narrations.length（强制）</text>
+    </g>
+    <g transform="translate(620 400)">
+      <rect width="360" height="120" rx="10" fill="#2d4858" stroke="#2d4858"/>
+      <text x="180" y="32" text-anchor="middle" font-size="11" font-weight="720" fill="#f5e3d6" letter-spacing="2">★ 运行时真相源</text>
+      <text x="180" y="62" text-anchor="middle" font-weight="660" fill="#ffffff" font-family="ui-monospace, Menlo, monospace">narrations.ts</text>
+      <text x="180" y="86" text-anchor="middle" fill="#dde6ec" font-size="12">每 step 的口播文本数组</text>
+      <text x="180" y="106" text-anchor="middle" fill="#dde6ec" font-size="12">Auto 录屏 / 音频 / step 数都从这里读</text>
+    </g>
+  </g>
+
+  <!-- Chapter <-> narrations 强制等长 -->
+  <g stroke="#2d4858" stroke-width="2" fill="none" stroke-dasharray="4 3">
+    <line x1="600" y1="460" x2="620" y2="460"/>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#2d4858" font-weight="660">
+    <text x="610" y="450" text-anchor="middle">数组长度强制等于 max step + 1</text>
+  </g>
+
+  <!-- L3 → L4 派生 -->
+  <g stroke="#a04018" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <path d="M800 520 L160 640"/>
+    <path d="M800 520 L500 640"/>
+    <path d="M800 520 L800 640"/>
+    <path d="M800 520 L1080 640"/>
+  </g>
+
+  <!-- L4: 派生产物 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#1f1b16">
+    <g transform="translate(60 640)">
+      <rect width="220" height="80" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="110" y="28" text-anchor="middle" font-weight="660" font-family="ui-monospace, Menlo, monospace" font-size="12">useStepper</text>
+      <text x="110" y="50" text-anchor="middle" fill="#5d544a" font-size="11">读 narrations.length</text>
+      <text x="110" y="66" text-anchor="middle" fill="#5d544a" font-size="11">算 step 总数</text>
+    </g>
+    <g transform="translate(310 640)">
+      <rect width="280" height="80" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="140" y="28" text-anchor="middle" font-weight="660" font-family="ui-monospace, Menlo, monospace" font-size="12">audio-segments.json</text>
+      <text x="140" y="50" text-anchor="middle" fill="#5d544a" font-size="11">extract-narrations.ts 抽取</text>
+      <text x="140" y="66" text-anchor="middle" fill="#5d544a" font-size="11">用户审 → 喂给 mmx 合成</text>
+    </g>
+    <g transform="translate(620 640)">
+      <rect width="320" height="80" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="160" y="28" text-anchor="middle" font-weight="660" font-family="ui-monospace, Menlo, monospace" font-size="12">public/audio/&lt;id&gt;/&lt;N&gt;.mp3</text>
+      <text x="160" y="50" text-anchor="middle" fill="#5d544a" font-size="11">每 step 一个 mp3</text>
+      <text x="160" y="66" text-anchor="middle" fill="#5d544a" font-size="11">增量合成，跳过已存在</text>
+    </g>
+    <g transform="translate(970 640)">
+      <rect width="170" height="80" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="85" y="28" text-anchor="middle" font-weight="660" font-size="12">?auto=1</text>
+      <text x="85" y="50" text-anchor="middle" fill="#5d544a" font-size="11">按音频结束推进</text>
+      <text x="85" y="66" text-anchor="middle" fill="#5d544a" font-size="11">不等动画</text>
+    </g>
+  </g>
+</svg>

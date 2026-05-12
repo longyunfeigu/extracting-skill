@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">三个人在同一段位置上的对照</title>
+  <desc id="desc">塔勒布、费曼、MrBeast 三个人各自的核心心智模型（上半部）和女娲反推出的研究维度（下半部）。同一段位置，三个人完全不同——证明 Agentic Protocol 不是写死的模板。</desc>
+
+  <defs>
+    <marker id="arrow-derive" markerWidth="12" markerHeight="12" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L11,4 z" fill="#a04018"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="780" rx="12" fill="#f7f4ef"/>
+
+  <!-- Title row -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="30" y="32" font-size="11" font-weight="720" fill="#5d544a" letter-spacing="2.5">PHASE 3 · 反推 AGENTIC PROTOCOL</text>
+    <text x="30" y="56" font-size="16" font-weight="660" fill="#1f1b16">从蒸馏出的核心心智模型，倒着推出「这个人回答问题前会先看什么」</text>
+  </g>
+
+  <!-- 3 Column headers -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <!-- Col 1: Taleb -->
+    <g transform="translate(30 90)">
+      <rect width="340" height="50" rx="8" fill="#2d4858"/>
+      <text x="170" y="22" text-anchor="middle" font-size="13" font-weight="720" fill="#ffffff">塔勒布</text>
+      <text x="170" y="40" text-anchor="middle" font-size="11" fill="#dde6ec">Nassim Nicholas Taleb · 思想家 / 交易员</text>
+    </g>
+    <!-- Col 2: Feynman -->
+    <g transform="translate(430 90)">
+      <rect width="340" height="50" rx="8" fill="#2d4858"/>
+      <text x="170" y="22" text-anchor="middle" font-size="13" font-weight="720" fill="#ffffff">费曼</text>
+      <text x="170" y="40" text-anchor="middle" font-size="11" fill="#dde6ec">Richard Feynman · 物理学家 / 教育家</text>
+    </g>
+    <!-- Col 3: MrBeast -->
+    <g transform="translate(830 90)">
+      <rect width="340" height="50" rx="8" fill="#2d4858"/>
+      <text x="170" y="22" text-anchor="middle" font-size="13" font-weight="720" fill="#ffffff">MrBeast</text>
+      <text x="170" y="40" text-anchor="middle" font-size="11" fill="#dde6ec">Jimmy Donaldson · 内容创作者</text>
+    </g>
+  </g>
+
+  <!-- Row label (心智模型) -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="30" y="172" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">↑ 蒸馏出的核心心智模型（Phase 2 三重验证筛出来的）</text>
+  </g>
+
+  <!-- Mental models row, y=185-380 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <!-- Col 1 Taleb models -->
+    <g transform="translate(30 185)">
+      <rect width="340" height="200" rx="8" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="18" y="28" font-size="13" font-weight="660" fill="#1f1b16">1. 非对称风险思维</text>
+      <text x="18" y="54" font-size="13" font-weight="660" fill="#1f1b16">2. 反脆弱偏好</text>
+      <text x="18" y="80" font-size="13" font-weight="660" fill="#1f1b16">3. Skin in the Game 检验</text>
+      <text x="18" y="106" font-size="13" font-weight="660" fill="#1f1b16">4. 林迪效应筛选</text>
+      <text x="18" y="132" font-size="13" font-weight="660" fill="#1f1b16">5. Via Negativa（减法）</text>
+      <text x="18" y="158" font-size="13" font-weight="660" fill="#1f1b16">6. 领域特异性</text>
+      <text x="18" y="184" font-size="11" fill="#5d544a" font-style="italic">三重验证：候选 15-30 个 → 筛 6 个</text>
+    </g>
+    <!-- Col 2 Feynman models -->
+    <g transform="translate(430 185)">
+      <rect width="340" height="200" rx="8" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="18" y="28" font-size="13" font-weight="660" fill="#1f1b16">1. 第一性原理</text>
+      <text x="18" y="54" font-size="13" font-weight="660" fill="#1f1b16">2. 对权威的怀疑</text>
+      <text x="18" y="80" font-size="13" font-weight="660" fill="#1f1b16">3. 货物崇拜检测</text>
+      <text x="18" y="106" font-size="13" font-weight="660" fill="#1f1b16">4. 命名 ≠ 理解</text>
+      <text x="18" y="132" font-size="13" font-weight="660" fill="#1f1b16">5. 自欺识别</text>
+      <text x="18" y="184" font-size="11" fill="#5d544a" font-style="italic">三重验证：候选 → 筛 5 个心智模型</text>
+    </g>
+    <!-- Col 3 MrBeast models -->
+    <g transform="translate(830 185)">
+      <rect width="340" height="200" rx="8" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="18" y="28" font-size="13" font-weight="660" fill="#1f1b16">1. 注意力工程</text>
+      <text x="18" y="54" font-size="13" font-weight="660" fill="#1f1b16">2. 测试迭代</text>
+      <text x="18" y="80" font-size="13" font-weight="660" fill="#1f1b16">3. 标题/缩略图公式</text>
+      <text x="18" y="106" font-size="13" font-weight="660" fill="#1f1b16">4. 留存率优化</text>
+      <text x="18" y="132" font-size="13" font-weight="660" fill="#1f1b16">5. 简单概念 × 极端执行</text>
+      <text x="18" y="158" font-size="13" font-weight="660" fill="#1f1b16">6. ROI 思维</text>
+      <text x="18" y="184" font-size="11" fill="#5d544a" font-style="italic">三重验证：候选 → 筛 6 个心智模型</text>
+    </g>
+  </g>
+
+  <!-- Arrow band: "倒着推出" -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <!-- 3 downward arrows -->
+    <line x1="200" y1="395" x2="200" y2="455" stroke="#a04018" stroke-width="2.5" marker-end="url(#arrow-derive)"/>
+    <line x1="600" y1="395" x2="600" y2="455" stroke="#a04018" stroke-width="2.5" marker-end="url(#arrow-derive)"/>
+    <line x1="1000" y1="395" x2="1000" y2="455" stroke="#a04018" stroke-width="2.5" marker-end="url(#arrow-derive)"/>
+
+    <!-- Center label -->
+    <g transform="translate(490 410)">
+      <rect width="220" height="36" rx="18" fill="#a04018"/>
+      <text x="110" y="23" text-anchor="middle" font-size="13" font-weight="720" fill="#ffffff">↓ 倒着推出研究维度</text>
+    </g>
+  </g>
+
+  <!-- Row label (研究维度) -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="30" y="490" font-size="11" font-weight="720" fill="#a04018" letter-spacing="2">↓ 生成的 skill 在回答问题前会先看什么（写进 Step 2 工作流）</text>
+  </g>
+
+  <!-- Research dimensions row, y=500-720 -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <!-- Col 1 Taleb dimensions -->
+    <g transform="translate(30 500)">
+      <rect width="340" height="220" rx="8" fill="#f5e3d6" stroke="#a04018" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="720" fill="#a04018">1. 看风险</text>
+      <text x="18" y="44" font-size="11" fill="#5d544a">尾部风险 / 遍历性 / 不对称性</text>
+      <text x="18" y="74" font-size="13" font-weight="720" fill="#a04018">2. 看脆弱性</text>
+      <text x="18" y="90" font-size="11" fill="#5d544a">压力测试 / 隐藏脆弱点</text>
+      <text x="18" y="120" font-size="13" font-weight="720" fill="#a04018">3. 看历史</text>
+      <text x="18" y="136" font-size="11" fill="#5d544a">黑天鹅先例 / 火鸡问题检验</text>
+      <text x="18" y="166" font-size="13" font-weight="720" fill="#a04018">4. 看叙事</text>
+      <text x="18" y="182" font-size="11" fill="#5d544a">主流叙事 / 反面观点</text>
+      <text x="18" y="206" font-size="13" font-weight="720" fill="#a04018">5. 看皮肤在场</text>
+    </g>
+    <!-- Col 2 Feynman dimensions -->
+    <g transform="translate(430 500)">
+      <rect width="340" height="220" rx="8" fill="#f5e3d6" stroke="#a04018" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="720" fill="#a04018">1. 第一性原理拆解</text>
+      <text x="18" y="44" font-size="11" fill="#5d544a">底层原理 / 去掉名字看本质</text>
+      <text x="18" y="74" font-size="13" font-weight="720" fill="#a04018">2. 看实验数据</text>
+      <text x="18" y="90" font-size="11" fill="#5d544a">实际验证 / 理论 vs 观测</text>
+      <text x="18" y="120" font-size="13" font-weight="720" fill="#a04018">3. 看类比</text>
+      <text x="18" y="136" font-size="11" fill="#5d544a">跨领域映射 / 类比边界</text>
+      <text x="18" y="166" font-size="13" font-weight="720" fill="#a04018">4. 看盲区</text>
+      <text x="18" y="182" font-size="11" fill="#5d544a">未验证假设 / 货物崇拜检测</text>
+    </g>
+    <!-- Col 3 MrBeast dimensions -->
+    <g transform="translate(830 500)">
+      <rect width="340" height="220" rx="8" fill="#f5e3d6" stroke="#a04018" stroke-width="1.2"/>
+      <text x="18" y="28" font-size="13" font-weight="720" fill="#a04018">1. 看数据</text>
+      <text x="18" y="44" font-size="11" fill="#5d544a">CTR / AVD / 完播率</text>
+      <text x="18" y="74" font-size="13" font-weight="720" fill="#a04018">2. 看竞品</text>
+      <text x="18" y="90" font-size="11" fill="#5d544a">Top10 标题/封面 / 差异化</text>
+      <text x="18" y="120" font-size="13" font-weight="720" fill="#a04018">3. 看趋势</text>
+      <text x="18" y="136" font-size="11" fill="#5d544a">搜索趋势 / 算法变化</text>
+      <text x="18" y="166" font-size="13" font-weight="720" fill="#a04018">4. 看成本/回报</text>
+      <text x="18" y="182" font-size="11" fill="#5d544a">制作成本 / 预期 ROI</text>
+    </g>
+  </g>
+
+  <!-- Bottom takeaway -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <line x1="30" y1="740" x2="1170" y2="740" stroke="#e0d6c5" stroke-width="1"/>
+    <text x="600" y="762" text-anchor="middle" font-size="12" fill="#5d544a">塔勒布不会去查 CTR；MrBeast 不会去查谁有 skin in the game。同一个外壳，不同的「先看什么」——这才是「HOW they think」。</text>
+  </g>
+</svg>

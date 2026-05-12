@@ -65,13 +65,30 @@ Plan visuals after the core explanation exists. A good default set:
 
 Structure diagrams explain. Generated images invite and reinforce.
 
+## 对照用真表格，不要散文
+
+教科书 Overview 的 wow moment 经常涉及 2+ 个东西的对照（不同人 → 不同行为 / 不同输入 → 不同产出 / 默认 vs 优化）。**这种对照必须用真表格——SVG diagram type=`compare` 或 HTML table——不能用散文叙述。**
+
+为什么：散文叙述对照逼读者把文字在脑子里转成表才能体会差异，认知负担高。真表格让眼睛自己走一遍，"哦原来如此"是看出来的，不是说出来的。
+
+具体规则：
+
+- 同一段位置上 2+ 个实体的横向对比 → SVG 表格（cols = 实体，rows = 维度）。
+- 同一实体在多个时间点的状态变化 → SVG 时间轴 + 状态卡。
+- before / after 对照 → 双卡（左边 before / 右边 after，颜色对比明显）。
+- 一对多 / 多对一 → SVG 网状图或 ER 图，不要文字罗列。
+
+**判定违规**：你的 wow moment 里出现了 ≥ 3 个并列项（"A 是 X / Y / Z；B 是 P / Q / R；C 是 M / N / O"）但没配图——这就是散文做对照，回去画 SVG。
+
+校准样板见 `examples/nuwa-skill/web-app/assets/diagrams/protocol-compare.svg`——3 列 × 2 行（核心心智模型 / 反推研究维度）的塔勒布 / 费曼 / MrBeast 对照。
+
 ## 占位 metadata ≠ 完成（写了 diagrams[] 不等于画了图）
 
 这是 web app 输出最常见的失败模式：
 
 - AI 在 `data.js` 的 `diagrams: []` 数组里写了 title / type / description 字段——觉得"画图这件事已经做完了"。
 - 但 `image: "assets/diagrams/*.svg"` 字段没填、或者填了但**对应 SVG 文件根本不存在**。
-- site.js 的 `diagramBlock()` 检测到 `image` 为空时**静默跳过 `<img>` 标签**——页面不报错、HTTP 200、左侧导航还在——但 walkthrough.html / file-map.html / design-choices.html 打开后看到的是一个孤立的"先看大流水线 · 顶层流程图"标题加一段描述，下面空着。
+- site.js 的 `diagramBlock()` 检测到 `image` 为空时**静默跳过 `<img>` 标签**——页面不报错、HTTP 200、左侧导航还在——但 overview.html / walkthrough.html / file-map.html / design-choices.html 打开后看到的是一个孤立的"先看大流水线 · 顶层流程图"标题加一段描述，下面空着。
 
 所以硬规则：
 
@@ -87,7 +104,7 @@ Before finishing a handbook, check:
 - Does the first page explain why the skill is cool without assuming file knowledge?
 - Does every important term get explained before it is used heavily?
 - **就地短解自检：** walkthrough / design choices / patterns / file map 里，每个领域术语第一次出现时，旁边有 5-25 字就地短解吗？
-- **Page-level orientation 自检：** 多页 web 版本里，每个明细页面（walkthrough / patterns / design-choices / file-map）的第一张详细卡之前，有没有一句话总任务、顶层全景图、全索引表？
+- **Page-level orientation 自检：** 多页 web 版本里，每个明细页面（**overview** / walkthrough / patterns / design-choices / file-map）的第一张详细卡之前，有没有一句话总任务、顶层全景图、全索引表？Overview 特别要求至少 1 张 orientation 图（嵌在 primer 第 1 拍后）+ 1 张 compare 图（如有横向对比）。
 - **图渲染自检（不是 metadata 检查）：** `data.js` 的 `diagrams[]` 每条都有 `image:` 字段吗？字段指向的 SVG 文件真实存在吗？起本地 server 后逐个 curl 每张 SVG，HTTP 200 且非零字节吗？没做这一关 = 图可能就是没画。
 - Is the AI using the skill the narrative subject?
 - Does the document move from user intent to low-level files?
@@ -98,6 +115,23 @@ Before finishing a handbook, check:
 - Are accurate relationship diagrams kept code-native instead of generated as bitmaps?
 - If imagegen is used, does each image have a clear learning purpose and avoid exact text-heavy labels?
 - Can the reader steal at least three concrete design moves?
+- For web mode, does the work use `handbook-brief.md` plus page packets as the
+  source, with `handbook.md` only as an export?
+- Do the pages have distinct jobs and writing voices instead of one Markdown
+  voice split into files?
+
+## Overview 教科书章节自检
+
+承重墙是 Overview——读者前 10 分钟。逐条扫，命中任何一条就回去重写：
+
+- 1.2 opening scene 是 6-10 个 narrative block 让读者**亲眼看到** AI 在没有这个 skill 时的失败模式，还是只在用一句话**陈述** AI 的本能？后者要重写——展示比陈述强 5 倍。
+- 1.3 predict prompt 存在吗？在 opening scene 之后、primer 之前？问得够具体让读者真能写出猜测，还是泛泛"想一下"？
+- 1.4 primer 是 5-9 拍 narrative blocks 还是一坨 >300 字段落？后者必须拆。
+- 1.4 primer 第 1 拍之后嵌了一张 orientation SVG 图吗？没有 = 读者没地图 = 重写。
+- 1.5 wow moment 涉及 2+ 个东西对照时，用了 SVG 表格还是散文叙述？散文 = 工作笔记 voice = 重写为 SVG。
+- 1.6 bad results 是 3-5 张 before/after 双行卡（aiDefault + nuwaIntercept），还是扁平 bullet 列表？扁平 = 落不到地 = 重写。
+- 1.8 whyThisShape 是 `shapeReason`（一句逻辑）+ `chapterLogic`（结构化列表），还是一段把 7 章串起来的 TOC 散文？后者重写。
+- 把 Overview 单独拿给一个**完全没读过源 skill 的朋友**看，他读完能用 3-5 句话给另一个朋友讲清楚源 skill 在干嘛吗？讲不清 = opening scene 或 primer 不够具体 = 重写。
 
 ## Pre-test / narrative material / challenges self-check
 
@@ -133,4 +167,3 @@ Before finishing a handbook, check:
 - 钩子的语气是"这一步可以做什么 / 不用做什么"，还是"被 skill 拦着不让做"？后者要重写。
 - 5.X 结尾的"下一步靠这个"和 5.X+1 开头的"接上一步"说的是同一件事吗？
 - 整本书读完，能不能口述出一条"AI 从想抄近路到明白每个停顿在赎债"的弧？
-

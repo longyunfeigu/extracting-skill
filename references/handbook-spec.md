@@ -8,6 +8,11 @@ The output is a multi-page handbook, suitable for a web documentation app, that
 walks through how a skill changes an AI's behavior from the perspective of the
 AI using it.
 
+For web app output, the source of truth is not one long `handbook.md`. The
+source is `handbook-brief.md` plus page packets. `handbook.md` may be generated
+afterwards as a linear export. Read `references/web-production-flow.md` before
+writing web pages.
+
 For a complete sample handbook, read `examples/web-video-presentation/handbook.md`
 for voice calibration. For the rendered web app shape, see
 `examples/web-video-presentation/web-app/`.
@@ -54,7 +59,9 @@ Load only the detail file needed for the current part of the work:
 | Overall contract, structure, and routing | `references/handbook-spec.md` |
 | Stage walkthrough, terminology explanations, narrative hooks, AI freedom | `references/stage-writing.md` |
 | Design choice cards, pattern cards, scenario comparison, pattern links | `references/cards-patterns.md` |
+| Web production flow, page packets, page agents, Markdown export | `references/web-production-flow.md` |
 | Multi-page web app structure and page-level orientation | `references/web-app-structure.md` |
+| 页面视觉规范（字体 / 配色 / 组件长什么样） | `references/web-app-visuals.md` |
 | Diagrams, generated illustrations, final self-checks | `references/visuals-and-quality.md` |
 
 Do not load every reference by default. Read this file first, then pull in the
@@ -118,18 +125,89 @@ instructions and examples.
     default instinct versus the constrained result. If it has almost no freedom,
     say why. See `references/stage-writing.md`.
 
+13. **Web mode uses brief plus page packets.**
+    Do not write one complete `handbook.md` and translate it into pages. Create
+    `handbook-brief.md`, write page packets with distinct page jobs and voices,
+    run an editor pass, then assemble the web app. `handbook.md` is only a
+    later export. See `references/web-production-flow.md`.
+
 ## Recommended Handbook Structure
 
-### 1. 先感受它为什么 cool
+For web mode, treat this structure as the page map. First create the source
+plan and page packets described in `references/web-production-flow.md`; then
+render the pages below. For Markdown-only output, this structure can be written
+directly as one file.
 
-Give the reader the "wow" moment in 100-200 words. Name the ordinary AI failure
-right away.
+### 1. Overview — 教科书章节标准
 
-```markdown
-这个 skill 看起来 cool 的地方不是"会写 React"。真正厉害的是：
-它不让我从文章直接跳到网页。它先把文章变成能念的稿子，再变成
-可开发的节奏计划，再让用户在最便宜的返工点确认，最后才写网页和音频。
-```
+Overview 是承重墙。一个完全没看过源 skill 的读者，应该能在读完这一页后给朋友用 3-5 句话讲清楚这个 skill 在干嘛。
+
+**这一节不是 creator 风格的总结。**"用一段密集段落把整个 skill 总结一遍"是工作笔记 voice，会让读者关掉。教科书 voice 必须刻意安排读者的前 10 分钟。
+
+**校准样板**：`examples/nuwa-skill/web-app/pages/overview.html` 渲染后的页面 + `examples/nuwa-skill/web-app/assets/data.js` 里 `overview` 对象的字段。下面 8 个子节是写 Overview 时必填的字段和形状。
+
+#### 1.1 Hero — 一句话框架
+
+- `eyebrow`：章节标签（如 "Overview · 章 01"）
+- `h1`：具体框架（如 "看见女娲在做什么"），不要写 "为什么这个 skill 值得看" 这种空泛标题
+- `oneLiner`（lede）：最多 3 句，搭好这一章要解的张力。**展示 AI 默认会怎样 vs skill 让它怎样**——不要写抽象赞美。
+
+#### 1.2 Opening scene — 先让读者看到失败模式，再命名
+
+- 6-10 个 narrative block（段落 + 列表）让读者**亲眼看到** AI 在没有这个 skill 时会出的坏结果。
+- 写成具体对话或 trace：「我让 AI 做 X。它说 Y。然后我问 Z。它开始飘——」
+- **这一节里不许引入源 skill 的术语**。只展示问题，从读者的位置看。
+- 字段：`overview.openingScene` (array of narrative blocks)。
+- 反例：「拿到 X，AI 的本能是 Y——表面像，实际错」——这是陈述失败模式，不是展示。
+
+#### 1.3 Predict prompt — 读者预测钩子
+
+- 一个问题，2-3 句话。
+- 强迫读者在看 skill 的答案之前，先写下自己的修法猜测。
+- 字段：`overview.predictPrompt` (string)。
+- 这个钩子要放在 openingScene 之后、primer 之前——读者已经看到问题，但还没看到答案。
+
+#### 1.4 Domain primer — 多拍 + 嵌入 orientation 图
+
+- 把 primer 拆成 5-9 个拍子（narrative block）。每拍一个想法、一段（或一个短列表）。
+- **必须在第 1 拍之后嵌入一张顶层 SVG orientation 图**——`{kind: "diagram", id: "..."}`。没有图，读者就没有地图。
+- 字段：`overview.primerBeats` (array of narrative blocks, including at least one `kind: "diagram"`)。
+- **禁止：单一 `domainPrimer` 字段是 >300 字的一段。** 一坨长段落是工作笔记 voice 的最强信号，必须拆。
+
+#### 1.5 Wow moment — 对照用真表格，不要散文
+
+- `wowSetup`（2-3 句）：把读者带回到 opening scene 的具体问题，预告下面要展示什么。
+- **如果 wow 涉及 2+ 个东西的对照**（不同输入 → 不同产出 / 不同人 → 不同行为 / 默认 vs 优化），**必须用真表格**——SVG diagram type=`compare`，或 HTML table。不能用散文叙述。
+- 为什么：散文对照逼读者把文字转成脑子里的表才能体会差异；真表格让眼睛自己走一遍，"哦原来如此"是看出来的不是说出来的。
+- `wowMoment`（2-3 句）：从表格里提炼出读者应该记住的一句话。
+- 字段：`overview.wowSetup` (string), `handbook.diagrams[]` 中至少一个 `type: "compare"`, `overview.wowMoment` (string)。
+
+#### 1.6 Bad results prevented — before/after 卡，不是 bullet 列表
+
+- 3-5 张卡。每张卡两行：`aiDefault`（不用这个 skill 会发生什么）+ `nuwaIntercept`（这个 skill 怎么具体拦）。
+- **不要写成一个 "防 X / 防 Y / 防 Z" 的扁平 list。** before/after 配对才让规则落地。
+- 字段：`overview.badResults` (array of `{title, aiDefault, nuwaIntercept}`)。
+
+#### 1.7 Running example — 引入贯穿全本的例子
+
+- 这是后面 Walkthrough / Design Choices / Patterns 都要用的同一个例子。在这里设定，中途不换。
+- 三张卡：用户请求 / 为什么挑这个例子 / 预期产出。
+- 末尾 callout 提醒读者：这个例子会在每个 stage 出现。
+- 字段：`handbook.example` (object with `userRequest`, `whyThisExample`, `expectedOutput`)。
+
+#### 1.8 Why this shape — 结构化列表，不是 TOC 散文
+
+- `shapeReason`：**一句话**讲排序逻辑（如 "按读者意图排，不按源文件顺序"）。
+- `chapterLogic`：结构化列表——每章 `{chapter: "01 ...", why: "..."}`。"why" 必须说**为什么这一章排在这个位置**，不只是描述内容。
+- **禁止**：一段把 7 章串起来的散文（"先在 Overview...，再在 Walkthrough...，然后..."）——这是 TOC 散文，且 site.js 已经自动渲染了 TOC 卡片，不需要再用文字版重复。
+- 字段：`overview.shapeReason` (string), `overview.chapterLogic` (array)。
+
+#### Overview voice 终极测试
+
+把 Overview 单独拿出来，给一个**完全没看过源 skill 的朋友**读。
+- 读完他能不能用 3-5 句话给另一个朋友讲清楚源 skill 在干嘛？讲不清 → 1.2 opening scene 或 1.4 primer 不够具体。
+- 他读到哪一节最想跳过？跳过的那一节就是没做好 pacing 的——多半是 1.4 primer 一坨没拆 / 1.5 wow 用散文做对照 / 1.6 bad results 写成扁平 list。
+- 他读完后有没有自己的预测被验证 / 被打破的感觉？没有 → 1.3 predict prompt 缺失或问得太泛。
 
 ### 2. 用一个小例子跑完整流程
 
@@ -224,4 +302,3 @@ Plan visuals after the core explanation exists. Read
 
 Organize pages by reader intent, not source file order. Read
 `references/web-app-structure.md` before writing or implementing the web app.
-

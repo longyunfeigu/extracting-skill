@@ -324,7 +324,7 @@
         ? `
         <section class="section" id="stage-index">
           <p class="eyebrow">全 ${stages.length} 个 stage 索引 · 点击跳转</p>
-          <h2>每个 stage 一行摘要</h2>
+          <h2>整条路径一眼看完</h2>
           <ol class="stage-index-list">
             ${stages.map((stage, index) => {
               const num = String(index + 1).padStart(2, "0");

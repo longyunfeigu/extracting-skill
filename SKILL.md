@@ -13,7 +13,18 @@ The output is never a flat report. It is a structured handbook: cool moment → 
 
 For the core handbook contract, read `references/handbook-spec.md` first. That file routes to the smaller detail references only when they are needed. Everything in this `SKILL.md` is the prep work that feeds into that contract.
 
-The output should feel like a creator's working notes: clear, concrete, easy to steal from. **No academic name-dropping, no decorative metaphors, no fake-jargon, no English-Chinese mash-ups.** See **反装样自检** at the end — non-negotiable.
+**The output is a textbook chapter for a smart reader who has not seen the source skill**——not creator's working notes for someone already in the same shop. The reader's first 10 minutes (Overview) is the load-bearing chapter, so it gets the heaviest scaffolding:
+
+- 先让读者亲眼看到那个失败模式（experiential opening），再给它命名；
+- domain primer 拆成 5-9 个拍子，中间嵌入一张顶层 orientation 图，禁止一坨 >300 字的段落；
+- wow moment 涉及 2+ 个东西的对照时必须用真表格（SVG 或 HTML table），不能用散文叙述；
+- 每个"防的坏 AI 输出"配一张 before/after 卡，左边「不用这个 skill 会发生」，右边「这个 skill 怎么拦」；
+- 在 primer 开始之前给一个 predict 钩子，让读者先写下自己的猜测再读下文；
+- whyThisShape 用结构化列表逐章说排序逻辑，不能写成一段把 7 章串成一句的 TOC 散文。
+
+详见 `references/handbook-spec.md` 的 Overview 形状规范，校准样板见 `examples/nuwa-skill/web-app/`（教科书标准，2025-05 重写）。
+
+**No academic name-dropping, no decorative metaphors, no fake-jargon, no English-Chinese mash-ups.** See **反装样自检** at the end — non-negotiable.
 
 ## Workflow
 
@@ -63,9 +74,19 @@ Before writing anything, choose **one small request** that will run through the 
 
 The handbook will reuse this example end-to-end. Switching examples midstream is the most common failure mode — decide once, then commit.
 
-### 4. Write the handbook
+### 4. Build the source plan before writing pages
 
-Open `references/handbook-spec.md` and follow it. That file is the canonical core spec — it summarizes the non-negotiable rules, recommended structure, and which detail reference to read for each section.
+Open `references/handbook-spec.md` and follow it. For web app output, also read `references/web-production-flow.md` before writing long prose.
+
+**Do not write one full `handbook.md` and then translate it into web pages.** In web mode, `handbook.md` is an export, not the source of truth.
+
+Create the source artifacts first:
+
+- `handbook-brief.md` — global facts, one running example, page map, shared IDs, diagrams, links.
+- `page-packets/` — one packet per page, each with its own page job, writing voice, inputs, required material, and self-check.
+- anchor slice — overview opening + one walkthrough stage + one pattern card + one file-role card + one page shell, used to set density and voice.
+
+Then 写 / 组装 web 页面：**先写完 anchor slice**（overview opening + 一个 walkthrough stage + 一张 pattern card + 一张 file-role card + 一个 page shell），**停下来问用户剩下 7 页要串行还是 fan-out 给 sub-agent 并行**。并行时 sub-agent 用 `model: "opus"`、`subagent_type: "general-purpose"`，prompt 自包含 brief + anchor slice 对应组件 + 该页 packet 模板；产出回到主 thread 做 editor pass。判断条件、调用形状和"不要 team 模式"的理由见 `references/web-production-flow.md` 的 step 2a。
 
 Key shape to remember while writing:
 
@@ -79,7 +100,17 @@ Key shape to remember while writing:
 
 For the multi-page web app structure, read `references/web-app-structure.md`, then use `examples/web-video-presentation/web-app/` as a rendered sample.
 
-### 5. 画图（不是可选步骤）
+### 5. Run the editor pass
+
+Before building the web app or exporting Markdown, run the editor pass from `references/web-production-flow.md`:
+
+- one running example stays consistent across pages;
+- every page has a distinct job and voice;
+- stage IDs / term IDs / pattern IDs / design choice IDs match the brief;
+- repeated paragraphs are removed instead of copied across pages;
+- cross-links point to existing pages or anchors.
+
+### 6. 画图（不是可选步骤）
 
 如果输出是 web app 或多页 handbook，**每个明细页面必须配一张顶层 SVG 图**——这是 `references/web-app-structure.md` 的 Page-level orientation 硬要求，不是装饰。具体：
 
@@ -177,13 +208,88 @@ LLM 写这类报告时有"显得专业"的本能——会用学者名 / 英文�
 
 判定违规标准：把报告给一个**英语好的工程师朋友**读 5 分钟，问他"读完你能不能跟另一个朋友用大白话讲一遍"——讲不出 = 装样语言遮蔽了内容，回去重写。
 
+### 去 AI 味自检 / 教学语气自检（和反装样自检并列，写完逐条扫，命中就改）
+
+**反装样自检管「哪些词不能写」，这一节管「怎么写出教学语气」。**
+
+LLM 写完一段感觉"密度高、信息量大"——这正是 AI 味的源头。同样的内容，写成「工程师向工程师汇报」是 AI 味；写成「老师带学生一步步看」就是教学。**教学语气比 AI 味版本长 1.5-2 倍是正常成本**，不要为了"紧凑"把它压回 AI 味。
+
+教学语气可观察的几个特征：
+
+- 一句话只承担一件事
+- 句子之间留呼吸（允许「停一下」「展开一点」「我们先想想」）
+- 不时转向读者（「我们」「你」「想象一下」）
+- 数字和名词不堆在一起当摘要
+- 段落开头允许场景慢起，不要规则先行
+
+#### Anchor: AI 味 vs 教学语气整段对照
+
+**AI 味（156 字，注意一段塞了 4-5 件事）：**
+
+> **3 道检查点：Phase 1.5 / 2.5 / 4。** 整个流程中间停 3 次等用户拍板——看 6 agent 调研质量够不够 / 看蒸馏出的心智模型对不对 / 看验证结果接不接受。这不是流程的装饰：AI 自己看不出哪一步走偏了，必须让用户在改起来还便宜的时候卡一下。在写完 440 行 SKILL.md 之后才发现『方向不对』，返工成本要高得多。
+
+**教学语气（约 300 字，1.9 倍）：**
+
+> 整个流程里有三个停顿点。分别在 Phase 1.5、Phase 2.5 和 Phase 4。
+>
+> 我们先一起想一下——为什么要在这三个地方刻意停？
+>
+> 因为有一个事实：AI 自己看不出方向走没走偏。它能不停往下产出东西，但产出对不对，它没把握。所以必须有外人介入。
+>
+> 这三个停顿点做的事是同一件：把当前阶段的产出整理成一张表，让用户在三十秒内看完。表给到用户之后，AI 就停下来，不再往下做。
+>
+> 第一个停顿在调研之后。问的是：这六份调研够不够，要不要再补？
+>
+> 第二个停顿在蒸馏之后。问的是：我从塔勒布身上提出来的这些心智模型，像不像他本人？
+>
+> 第三个停顿在验证之后。问的是：我跑出来的三类测试结果，你能不能接受？
+>
+> 注意一个细节——这三个停顿点都选在「东西还都是文字、改起来不费劲」的时间点。你想象一下：如果四百多行的 SKILL.md 都写完了，才发现方向不对，再回头改就贵得多。所以停在前面，停在还便宜的时候。
+
+#### 6 项具体自检
+
+1. **一句话只承担一件事。**
+   - 检查方法：把段拆成单句念。一句话需要在两处停顿才能念完 = 塞了两件事，拆成两句。
+   - ❌ "三重验证完，6 心智模型 + 9 启发式 + 3 voice 特征 + 7 内在张力 + 6 诚实边界都提炼出来了"
+   - ✅ "蒸馏做完之后，我手里多了几样东西。它们是：六个心智模型、九条决策启发式、三个语气特征、七组内在张力、六条诚实边界。"
+
+2. **数字+名词不在正文里堆成摘要。**
+   - 「6 心智模型 / 9 启发式 / 3 voice 特征」这种堆叠只在快速参考 panel 或 summary 字段允许；正文里必须把每一项展开成一两句人话。
+   - 检查方法：这串数字-名词，一个**没读过这个 skill** 的朋友能不能猜出每一项大概是什么？猜不出 = 工程汇报，回去展开。
+
+3. **破折号锁链拆成多句。**
+   - 一段里出现 2 个以上破折号 = 一段塞了多件事。
+   - 检查方法：数破折号。超过 2 个就改。
+   - ❌ "停 3 次等用户拍板——看 6 agent 调研质量够不够 / 看蒸馏出的心智模型对不对 / 看验证结果接不接受"
+   - ✅ "停三次，每次让用户回答一个问题。第一次问的是六份调研够不够。第二次问的是心智模型像不像他本人。第三次问的是测试结果能不能接受。"
+
+4. **每隔几段必须转向读者。**
+   - 教学不是单向汇报。要用「我们先一起想 / 你想象一下 / 注意这里 / 你可能会问 / 这就解释了为什么」这类话把读者拉进来。
+   - 检查方法：一整页 ctrl-F 找「你」「我们」——一次都没出现 = 从未转向读者，回去补几处。
+   - ✅ 节奏样本：「在我继续讲之前，我们先想一下——如果跳过这一步会怎样？」「注意这里有个容易踩的坑：……」
+
+5. **段落开头允许慢起，不要规则先行。**
+   - ❌ "这是 3 道检查点的第二道。"
+   - ✅ "现在我们走到第二个停顿点。回想一下，第一个停顿点是在调研之后——我们当时问的是「调研够不够」。第二个停顿点问的不一样……"
+
+6. **节奏词不要省。**
+   - AI 味会把「也就是说 / 换句话说 / 这样一来 / 你看 / 这就解释了 / 接下来 / 不过 / 但是」省掉，让句子干练。教学语气恰恰要靠这些词撑出节奏。
+   - 检查方法：相邻两句之间没有连接词 = 读者得自己脑补关系，认知负担升高。回去补一个最自然的连词。
+
+#### 朗读测试（最后一道）
+
+写完一段，**真念出声**。判定标准很简单：**念到段末不用换气**。中间憋不住要停下来喘 = AI 味没去干净，回去拆句。
+
 ## Resources
 
 - `references/handbook-spec.md` — required first read; core handbook contract, rule summary, recommended structure, and routing to detail references.
 - `references/stage-writing.md` — stage walkthrough writing rules: local term explanations, pre-test hooks, real materials, narrative handoffs, story voice, and AI freedom.
 - `references/cards-patterns.md` — design choice cards and pattern cards: bad scenarios, counter scenarios, therefore breaks, and related pattern links.
+- `references/web-production-flow.md` — web handbook production flow: `handbook-brief.md`, page packets, page agents, editor pass, and Markdown export rules.
 - `references/web-app-structure.md` — multi-page web app structure and page-level orientation blocks for detail pages.
+- `references/web-app-visuals.md` — 页面视觉规范（typography / 配色 / 组件形状）。校准目标是 `examples/nuwa-skill/web-app/pages/walkthrough.html` 的编辑杂志体（2026-05）。
 - `references/visuals-and-quality.md` — diagram/image rules and final quality bar.
 - `examples/` — handbooks already produced for specific skills. **They are calibration targets, not templates.** Read one to feel the format in action; do not copy its content or structure into a new handbook. Future analyses can add more entries under `examples/<skill-name>/`.
-  - `examples/web-video-presentation/handbook.md` — complete sample handbook (markdown). Read the first 1-2 sections for voice calibration; read it in full when modeling a complete manual.
-  - `examples/web-video-presentation/web-app/` — rendered multi-page web app (index.html + pages/ + assets/). Reference shape when the user wants the handbook as a web documentation app.
+  - `examples/nuwa-skill/web-app/` — **教科书标准的 Overview 校准目标**（2025-05 重写）。看 `pages/overview.html` 渲染效果 + `assets/data.js` 的 schema 实例（openingScene / predictPrompt / primerBeats + 嵌入图 / wowSetup + compare 表格 + wowMoment / badResults before-after / shapeReason + chapterLogic）。**新写 Overview 优先参考这一份**。
+  - `examples/web-video-presentation/handbook.md` — 早期工作笔记标准的完整 markdown 样本。voice 偏密、信息为主、视觉较少。当用户明确要 "creator's notes" 节奏时可参考；做教科书 Overview 不要照这个抄。
+  - `examples/web-video-presentation/web-app/` — 早期工作笔记标准的渲染 web app。可以参考其 site.js 渲染引擎和 walkthrough / patterns / design-choices / file-map 几页的形状，但 Overview 不要照这个抄。

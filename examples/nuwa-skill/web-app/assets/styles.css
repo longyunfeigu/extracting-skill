@@ -1200,3 +1200,943 @@ h3 {
     font-size: 22px;
   }
 }
+
+/* === Overview · 教科书结构追加样式 === */
+
+/* Inline rich markup (**bold** / `code`) */
+.inline-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  padding: 1.5px 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+/* Opening scene — 体验式开篇，先让读者看见 AI 角色扮演的失败模式 */
+.opening-section .opening-body {
+  display: grid;
+  gap: 14px;
+  max-width: 760px;
+}
+.opening-section .opening-body p {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.85;
+}
+.opening-section .opening-body p:nth-of-type(3),
+.opening-section .opening-body p:nth-of-type(5) {
+  font-style: italic;
+  color: var(--text-2);
+  font-size: 15.5px;
+}
+.opening-section .narrative-list {
+  background: rgba(160, 64, 24, 0.04);
+  border-left: 3px solid var(--accent);
+  padding: 14px 20px 14px 36px;
+  border-radius: 4px;
+}
+
+/* Pre-test 预测钩子（top-level，区别于 stage-card 内的同款） */
+.predict-section .predict-block {
+  margin: 0;
+  padding: 22px 26px;
+  border: 1.5px dashed var(--accent-2);
+  border-radius: 10px;
+  background: rgba(45, 72, 88, 0.05);
+  display: grid;
+  gap: 10px;
+  max-width: 760px;
+}
+.predict-label {
+  color: var(--accent-2);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.predict-section .predict-block p {
+  margin: 0;
+  color: var(--text);
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+/* Primer beats — 6 拍的 domain primer，每拍一段，中间嵌入 orientation diagram */
+.primer-beats {
+  display: grid;
+  gap: 16px;
+}
+.primer-beats > p {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.85;
+}
+.primer-beats > p strong {
+  color: var(--accent);
+  font-weight: 720;
+}
+.primer-beats .narrative-list {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 14px 20px 14px 38px;
+}
+.primer-beats .narrative-list li {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.primer-beats .diagram-card {
+  margin: 8px 0;
+}
+
+/* Wow moment — 主对照表 + 解释句 */
+.wow-section .intro-prose {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text);
+  max-width: 800px;
+  margin: 0 0 18px;
+}
+.wow-section .diagram-card {
+  margin: 18px 0;
+}
+.wow-section .wow-explanation {
+  margin: 18px 0 0;
+  padding: 18px 22px;
+  background: rgba(160, 64, 24, 0.05);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-size: 15.5px;
+  line-height: 1.78;
+}
+
+/* Bad results — 4 张 before/after 对照卡 */
+.bad-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+@media (max-width: 920px) {
+  .bad-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.bad-result-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 14px;
+}
+.bad-result-card h3 {
+  margin: 0;
+  font-size: 17px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--text);
+}
+.bad-result-card h3 .step-num {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--accent-soft);
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.bad-result-card .card-row {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: none;
+  display: grid;
+  gap: 6px;
+}
+.bad-result-card .card-row .label {
+  font-size: 10.5px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.bad-result-card .card-row p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.72;
+  color: var(--text);
+}
+.bad-result-card .card-row-default {
+  background: rgba(160, 64, 24, 0.06);
+}
+.bad-result-card .card-row-default .label {
+  color: var(--accent);
+}
+.bad-result-card .card-row-nuwa {
+  background: rgba(45, 72, 88, 0.06);
+}
+.bad-result-card .card-row-nuwa .label {
+  color: var(--accent-2);
+}
+
+/* Chapter logic list — 章节顺序解释 */
+.chapter-logic-list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 12px;
+  max-width: 880px;
+}
+.chapter-logic-list li {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 18px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  align-items: baseline;
+}
+@media (max-width: 720px) {
+  .chapter-logic-list li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+.chapter-logic-list li strong {
+  color: var(--accent);
+  font-weight: 720;
+  font-size: 14.5px;
+}
+.chapter-logic-list li span {
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   WALKTHROUGH page · 编辑杂志体（v2, 2026-05）
+   规范见 references/web-app-visuals.md
+   所有规则 scoped 在 body[data-page="walkthrough"] 之下，
+   不影响 overview / glossary / file-map / 等其它页面。
+   ============================================================ */
+
+body[data-page="walkthrough"] {
+  /* paper / ink */
+  --paper: #f6f1e6;
+  --paper-2: #ede6d4;
+  --ink: #1a1410;
+  --ink-2: #4a3f33;
+  --ink-mute: #8a7a66;
+  --rule: #d8cdb6;
+
+  /* single accent — oxblood，全本只这一种强调色 */
+  --accent: #8a1c0f;
+  --accent-soft: rgba(138, 28, 15, 0.08);
+  --accent-line: rgba(138, 28, 15, 0.35);
+
+  /* dark inset：代码块专用 */
+  --night: #161210;
+  --night-2: #221c18;
+  --night-text: #ece3d0;
+  --night-mute: #948876;
+  --night-rule: #2e2620;
+
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
+           Georgia, "Times New Roman", serif;
+  --sans:  "PingFang SC", "Hiragino Sans GB", -apple-system, BlinkMacSystemFont,
+           "Segoe UI", "Microsoft YaHei", sans-serif;
+  --mono:  "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 17.5px;
+  line-height: 1.78;
+  font-feature-settings: "kern", "liga", "calt", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 取消默认 layout 的 grid + sidebar — walkthrough 走全宽 */
+body[data-page="walkthrough"] #app {
+  display: block;
+  min-height: auto;
+}
+
+/* 纸张质感（轻盈，不喧宾夺主） */
+body[data-page="walkthrough"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(138, 28, 15, 0.03) 0, transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(26, 20, 16, 0.04) 0, transparent 35%);
+  mix-blend-mode: multiply;
+}
+
+body[data-page="walkthrough"] .page {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100% - 48px);
+  margin: 0 auto;
+}
+
+/* ─── Masthead ─────────────────────────────────── */
+body[data-page="walkthrough"] .masthead {
+  padding: 36px 0 28px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+body[data-page="walkthrough"] .masthead-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+body[data-page="walkthrough"] .masthead-mark {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+body[data-page="walkthrough"] .masthead-mark::before {
+  content: "❖";
+  color: var(--accent);
+  margin-right: 8px;
+  font-size: 16px;
+  vertical-align: 1px;
+}
+body[data-page="walkthrough"] .masthead-section,
+body[data-page="walkthrough"] .masthead-meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+body[data-page="walkthrough"] .masthead-meta { letter-spacing: 0.18em; font-weight: 500; }
+
+/* ─── Hero（覆盖 styles.css 通用 .hero） ──────── */
+body[data-page="walkthrough"] .hero {
+  padding: 96px 0 80px;
+  position: relative;
+  border-bottom: 0;       /* 取消通用 .hero 的下分隔 */
+}
+body[data-page="walkthrough"] .hero-eyebrow {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+body[data-page="walkthrough"] .hero-eyebrow::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 64px;
+  height: 1px;
+  background: var(--accent);
+}
+body[data-page="walkthrough"] .hero-title {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(56px, 9vw, 132px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin: 0 0 28px;
+  color: var(--ink);
+  max-width: 14ch;
+}
+body[data-page="walkthrough"] .hero-subtitle {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.4;
+  max-width: 28ch;
+  margin: 0 0 40px;
+  color: var(--ink-2);
+  letter-spacing: -0.005em;
+}
+body[data-page="walkthrough"] .hero-lede {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 56ch;
+  margin: 0 0 28px;
+}
+body[data-page="walkthrough"] .hero-lede strong {
+  color: var(--ink);
+  font-weight: 700;
+  background: linear-gradient(transparent 60%, rgba(232, 200, 90, 0.45) 60%);
+  padding: 0 2px;
+}
+body[data-page="walkthrough"] .hero-rule {
+  margin: 56px 0 0;
+  height: 1px;
+  background: var(--ink);
+  width: 96px;
+}
+
+/* ─── Index bar ─────────────────────────────────── */
+body[data-page="walkthrough"] .index-bar {
+  padding: 40px 0 64px;
+  border-bottom: 1px solid var(--rule);
+}
+body[data-page="walkthrough"] .index-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+body[data-page="walkthrough"] .index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+body[data-page="walkthrough"] .index-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 16px 14px 16px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 140ms ease, padding-left 140ms ease;
+}
+body[data-page="walkthrough"] .index-item:hover {
+  background: var(--accent-soft);
+  padding-left: 10px;
+}
+body[data-page="walkthrough"] .index-item .num {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+body[data-page="walkthrough"] .index-item .label {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* ─── Stage ─────────────────────────────────────── */
+body[data-page="walkthrough"] .stage {
+  padding: 120px 0 80px;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 24px;
+}
+body[data-page="walkthrough"] .stage:last-child {
+  border-bottom: 0;
+}
+body[data-page="walkthrough"] .stage-head {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(0, 720px) minmax(80px, 1fr);
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+body[data-page="walkthrough"] .stage-num {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(96px, 14vw, 168px);
+  line-height: 0.85;
+  color: var(--accent);
+  margin: 0;
+  text-align: right;
+  letter-spacing: -0.03em;
+  font-feature-settings: "ss01";
+}
+body[data-page="walkthrough"] .stage-headline {
+  max-width: 720px;
+}
+body[data-page="walkthrough"] .stage-kicker {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 12px;
+}
+body[data-page="walkthrough"] .stage-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0 0 24px;
+  color: var(--ink);
+}
+body[data-page="walkthrough"] .stage-summary {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0;
+  max-width: 680px;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+  /* 覆盖 styles.css 通用 .stage-summary */
+  padding-bottom: 0;
+  padding-top: 0;
+  border-bottom: 0;
+  font-weight: 400;
+}
+body[data-page="walkthrough"] .stage-body {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ─── Pre-test sidenote ────────────────────────── */
+body[data-page="walkthrough"] .pretest {
+  margin: 40px 0;
+  padding: 24px 28px;
+  background: var(--paper-2);
+  border-left: 3px solid var(--ink);
+  font-family: var(--serif);
+  position: relative;
+}
+body[data-page="walkthrough"] .pretest::before {
+  content: "?";
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0.1;
+}
+body[data-page="walkthrough"] .pretest-label {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+  display: block;
+}
+body[data-page="walkthrough"] .pretest-body {
+  font-size: 16px;
+  line-height: 1.72;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ─── Narrative body ───────────────────────────── */
+body[data-page="walkthrough"] .narrative p,
+body[data-page="walkthrough"] .narrative ul,
+body[data-page="walkthrough"] .narrative ol {
+  font-family: var(--serif);
+  font-size: 17.5px;
+  line-height: 1.85;
+  color: var(--ink);
+  margin: 0 0 22px;
+}
+body[data-page="walkthrough"] .narrative p strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+body[data-page="walkthrough"] .narrative p strong:first-child {
+  color: var(--accent);
+}
+body[data-page="walkthrough"] .narrative ul {
+  padding-left: 0;
+  list-style: none;
+}
+body[data-page="walkthrough"] .narrative ul li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 10px;
+}
+body[data-page="walkthrough"] .narrative ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Inline code in narrative — 覆盖通用 .inline-code */
+body[data-page="walkthrough"] .inline-code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--paper-2);
+  padding: 2px 7px;
+  border-radius: 3px;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Dark code blocks ─────────────────────────── */
+body[data-page="walkthrough"] .code-block {
+  margin: 32px -8px;
+  padding: 0;
+  background: var(--night);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: var(--mono);
+  position: relative;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 40px -24px rgba(26, 20, 16, 0.35);
+}
+body[data-page="walkthrough"] .code-block .code-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--night-2);
+  border-bottom: 1px solid var(--night-rule);
+}
+body[data-page="walkthrough"] .code-block .code-dots {
+  display: flex;
+  gap: 6px;
+}
+body[data-page="walkthrough"] .code-block .code-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--night-rule);
+}
+body[data-page="walkthrough"] .code-block .code-dots span:first-child {
+  background: rgba(232, 109, 96, 0.55);
+}
+body[data-page="walkthrough"] .code-block .code-dots span:nth-child(2) {
+  background: rgba(232, 196, 96, 0.55);
+}
+body[data-page="walkthrough"] .code-block .code-dots span:last-child {
+  background: rgba(120, 200, 130, 0.45);
+}
+body[data-page="walkthrough"] .code-block .code-lang {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--night-mute);
+}
+body[data-page="walkthrough"] .code-block pre {
+  margin: 0;
+  padding: 22px 24px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--night-text);
+  white-space: pre;
+}
+body[data-page="walkthrough"] .code-block pre code {
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* ─── Reusable move (pull quote) ───────────────── */
+body[data-page="walkthrough"] .move {
+  margin: 56px 0 48px;
+  padding: 36px 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  position: relative;
+  background: transparent;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+body[data-page="walkthrough"] .move::before {
+  content: "\201C";
+  position: absolute;
+  top: -38px;
+  left: -24px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 140px;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.18;
+}
+body[data-page="walkthrough"] .move-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+body[data-page="walkthrough"] .move-body {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+  font-style: italic;
+  max-width: 36ch;
+}
+
+/* ─── Quick reference (collapsed) ──────────────── */
+body[data-page="walkthrough"] .quickref {
+  margin: 48px 0 32px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: rgba(246, 241, 230, 0.5);
+}
+body[data-page="walkthrough"] .quickref summary {
+  cursor: pointer;
+  padding: 16px 22px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+body[data-page="walkthrough"] .quickref summary::-webkit-details-marker {
+  display: none;
+}
+body[data-page="walkthrough"] .quickref summary::before {
+  content: "";
+}
+body[data-page="walkthrough"] .quickref summary::after {
+  content: "+";
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 22px;
+  color: var(--accent);
+  transition: transform 200ms ease;
+}
+body[data-page="walkthrough"] .quickref[open] summary::after {
+  content: "\2212";
+}
+body[data-page="walkthrough"] .quickref-grid {
+  padding: 0 22px 22px;
+  display: grid;
+  gap: 18px;
+}
+body[data-page="walkthrough"] .quickref-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+body[data-page="walkthrough"] .quickref-row .qr-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 1.4;
+}
+body[data-page="walkthrough"] .quickref-row .qr-body,
+body[data-page="walkthrough"] .quickref-row .qr-body p,
+body[data-page="walkthrough"] .quickref-row .qr-body ul {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0;
+}
+body[data-page="walkthrough"] .quickref-row .qr-body ul {
+  padding-left: 18px;
+  list-style: disc;
+}
+
+/* ─── Challenges (discussion questions) ────────── */
+body[data-page="walkthrough"] .challenges {
+  margin: 48px 0 0;
+  padding: 40px 36px 36px;
+  background: var(--paper-2);
+  border-radius: 4px;
+  position: relative;
+  /* 覆盖通用 .challenges-block 的负 margin */
+  border-top: 0;
+}
+body[data-page="walkthrough"] .challenges-rule {
+  position: absolute;
+  top: 0;
+  left: 36px;
+  right: 36px;
+  height: 3px;
+  background: var(--accent);
+}
+body[data-page="walkthrough"] .challenges-head {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  /* 覆盖通用 .challenges-header grid */
+  grid-template-columns: 1fr;
+}
+body[data-page="walkthrough"] .challenges-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: -0.01em;
+  /* 覆盖通用 .challenges-title uppercase / 12px */
+  text-transform: none;
+}
+body[data-page="walkthrough"] .challenges-sub {
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-mute);
+  margin: 0;
+  font-style: italic;
+}
+body[data-page="walkthrough"] .challenges-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: q;
+  display: grid;
+  gap: 22px;
+}
+body[data-page="walkthrough"] .challenges-list li {
+  counter-increment: q;
+  position: relative;
+  padding-left: 56px;
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+body[data-page="walkthrough"] .challenges-list li::before {
+  content: "Q" counter(q, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+body[data-page="walkthrough"] .challenges-list li::marker {
+  content: "";
+}
+
+/* ─── Footer ───────────────────────────────────── */
+body[data-page="walkthrough"] .end-mark {
+  margin: 96px 0 32px;
+  text-align: center;
+  color: var(--accent);
+  font-family: var(--serif);
+  font-size: 28px;
+  letter-spacing: 0.6em;
+  padding-left: 0.6em;
+}
+body[data-page="walkthrough"] .end-note {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-mute);
+  font-size: 15px;
+  margin: 0 0 80px;
+}
+
+/* ─── Responsive ───────────────────────────────── */
+@media (max-width: 900px) {
+  body[data-page="walkthrough"] .stage {
+    padding: 80px 0 60px;
+  }
+  body[data-page="walkthrough"] .stage-head {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  body[data-page="walkthrough"] .stage-num {
+    text-align: left;
+    font-size: 88px;
+  }
+  body[data-page="walkthrough"] .stage-summary {
+    padding-left: 16px;
+  }
+  body[data-page="walkthrough"] .move::before {
+    left: -8px;
+    font-size: 96px;
+  }
+  body[data-page="walkthrough"] .code-block {
+    margin: 28px -12px;
+  }
+  body[data-page="walkthrough"] .quickref-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  body[data-page="walkthrough"] .challenges {
+    padding: 32px 22px 28px;
+  }
+  body[data-page="walkthrough"] .challenges-rule {
+    left: 22px;
+    right: 22px;
+  }
+  body[data-page="walkthrough"] .challenges-list li {
+    padding-left: 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  body[data-page="walkthrough"] {
+    font-size: 16.5px;
+  }
+  body[data-page="walkthrough"] .page {
+    width: calc(100% - 32px);
+  }
+}

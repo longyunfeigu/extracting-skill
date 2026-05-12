@@ -44,10 +44,13 @@
     switch (page) {
       case "overview":
         return [
-          { anchor: "wow", label: "先感受一下" },
-          { anchor: "primer", label: "Domain primer" },
-          { anchor: "example", label: "一个具体例子" },
-          { anchor: "shape", label: "为什么这本手册长这样" }
+          { anchor: "opening", label: "先看场戏" },
+          { anchor: "predict", label: "先猜一遍" },
+          { anchor: "primer", label: "女娲长什么样" },
+          { anchor: "wow", label: "Wow moment" },
+          { anchor: "bad-results", label: "防的坏结果" },
+          { anchor: "example", label: "贯穿例子" },
+          { anchor: "shape", label: "Why this shape" }
         ];
       case "walkthrough":
         return (handbook.walkthrough || []).map((s, i) => ({
@@ -106,13 +109,19 @@
     return `<article class="card${extraClass}"${idAttr}>${titleHtml}${body}</article>`;
   }
 
+  function renderRich(value = "") {
+    return escapeHtml(value)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+  }
+
   function renderNarrativeBlock(block) {
     if (!block || !block.kind) return "";
     if (block.kind === "para") {
-      return `<p>${escapeHtml(block.text || "")}</p>`;
+      return `<p>${renderRich(block.text || "")}</p>`;
     }
     if (block.kind === "list") {
-      const items = (block.items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      const items = (block.items || []).map((item) => `<li>${renderRich(item)}</li>`).join("");
       return `<ul class="narrative-list">${items}</ul>`;
     }
     if (block.kind === "code") {
@@ -122,45 +131,12 @@
     if (block.kind === "quote") {
       return `<blockquote class="narrative-quote">${escapeHtml(block.text || "")}</blockquote>`;
     }
+    if (block.kind === "diagram") {
+      const diag = ((window.handbook && window.handbook.diagrams) || []).find((d) => d.id === block.id);
+      if (!diag) return "";
+      return diagramBlock(diag);
+    }
     return "";
-  }
-
-  function stageCard(stage, index) {
-    const titleHtml = `<h3><span class="step-num">阶段 ${String(index + 1).padStart(2, "0")}</span> ${escapeHtml(stage.title)}</h3>`;
-    const summaryHtml = stage.summary
-      ? `<p class="stage-summary">${escapeHtml(stage.summary)}</p>`
-      : "";
-    const preTestHtml = stage.preTest
-      ? `<aside class="pre-test-block"><span class="pre-test-label">先猜一遍 · pre-test</span><p>${escapeHtml(stage.preTest)}</p></aside>`
-      : "";
-    const narrativeHtml = Array.isArray(stage.narrativeBody) && stage.narrativeBody.length
-      ? `<section class="narrative-body"><span class="narrative-label">叙事 · 我（AI）实际怎么走</span>${stage.narrativeBody.map(renderNarrativeBlock).join("")}</section>`
-      : "";
-    const detailRows = [
-      ["这一步收到什么", stage.receives],
-      ["skill 让我读什么", stage.reads],
-      ["我不能直接做什么", stage.blockedShortcut],
-      ["我做什么", stage.action],
-      ["我产出什么", stage.output],
-      ["下一步谁用它", stage.nextConsumer]
-    ];
-    const detailsBody = detailRows
-      .filter(([, value]) => value && (!Array.isArray(value) || value.length))
-      .map(([label, value]) => {
-        const content = Array.isArray(value) ? list(value) : `<p>${escapeHtml(value)}</p>`;
-        return `<div class="card-row"><span class="label">${escapeHtml(label)}</span>${content}</div>`;
-      })
-      .join("");
-    const detailsHtml = Array.isArray(stage.narrativeBody) && stage.narrativeBody.length
-      ? `<details class="stage-quickref"><summary>快速参考（7 字段速查）</summary>${detailsBody}</details>`
-      : detailsBody;
-    const footerHtml = stage.reusableMove
-      ? `<div class="stage-footer"><span class="stage-footer-label">这里能偷的招</span><p>${escapeHtml(stage.reusableMove)}</p></div>`
-      : "";
-    const challengesHtml = Array.isArray(stage.challenges) && stage.challenges.length
-      ? `<section class="challenges-block"><div class="challenges-header"><span class="challenges-mark">🤔</span><span class="challenges-title">你的练习</span><span class="challenges-sub">不是 AI 的内心独白——是给读这本手册的你的题。先想再读下一阶段。</span></div><ol>${stage.challenges.map((c) => `<li>${escapeHtml(c)}</li>`).join("")}</ol></section>`
-      : "";
-    return `<article class="card stage-card" id="${escapeHtml(stage.id || "stage-" + index)}">${titleHtml}${summaryHtml}${preTestHtml}${narrativeHtml}${detailsHtml}${footerHtml}${challengesHtml}</article>`;
   }
 
   function diagramBlock(diagram) {
@@ -254,40 +230,92 @@
     overview() {
       const overview = handbook.overview || {};
       const example = handbook.example || {};
-      const primerHtml = overview.domainPrimer
+      const compareDiagrams = (handbook.diagrams || []).filter((d) => d.type === "compare");
+
+      const openingHtml = Array.isArray(overview.openingScene) && overview.openingScene.length
         ? `
-        <section class="section primer-section" id="primer">
-          <p class="eyebrow">Domain primer · 0 行业黑话先说一遍</p>
-          <h2>这个 skill 在做什么</h2>
-          <div class="primer-block">
-            <p>${escapeHtml(overview.domainPrimer)}</p>
-            <p class="primer-note">把这一段单独抽出来给一个完全没读过原 skill 的人看，他能看懂这个 skill 在做什么吗？看不懂就重写——这是 skill 自己设的 obvious 标准。</p>
+        <section class="section opening-section" id="opening">
+          <p class="eyebrow">先看场戏 · 不带女娲的 AI</p>
+          <h2>试一下让 AI 扮演塔勒布</h2>
+          <div class="opening-body">
+            ${overview.openingScene.map(renderNarrativeBlock).join("")}
           </div>
         </section>`
         : "";
+
+      const predictHtml = overview.predictPrompt
+        ? `
+        <section class="section predict-section" id="predict">
+          <aside class="predict-block">
+            <span class="predict-label">先猜一遍 · pre-test</span>
+            <p>${escapeHtml(overview.predictPrompt)}</p>
+          </aside>
+        </section>`
+        : "";
+
+      const primerHtml = Array.isArray(overview.primerBeats) && overview.primerBeats.length
+        ? `
+        <section class="section primer-section" id="primer">
+          <p class="eyebrow">Domain primer · 女娲长什么样</p>
+          <h2>它把「蒸馏一个人」拆成 5 个阶段</h2>
+          <div class="primer-block primer-beats">
+            ${overview.primerBeats.map(renderNarrativeBlock).join("")}
+          </div>
+        </section>`
+        : "";
+
+      const wowHtml = (overview.wowSetup || compareDiagrams.length || overview.wowMoment)
+        ? `
+        <section class="section wow-section" id="wow">
+          <p class="eyebrow">Wow moment · 它最让我意外的地方</p>
+          <h2>同一个外壳，不同的「先看什么」</h2>
+          ${overview.wowSetup ? `<p class="intro-prose">${renderRich(overview.wowSetup)}</p>` : ""}
+          ${compareDiagrams.map(diagramBlock).join("")}
+          ${overview.wowMoment ? `<p class="intro-prose wow-explanation">${renderRich(overview.wowMoment)}</p>` : ""}
+        </section>`
+        : "";
+
+      const badResultsHtml = Array.isArray(overview.badResults) && overview.badResults.length
+        ? `
+        <section class="section bad-results-section" id="bad-results">
+          <p class="eyebrow">另外它还防 ${overview.badResults.length} 件具体的事</p>
+          <h2>如果不是这套流程，AI 会做坏成什么样</h2>
+          <div class="bad-results-grid">
+            ${overview.badResults.map((br, i) => `
+              <article class="bad-result-card">
+                <h3><span class="step-num">防 ${String(i + 1).padStart(2, "0")}</span> ${escapeHtml(br.title || "")}</h3>
+                <div class="card-row card-row-default">
+                  <span class="label">不用女娲会发生</span>
+                  <p>${renderRich(br.aiDefault || "")}</p>
+                </div>
+                <div class="card-row card-row-nuwa">
+                  <span class="label">女娲怎么拦</span>
+                  <p>${renderRich(br.nuwaIntercept || "")}</p>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+        </section>`
+        : "";
+
+      const shapeListHtml = Array.isArray(overview.chapterLogic) && overview.chapterLogic.length
+        ? `<ul class="chapter-logic-list">${overview.chapterLogic.map((item) => `<li><strong>${escapeHtml(item.chapter)}</strong><span>${escapeHtml(item.why)}</span></li>`).join("")}</ul>`
+        : "";
+
       layout("Overview", `
         <section class="hero">
           <p class="eyebrow">Overview · 章 01</p>
-          <h1>为什么这个 skill 值得看</h1>
-          <p class="lede">${escapeHtml(overview.oneLiner || "")}</p>
+          <h1>看见女娲在做什么</h1>
+          <p class="lede">${renderRich(overview.oneLiner || "")}</p>
         </section>
+        ${openingHtml}
+        ${predictHtml}
         ${primerHtml}
-        <section class="section" id="wow">
-          <p class="eyebrow">先感受一下</p>
-          <h2>它防什么坏 AI 输出</h2>
-          <div class="card-grid">
-            ${card("Wow moment（它最让我意外的地方）", [
-              ["看着像", "拿到这种输入，普通 AI 会本能照默认动作做完——表面像回答了，实际偏离了真正的设计目标。"],
-              ["实际上", overview.wowMoment]
-            ])}
-            ${card("它防的坏结果", [
-              ["具体到一种 AI 本能", overview.badResultPrevented]
-            ])}
-          </div>
-        </section>
+        ${wowHtml}
+        ${badResultsHtml}
         <section class="section" id="example">
-          <p class="eyebrow">一个具体例子</p>
-          <h2>用一个真实输入跑一遍</h2>
+          <p class="eyebrow">一个具体例子 · 贯穿全本</p>
+          <h2>塔勒布作为这本手册的唯一例子</h2>
           <div class="card-grid single">
             ${card("用户输入", [
               ["用户请求", example.userRequest],
@@ -298,81 +326,193 @@
             ])}
           </div>
           <div class="callout">
-            <strong>这个例子会贯穿整本手册。</strong>后面 Walkthrough 的每一阶段都用它来落地——不在中途换题。
+            <strong>这个例子会贯穿整本手册。</strong>后面 Walkthrough 的每一阶段都用它落地——中途不换题。换题是这类手册最常见的失败模式：例子一换，读者刚建立起来的心智模型就被打散。
           </div>
         </section>
-        <section class="section" id="shape">
-          <p class="eyebrow">Why this shape</p>
-          <h2>为什么本手册按这 7 章拆</h2>
-          <div class="card-grid single">
-            ${card("章节顺序的依据", [
-              ["按读者意图排，不按源文件顺序", overview.whyThisShape]
-            ])}
-          </div>
-          <div class="callout">
-            想看每个概念什么意思？右边 sidebar 的 <strong>Glossary</strong> 章列了 ${(handbook.glossary || []).length} 个核心术语，每条 5 个字段（人话 / 出现场景 / 解决问题 / 怎么用 / 容易误解）。
-          </div>
+        <section class="section shape-section" id="shape">
+          <p class="eyebrow">Why this shape · 为什么这 7 章这么排</p>
+          <h2>按读者意图排，不按源文件顺序</h2>
+          ${overview.shapeReason ? `<p class="intro-prose">${renderRich(overview.shapeReason)}</p>` : ""}
+          ${shapeListHtml}
         </section>
       `);
     },
 
     walkthrough() {
+      /* 编辑杂志体 · v2 (2026-05)
+       * 视觉规范见 references/web-app-visuals.md
+       * CSS 在 styles.css 末尾 body[data-page="walkthrough"] scope 内
+       * 这一页不走 layout()——不要 sidebar，全宽报章排版。
+       */
       const stages = handbook.walkthrough || [];
       const oneLiner = handbook.overview?.oneLiner || "";
-      const flowDiagrams = (handbook.diagrams || []).filter((d) => d.type === "flow");
-      const stageIndexHtml = stages.length
-        ? `
-        <section class="section" id="stage-index">
-          <p class="eyebrow">全 ${stages.length} 个 stage 索引 · 点击跳转</p>
-          <h2>每个 stage 一行摘要</h2>
-          <ol class="stage-index-list">
-            ${stages.map((stage, index) => {
-              const num = String(index + 1).padStart(2, "0");
-              const anchor = escapeHtml(stage.id || `stage-${index + 1}`);
-              return `
-                <li>
-                  <a href="#${anchor}">
-                    <span class="stage-index-num">${num}</span>
-                    <span class="stage-index-body">
-                      <span class="stage-index-title">${escapeHtml(stage.title || "")}</span>
-                      <span class="stage-index-summary">${escapeHtml(stage.summary || "")}</span>
-                    </span>
-                  </a>
-                </li>
-              `;
-            }).join("")}
-          </ol>
-        </section>`
-        : "";
-      const flowSectionHtml = flowDiagrams.length
-        ? `
-        <section class="section" id="flow-overview">
-          <p class="eyebrow">先看大流水线 · 顶层流程图</p>
-          <h2>这条流水线上有几个大阶段</h2>
-          ${flowDiagrams.map(diagramBlock).join("")}
-          <p class="page-orientation-note">图说的是 4 个大 Phase 的拓扑关系——14 个 stage 是这些 Phase 内部的展开，不画在图里（14 个 node 带文字会糊一脸）。下面的索引表负责把 14 个 stage 的一行摘要列清楚。</p>
-        </section>`
-        : "";
-      layout("Walkthrough", `
-        <section class="hero">
-          <p class="eyebrow">Walkthrough · 章 02</p>
-          <h1>AI 运行轨迹</h1>
-          <p class="lede">${escapeHtml(oneLiner)}</p>
-          <p class="lede" style="margin-top: 12px;">这是本手册的脊柱。下面 ${stages.length} 个阶段展示我作为 AI，拿到用户输入后被这个 skill 一步步约束、暂停、检查、推进的完整工作路径。每一阶段都用同一个例子来落地。</p>
-          <div class="callout">
-            <strong>每个 stage 的卡都回答 7 件事：</strong>这一步收到什么 / skill 让我读什么 / 我不能直接做什么 / 我做什么 / 我产出什么 / 下一步谁用它 / 这里能偷的招。
-          </div>
-        </section>
-        ${flowSectionHtml}
-        ${stageIndexHtml}
-        <section class="section">
-          <p class="eyebrow">下面是 14 个 stage 的详细卡</p>
-          <h2>每个 stage 展开讲</h2>
-          <div class="timeline">
-            ${stages.map((stage, index) => stageCard(stage, index)).join("")}
-          </div>
-        </section>
-      `);
+
+      function pad2(n) { return String(n).padStart(2, "0"); }
+
+      function renderEditorialBlock(block) {
+        if (!block || !block.kind) return "";
+        if (block.kind === "para") {
+          return `<p>${renderRich(block.text || "")}</p>`;
+        }
+        if (block.kind === "list") {
+          const items = (block.items || [])
+            .map((item) => `<li>${renderRich(item)}</li>`)
+            .join("");
+          return `<ul>${items}</ul>`;
+        }
+        if (block.kind === "code") {
+          const lang = block.lang || "text";
+          return `
+            <figure class="code-block">
+              <div class="code-chrome">
+                <span class="code-dots"><span></span><span></span><span></span></span>
+                <span class="code-lang">${escapeHtml(lang)}</span>
+              </div>
+              <pre><code>${escapeHtml(block.text || "")}</code></pre>
+            </figure>`;
+        }
+        if (block.kind === "quote") {
+          return `<blockquote class="narrative-quote">${escapeHtml(block.text || "")}</blockquote>`;
+        }
+        /* diagram: 编辑杂志体跳过图，保持阅读节奏 */
+        return "";
+      }
+
+      function renderQuickref(stage) {
+        const rows = [
+          ["这一步收到什么", stage.receives],
+          ["skill 让我读什么", stage.reads],
+          ["我不能直接做什么", stage.blockedShortcut],
+          ["我做什么", stage.action],
+          ["我产出什么", stage.output],
+          ["下一步谁用它", stage.nextConsumer]
+        ].filter(([, v]) => v && (!Array.isArray(v) || v.length));
+        if (!rows.length) return "";
+        const body = rows
+          .map(([label, value]) => {
+            const content = Array.isArray(value)
+              ? `<ul>${value.map((v) => `<li>${escapeHtml(v)}</li>`).join("")}</ul>`
+              : `<p>${escapeHtml(value)}</p>`;
+            return `
+              <div class="quickref-row">
+                <span class="qr-label">${escapeHtml(label)}</span>
+                <div class="qr-body">${content}</div>
+              </div>`;
+          })
+          .join("");
+        return `
+          <details class="quickref">
+            <summary>七字段速查 · Stage metadata</summary>
+            <div class="quickref-grid">${body}</div>
+          </details>`;
+      }
+
+      function renderChallenges(stage) {
+        if (!Array.isArray(stage.challenges) || !stage.challenges.length) return "";
+        const items = stage.challenges
+          .map((c) => `<li>${escapeHtml(c)}</li>`)
+          .join("");
+        return `
+          <section class="challenges">
+            <span class="challenges-rule"></span>
+            <header class="challenges-head">
+              <h3 class="challenges-title">你的练习</h3>
+              <p class="challenges-sub">不是 AI 的内心独白——是给读这本手册的你的题。先想再读下一阶段。</p>
+            </header>
+            <ol class="challenges-list">${items}</ol>
+          </section>`;
+      }
+
+      function renderEditorialStage(stage, i) {
+        const num = pad2(i + 1);
+        const id = escapeHtml(stage.id || `stage-${i + 1}`);
+        const pretest = stage.preTest
+          ? `<aside class="pretest">
+              <span class="pretest-label">先猜一遍 · pre-test</span>
+              <p class="pretest-body">${escapeHtml(stage.preTest)}</p>
+            </aside>`
+          : "";
+        const narrative = Array.isArray(stage.narrativeBody)
+          ? stage.narrativeBody.map(renderEditorialBlock).join("")
+          : "";
+        const move = stage.reusableMove
+          ? `<aside class="move">
+              <div class="move-label">这里能偷的招</div>
+              <p class="move-body">${escapeHtml(stage.reusableMove)}</p>
+            </aside>`
+          : "";
+        return `
+          <article class="stage" id="${id}">
+            <header class="stage-head">
+              <p class="stage-num">${num}</p>
+              <div class="stage-headline">
+                <p class="stage-kicker">阶段 ${num}</p>
+                <h2 class="stage-title">${escapeHtml(stage.title || "")}</h2>
+                ${stage.summary ? `<p class="stage-summary">${escapeHtml(stage.summary)}</p>` : ""}
+              </div>
+              <div></div>
+            </header>
+            <div class="stage-body">
+              ${pretest}
+              <div class="narrative">${narrative}</div>
+              ${move}
+              ${renderQuickref(stage)}
+              ${renderChallenges(stage)}
+            </div>
+          </article>`;
+      }
+
+      function renderEditorialIndex() {
+        const items = stages
+          .map((s, i) => {
+            const num = pad2(i + 1);
+            const id = escapeHtml(s.id || `stage-${i + 1}`);
+            const title = escapeHtml(s.title || "").split(/[，——]/)[0];
+            return `
+              <a class="index-item" href="#${id}">
+                <span class="num">${num}</span>
+                <span class="label">${title}</span>
+              </a>`;
+          })
+          .join("");
+        return `
+          <section class="index-bar" aria-label="Stage index">
+            <p class="index-label">全 ${stages.length} 个阶段 · 点击跳转</p>
+            <div class="index-grid">${items}</div>
+          </section>`;
+      }
+
+      const brandTitle = handbook.meta?.title || "Skill Handbook";
+      document.title = `Walkthrough · ${brandTitle}`;
+      document.querySelector("#app").innerHTML = `
+        <main class="page">
+          <header class="masthead">
+            <div class="masthead-left">
+              <a class="masthead-mark" href="${root}index.html">${escapeHtml(brandTitle)}</a>
+              <span class="masthead-section">章 02 / Walkthrough</span>
+            </div>
+            <span class="masthead-meta">编辑杂志体 · v2</span>
+          </header>
+
+          <section class="hero">
+            <p class="hero-eyebrow">Walkthrough · 章 02</p>
+            <h1 class="hero-title">AI 运行<br/>轨迹</h1>
+            <p class="hero-subtitle">${stages.length} 个 stage 看 AI 被一步步拦下来的完整路径。</p>
+            <p class="hero-lede">${renderRich(oneLiner)}</p>
+            <p class="hero-lede">这是本手册的脊柱。下面每一阶段都用同一个例子落地，每个 stage 卡同时回答 7 件事：<strong>这一步收到什么 / skill 让我读什么 / 我不能直接做什么 / 我做什么 / 我产出什么 / 下一步谁用它 / 这里能偷的招</strong>。</p>
+            <div class="hero-rule"></div>
+          </section>
+
+          ${renderEditorialIndex()}
+
+          <section>
+            ${stages.map(renderEditorialStage).join("")}
+          </section>
+
+          <p class="end-mark">❖ ❖ ❖</p>
+          <p class="end-note">章 02 / Walkthrough — 完</p>
+        </main>
+      `;
     },
 
     glossary() {

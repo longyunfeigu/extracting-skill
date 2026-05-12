@@ -86,7 +86,7 @@ Create the source artifacts first:
 - `page-packets/` — one packet per page, each with its own page job, writing voice, inputs, required material, and self-check.
 - anchor slice — overview opening + one walkthrough stage + one pattern card + one file-role card + one page shell, used to set density and voice.
 
-Then 写 / 组装 web 页面：**先写完 anchor slice**（overview opening + 一个 walkthrough stage + 一张 pattern card + 一张 file-role card + 一个 page shell），**停下来问用户剩下 7 页要串行还是 fan-out 给 sub-agent 并行**。并行时 sub-agent 用 `model: "opus"`、`subagent_type: "general-purpose"`，prompt 自包含 brief + anchor slice 对应组件 + 该页 packet 模板；产出回到主 thread 做 editor pass。判断条件、调用形状和"不要 team 模式"的理由见 `references/web-production-flow.md` 的 step 2a。
+Then 写 / 组装 web 页面：**先写完 anchor slice**（overview opening + 一个 walkthrough stage + 一张 pattern card + 一张 file-role card + 一个 page shell），**停下来问用户剩下 7 页要串行还是 fan-out 给 sub-agent 并行**。并行时 sub-agent 用 `model: "opus"`、`subagent_type: "general-purpose"`，prompt 自包含 brief + anchor slice 对应组件 + 该页 packet 模板；产出回到主 thread 做 page voice gate 和 editor pass。判断条件、调用形状和"不要 team 模式"的理由见 `references/web-production-flow.md` 的 step 2a。
 
 Key shape to remember while writing:
 
@@ -97,12 +97,21 @@ Key shape to remember while writing:
 - **One example throughout.** The example from step 3 shows up at every stage with real material (text excerpt / prompt / command / code).
 - **Code-native diagrams for accuracy, imagegen only for mood.** Never use imagegen for diagrams with precise labels. For visual rules and final self-checks, read `references/visuals-and-quality.md`.
 - **Narrative hooks between stages.** 每个 stage 开头一句 **接上一步：** 回收上一步存的钱，结尾一句 **下一步靠这个：** 埋下一步要花的钱。没有这两个钩子，stage 之间是物料流不是故事，读者合上书只记得文件名。详见 `references/stage-writing.md` Rule 10。
+- **Page voice gate before moving on.** 每页 / 每章写完后先过反装样自检、去 AI 味自检、朗读可行性检查，并按检查结果修一轮；不要把这些局部文风问题都留给最终 editor pass。
 
 For the multi-page web app structure, read `references/web-app-structure.md`, then use `examples/web-video-presentation/web-app/` as a rendered sample.
 
-### 5. Run the editor pass
+### 5. Run page voice gates, then the editor pass
 
-Before building the web app or exporting Markdown, run the editor pass from `references/web-production-flow.md`:
+Before moving from one completed page/chapter to the next, run the page voice gate from `references/web-production-flow.md`:
+
+- 反装样自检：有没有学者名、英文包装、文学修辞、发明术语、中英夹杂、行话解释行话；
+- 去 AI 味自检：有没有密集汇报腔、数字名词堆叠、破折号锁链、规则先行、没有转向读者；
+- 朗读可行性检查：有没有长句、长段、喘不过气的句子、缺少自然停顿。
+
+The voice gate is not a report-only step. Findings must be fixed in that page before it is considered done.
+
+After every page has passed its local gate, run the final editor pass from `references/web-production-flow.md`:
 
 - one running example stays consistent across pages;
 - every page has a distinct job and voice;
@@ -133,7 +142,7 @@ Before building the web app or exporting Markdown, run the editor pass from `ref
 
 Run the full quality bar in `references/visuals-and-quality.md` before delivering. The handbook-specific writing rules live in `references/stage-writing.md`; design choice and pattern self-checks live in `references/cards-patterns.md`.
 
-Then run the universal anti-pretentious check below.
+The writing checks below are also used earlier as the per-page voice gate. Do not wait until final delivery to run them.
 
 ### 反装样自检（写完逐条扫，命中就改）
 
@@ -285,7 +294,7 @@ LLM 写完一段感觉"密度高、信息量大"——这正是 AI 味的源头�
 - `references/handbook-spec.md` — required first read; core handbook contract, rule summary, recommended structure, and routing to detail references.
 - `references/stage-writing.md` — stage walkthrough writing rules: local term explanations, pre-test hooks, real materials, narrative handoffs, story voice, and AI freedom.
 - `references/cards-patterns.md` — design choice cards and pattern cards: bad scenarios, counter scenarios, therefore breaks, and related pattern links.
-- `references/web-production-flow.md` — web handbook production flow: `handbook-brief.md`, page packets, page agents, editor pass, and Markdown export rules.
+- `references/web-production-flow.md` — web handbook production flow: `handbook-brief.md`, page packets, page agents, per-page voice gates, editor pass, and Markdown export rules.
 - `references/web-app-structure.md` — multi-page web app structure and page-level orientation blocks for detail pages.
 - `references/web-app-visuals.md` — 页面视觉规范（typography / 配色 / 组件形状）。校准目标是 `examples/nuwa-skill/web-app/pages/walkthrough.html` 的编辑杂志体（2026-05）。
 - `references/visuals-and-quality.md` — diagram/image rules and final quality bar.

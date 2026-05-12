@@ -82,7 +82,7 @@ anchor slice 一旦完成，**主 thread 不要继续写任何完整页面**。�
 | 走法 | 怎么做 | 什么时候选 |
 | --- | --- | --- |
 | 串行 | 主 thread 按顺序写下一个 packet → 渲染该页 → 再下一个 | 写 anchor slice 的时候频繁回头改 `handbook-brief.md`，或者 voice / density 在样本之间反复调——真相源或形状还没稳。这时候并行会让 7 个 sub-agent 同时基于一份不稳定的契约工作，editor pass 要修的东西比省下来的时间多 |
-| 并行 sub-agent | 在**一条 message** 里同时调用 7 个 `Agent` 工具（每页一个），让它们并发跑；产出回到主 thread 做 editor pass | anchor slice 一两遍就收敛、没有暴露 brief 问题，IDs / running example / 术语和 voice / density 都已经稳定 |
+| 并行 sub-agent | 在**一条 message** 里同时调用 7 个 `Agent` 工具（每页一个），让它们并发跑；每页产出先过 page voice gate，全部通过后回到主 thread 做 editor pass | anchor slice 一两遍就收敛、没有暴露 brief 问题，IDs / running example / 术语和 voice / density 都已经稳定 |
 
 并行时 `Agent` 工具的调用形状：
 
@@ -92,12 +92,15 @@ anchor slice 一旦完成，**主 thread 不要继续写任何完整页面**。�
   - 该页的 `page packet`（job / voice / must-include / must-avoid / self-check）
   - `handbook-brief.md` 的完整内容（共享 IDs / running example / 术语 / 图表清单）
   - **anchor slice 里对应该页的那个组件作为风格锚点**：overview 页拿 overview opening；walkthrough 页拿那一个 walkthrough stage 样本；patterns 页拿那张 pattern card；file-map 页拿那张 file-role card；所有页都拿 page shell 做导航和视觉密度参照
-  - 指向 `references/stage-writing.md`、`references/cards-patterns.md`、`references/visuals-and-quality.md` 的硬规则，以及 `SKILL.md` 末尾的反装样自检
+  - 指向 `references/stage-writing.md`、`references/cards-patterns.md`、`references/visuals-and-quality.md` 的硬规则，以及 `SKILL.md` 末尾的反装样自检、去 AI 味自检、朗读测试
   - 该页的产出位置（`web-app/pages/<page>.html` 或 `page-packets/<page>.packet.md`）
+  - 要求该页完成前先过 page voice gate：列出发现的问题，修掉 blocking issues，再返回最终页面内容
 
 **不要用 team 模式。** 本任务是单向交付——每个 sub-agent 拿到 brief + 对应锚点 + packet → 产出该页 → 结束。没有需要双向对话的协调。Team 模式的消息往返开销解决不了任何 brief 已经解决的协调问题，只会拖慢。
 
-主 thread 收齐所有 sub-agent 的产出后，**必须做 editor pass**（见 step 5）——sub-agent 之间看不到彼此的输出，IDs 漂移 / 重复段落 / cross-link 断链都靠 editor pass 兜底。
+主 thread 收齐所有 sub-agent 的产出后，先确认每页都通过 page voice gate，再做最终
+**editor pass**（见 step 5）——sub-agent 之间看不到彼此的输出，IDs 漂移 / 重复段落 /
+cross-link 断链都靠 editor pass 兜底。
 
 ### 3. Produce page packets
 
@@ -114,6 +117,7 @@ Each page packet is a self-contained handoff for a page agent. It includes:
 **Must avoid:** <bad page-specific output>
 **Packet output:** <structured data or prose blocks the web app will render>
 **Self-check:** <page-specific checks>
+**Voice gate:** <anti-pretentious check + AI-flavor check + read-aloud feasibility>
 ```
 
 如果 step 2a 选了串行，主 thread 顺序写每个 packet 并渲染对应页。
@@ -131,9 +135,45 @@ Each page packet is a self-contained handoff for a page agent. It includes:
 | Patterns | reusable cards; problem, therefore break, reuse, cost, links | renamed section headings |
 | Apply it | practical authoring moves and pressure scenarios | motivational advice |
 
+### 4a. Page voice gate
+
+每页 / 每章写完后立刻过 voice gate，过不了就当这页没写完。不要等 7 页都写完
+才清文风债。
+
+Preferred shape: page writer returns a draft, then an independent voice reviewer
+sub-agent checks only that page; the writer fixes blocking issues before the page
+is considered complete. If the harness cannot spawn a separate reviewer, the
+main thread performs the same gate before moving on. In parallel mode, each page
+handoff must still include this gate, either as a chained reviewer sub-agent or
+as a required self-review plus main-thread spot check.
+
+The gate checks three things:
+
+1. **反装样自检** — 学者名、英文包装、文学修辞、发明术语、中英夹杂、行话解释行话。
+2. **去 AI 味自检** — 密集汇报腔、数字名词堆叠、破折号锁链、规则先行、很久不转向读者。
+3. **朗读可行性检查** — 长句、长段、缺少自然停顿、念到中途必须换气的句子。
+
+Reviewer output should be concrete and local:
+
+```text
+Blocking issues
+1. <page / paragraph>:
+   原句：...
+   问题：...
+   建议：...
+
+Non-blocking notes
+- ...
+```
+
+The reviewer does not rewrite the whole page. The page writer fixes blocking
+issues, then the page is considered complete. The final editor pass still runs
+after all pages pass this gate, but it focuses on cross-page consistency.
+
 ### 5. Editor pass
 
-After packets exist, run an editor pass before building the web app:
+After packets exist and every page has passed the page voice gate, run an
+editor pass before building the web app:
 
 - one running example stays consistent across pages;
 - stage IDs, term IDs, design choice IDs, and pattern IDs match the brief;
@@ -164,6 +204,7 @@ Before delivery, answer these checks explicitly:
 - Is `handbook.md` described as an export rather than the web source?
 - Is there a `handbook-brief.md` or equivalent source plan?
 - Does each page have a page packet with job, voice, inputs, must-include, and self-check?
+- Did every page pass the page voice gate before final editor pass?
 - Could two page agents work without editing the same packet?
 - 写完 anchor slice 之后是否真的停下来问了用户并行还是串行？（不要默默替用户决定，也不要默默全程串行到底）
 - 如果走了并行：sub-agent 是不是用了 `model: "opus"` + `subagent_type: "general-purpose"`，prompt 是不是自包含了 brief + anchor slice 对应组件 + packet 模板？
@@ -171,4 +212,3 @@ Before delivery, answer these checks explicitly:
 - Do design choices and patterns still follow `references/cards-patterns.md`?
 - Does every detail page still follow `references/web-app-structure.md` orientation rules?
 - Did the editor pass check ID consistency and repeated prose?
-

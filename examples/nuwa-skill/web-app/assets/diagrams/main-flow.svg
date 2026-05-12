@@ -1,142 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" role="img" aria-labelledby="title desc">
-  <title id="title">14 个 stage 的 6 phase 拓扑</title>
-  <desc id="desc">14 个 stage 分成 6 个 Phase 大组，3 个 ★ 检查点等用户拍板。从输入"我想做一个塔勒布的 skill"到输出 .claude/skills/taleb-perspective/。</desc>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 240" role="img" aria-label="Walkthrough 顶层流程图：5 个大段 14 个 stage 的拓扑">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#a04018"/>
+    <marker id="mf-arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,1 L11,6 L0,11 Z" fill="#8a1c0f" />
     </marker>
-    <marker id="arrow-soft" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#5d544a"/>
-    </marker>
+    <style>
+      .mf-bg { fill: #f6f1e6; }
+      .mf-phase { fill: #ede6d4; stroke: #d8cdb6; stroke-width: 1.4; }
+      .mf-cp { fill: rgba(138, 28, 15, 0.08); stroke: #8a1c0f; stroke-width: 1.6; stroke-dasharray: 4 3; }
+      .mf-label { font: 700 15px "Noto Serif SC", Georgia, serif; fill: #1a1410; }
+      .mf-stages { font: 11px "JetBrains Mono", ui-monospace, monospace; fill: #8a7a66; letter-spacing: 0.08em; }
+      .mf-arrow { stroke: #8a1c0f; stroke-width: 1.6; fill: none; }
+      .mf-title { font: 700 16px "Noto Serif SC", Georgia, serif; fill: #1a1410; }
+      .mf-kicker { font: 11px "JetBrains Mono", ui-monospace, monospace; fill: #8a7a66; letter-spacing: 0.16em; text-transform: uppercase; }
+      .mf-accent { stroke: #8a1c0f; stroke-width: 1.6; }
+    </style>
   </defs>
+  <rect class="mf-bg" width="1000" height="240" />
+  <text class="mf-kicker" x="40" y="28">先看大流水线</text>
+  <text class="mf-title" x="40" y="52">5 个大段 · 14 个 stage · 3 道便宜返工点</text>
+  <line class="mf-accent" x1="40" y1="66" x2="120" y2="66" />
 
-  <rect width="1200" height="480" rx="12" fill="#f7f4ef"/>
-
-  <!-- Header -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <text x="30" y="32" font-size="11" font-weight="720" fill="#5d544a" letter-spacing="2.5">WALKTHROUGH · 14 STAGE 的 6 PHASE 拓扑</text>
-    <text x="30" y="56" font-size="13" fill="#5d544a">输入：「我想做一个塔勒布的 skill」 → 14 stage → 输出：<tspan font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">.claude/skills/taleb-perspective/</tspan></text>
+  <!-- Boxes -->
+  <g transform="translate(40, 100)">
+    <rect class="mf-phase" x="0" y="0" width="160" height="80" rx="6" />
+    <text class="mf-label" x="80" y="32" text-anchor="middle">入口 + 准备</text>
+    <text class="mf-stages" x="80" y="54" text-anchor="middle">3 个 stage</text>
+    <text class="mf-stages" x="80" y="70" text-anchor="middle">分流 / 澄清 / 建目录</text>
+  </g>
+  <path class="mf-arrow" d="M 200 140 L 230 140" marker-end="url(#mf-arrow)" />
+  <g transform="translate(240, 100)">
+    <rect class="mf-phase" x="0" y="0" width="160" height="80" rx="6" />
+    <text class="mf-label" x="80" y="32" text-anchor="middle">采集 + 检查</text>
+    <text class="mf-stages" x="80" y="54" text-anchor="middle">3 个 stage · ★ 检查点 1.5</text>
+    <text class="mf-stages" x="80" y="70" text-anchor="middle">6 agent / 著作样本 / 拍板</text>
+  </g>
+  <path class="mf-arrow" d="M 400 140 L 430 140" marker-end="url(#mf-arrow)" />
+  <g transform="translate(440, 100)">
+    <rect class="mf-phase" x="0" y="0" width="160" height="80" rx="6" />
+    <text class="mf-label" x="80" y="32" text-anchor="middle">提炼 + 检查</text>
+    <text class="mf-stages" x="80" y="54" text-anchor="middle">3 个 stage · ★ 检查点 2.5</text>
+    <text class="mf-stages" x="80" y="70" text-anchor="middle">三重验证 / DNA / 拍板</text>
+  </g>
+  <path class="mf-arrow" d="M 600 140 L 630 140" marker-end="url(#mf-arrow)" />
+  <g transform="translate(640, 100)">
+    <rect class="mf-phase" x="0" y="0" width="160" height="80" rx="6" />
+    <text class="mf-label" x="80" y="32" text-anchor="middle">构建 + 验证</text>
+    <text class="mf-stages" x="80" y="54" text-anchor="middle">3 个 stage · ★ 检查点 4</text>
+    <text class="mf-stages" x="80" y="70" text-anchor="middle">反推 protocol / 套模板 / 三类测试</text>
+  </g>
+  <path class="mf-arrow" d="M 800 140 L 830 140" marker-end="url(#mf-arrow)" />
+  <g transform="translate(840, 100)">
+    <rect class="mf-phase" x="0" y="0" width="120" height="80" rx="6" />
+    <text class="mf-label" x="60" y="32" text-anchor="middle">精炼 + 交付</text>
+    <text class="mf-stages" x="60" y="54" text-anchor="middle">2 个 stage</text>
+    <text class="mf-stages" x="60" y="70" text-anchor="middle">双 agent 改进 / 交付</text>
   </g>
 
-  <!-- Checkpoint star markers above phase boxes (Phase 1.5 / 2.5 / 4) -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <!-- Star above Box 3 (Phase 1.5 - entire box is checkpoint) -->
-    <g transform="translate(470 80)">
-      <rect width="118" height="32" rx="16" fill="#2d4858"/>
-      <text x="59" y="20" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点 1.5</text>
-    </g>
-    <line x1="529" y1="113" x2="529" y2="148" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-
-    <!-- Star above Box 4 right side (Phase 2.5 inside group) -->
-    <g transform="translate(720 80)">
-      <rect width="118" height="32" rx="16" fill="#2d4858"/>
-      <text x="59" y="20" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点 2.5</text>
-    </g>
-    <line x1="755" y1="113" x2="755" y2="148" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-
-    <!-- Star above Box 6 left side (Phase 4 inside group) -->
-    <g transform="translate(1018 80)">
-      <rect width="118" height="32" rx="16" fill="#2d4858"/>
-      <text x="59" y="20" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点 4</text>
-    </g>
-    <line x1="1045" y1="113" x2="1045" y2="148" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-  </g>
-
-  <!-- 6 Phase boxes row, y=150-280 -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <!-- Box 1: Phase 0+0.5 (3 stages) -->
-    <g transform="translate(30 150)">
-      <rect width="170" height="130" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 0 + 0.5</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">入口 + 建目录</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">3 stages</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#e0d6c5" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#5d544a">01 分流</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#5d544a">02 澄清</text>
-    </g>
-
-    <!-- Box 2: Phase 1 (2 stages) -->
-    <g transform="translate(224 150)">
-      <rect width="170" height="130" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 1</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">6 agent 并行</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">2 stages</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#e0d6c5" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#5d544a">04 启动</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#5d544a">05 看其一</text>
-    </g>
-
-    <!-- Box 3: Phase 1.5 (1 stage) - checkpoint -->
-    <g transform="translate(418 150)">
-      <rect width="170" height="130" rx="10" fill="#dde6ec" stroke="#2d4858" stroke-width="1.6"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#2d4858" letter-spacing="1.5">PHASE 1.5 ★</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">调研 review</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">1 stage</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#b8c5cc" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#2d4858" font-style="italic">06 用户拍板</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#5d544a">调研够不够</text>
-    </g>
-
-    <!-- Box 4: Phase 2 (2 stages, 1 internal ★) -->
-    <g transform="translate(612 150)">
-      <rect width="170" height="130" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 2</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">三重验证</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">2 stages（含 ★ 2.5）</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#e0d6c5" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#5d544a">07 筛模型</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#2d4858" font-style="italic">08 ★ 用户拍板</text>
-    </g>
-
-    <!-- Box 5: Phase 3 (3 stages, contains wow) -->
-    <g transform="translate(806 150)">
-      <rect width="170" height="130" rx="10" fill="#fbeadc" stroke="#a04018" stroke-width="1.5"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 3 · WOW</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">反推 + 套模板</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">3 stages</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#e0d6c5" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#a04018" font-weight="660">09 反推 Protocol</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#5d544a">10 填模板 / 11 自检</text>
-    </g>
-
-    <!-- Box 6: Phase 4+5+交付 (3 stages, 1 internal ★) -->
-    <g transform="translate(1000 150)">
-      <rect width="170" height="130" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="85" y="28" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.2">PHASE 4 + 5 + 交付</text>
-      <text x="85" y="56" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">验证 + 精炼</text>
-      <text x="85" y="80" text-anchor="middle" font-size="11" fill="#5d544a">3 stages（含 ★ 4）</text>
-      <line x1="20" y1="92" x2="150" y2="92" stroke="#e0d6c5" stroke-width="1"/>
-      <text x="85" y="108" text-anchor="middle" font-size="11" fill="#2d4858" font-style="italic">12 ★ 三类验证</text>
-      <text x="85" y="120" text-anchor="middle" font-size="11" fill="#5d544a">13 精炼 / 14 交付</text>
-    </g>
-  </g>
-
-  <!-- Arrows between phase boxes -->
-  <g stroke="#a04018" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
-    <line x1="200" y1="215" x2="222" y2="215"/>
-    <line x1="394" y1="215" x2="416" y2="215"/>
-    <line x1="588" y1="215" x2="610" y2="215"/>
-    <line x1="782" y1="215" x2="804" y2="215"/>
-    <line x1="976" y1="215" x2="998" y2="215"/>
-  </g>
-
-  <!-- Legend for checkpoint convention -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <line x1="30" y1="320" x2="1170" y2="320" stroke="#e0d6c5" stroke-width="1"/>
-    <text x="30" y="345" font-size="11" font-weight="720" fill="#2d4858" letter-spacing="1.5">★ 检查点说明</text>
-    <g transform="translate(30 358)">
-      <rect width="14" height="14" rx="2" fill="#dde6ec" stroke="#2d4858" stroke-width="1.2"/>
-      <text x="22" y="11" font-size="11.5" fill="#5d544a">整个 phase 都是检查点（用户拍板才能继续）</text>
-    </g>
-    <text x="30" y="395" font-size="11.5" fill="#5d544a">→ Phase 1.5 stage 06：等用户说调研质量够不够</text>
-    <text x="30" y="412" font-size="11.5" fill="#5d544a">→ Phase 2 内含 stage 08：等用户说提炼出的 6 心智模型对不对</text>
-    <text x="30" y="429" font-size="11.5" fill="#5d544a">→ Phase 4 stage 12：用独立 subagent 做 3 类验证</text>
-
-    <text x="600" y="345" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 3 = WOW · 反推 Agentic Protocol</text>
-    <text x="600" y="368" font-size="11.5" fill="#5d544a">stage 09：从蒸馏出的 6 心智模型，倒着推出 5 个</text>
-    <text x="600" y="385" font-size="11.5" fill="#5d544a">「塔勒布回答问题前会先看什么」的研究维度。</text>
-    <text x="600" y="402" font-size="11.5" fill="#5d544a">同一段位置上塔勒布 / 费曼 / MrBeast 完全不同——</text>
-    <text x="600" y="419" font-size="11.5" fill="#5d544a">这才是「HOW they think」（详见 Overview · Wow moment）。</text>
-  </g>
+  <text class="mf-stages" x="40" y="220">14 stage 的一行摘要见下面索引表；这张图只画 5 个大段的拓扑，不展开 stage 内部。</text>
 </svg>

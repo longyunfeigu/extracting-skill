@@ -54,19 +54,33 @@ Good（满足第一层）：
 ```markdown
 #### `<term>`
 
-**人话解释：** <one plain explanation>
+**定义：** <一个具体的"值"作为解释主体，不是抽象描述>
 
-**它出现在哪个场景：** <the concrete moment where the AI needs it>
+**它在哪个 stage 出现：** <Walkthrough 第 N 阶段，那一段真正用到它的位置>
 
 **它解决什么问题：** <bad output or confusion it prevents>
 
-**我作为 AI 怎么用它：** <how the skill makes the agent use it>
+**我作为 AI 怎么用它：** <那个 stage 里真实发生的动作，引用 walkthrough 里同一份真材料>
 
-**容易误解：** <what it is not>
+**容易误解：** <what it is not，最好对比另外一个相近术语>
 ```
 
 Card 通常单独成节，或集中进 glossary 章。哪些术语值得 promote 到 card？
 判定标准：**这个术语如果误解了，整本手册后面好几个 stage 都会跟着误解。**
+
+#### 关键写法：用具体的值，不要用抽象定义
+
+5 字段 card 最常见的坏写法是把每个字段写成抽象描述——「他遇到新问题用的镜片 / Phase 2.1 产物 / 让 skill 能面对新问题做判断 / 三重验证筛 / 不是观点也不是建议」。读完五条全是抽象名词堆叠，读者闭眼能背但不知道任何一个具体的值长什么样。
+
+正确的写法是 **「定义」字段直接用一个真值作为主体**——例如解释「心智模型」时不要写"他看世界的镜片"，要写：
+
+> 塔勒布的「反脆弱偏好」——他看一个系统时先问的不是"这个能不能优化"，而是"它受压会变强还是崩溃"。同一个问题，普通人本能问前者，他本能问后者。
+
+这一个具体值就同时回答了"这是什么"+"它和别的有什么区别"——抽象定义做不到。
+
+后面 4 个字段必须用同一个具体值（或同一组具体值）贯穿——「它在哪个 stage 出现」直接 link 到 walkthrough 里那个真值出现的位置（"Walkthrough 07 三重验证里——反脆弱过了跨域复现 + 生成力 + 排他性三道筛"），「我作为 AI 怎么用它」复用 walkthrough 里那段真表格的字段，「容易误解」用同一个值做对比（"反脆弱不是他相信的事——那是价值观；不是他给的建议——那是启发式"）。
+
+判定违规：5 字段里出现 ≥ 3 个「Phase X 的产物 / 数量 / 占比」这类元描述但没有任何一个真值——抽象定义 = 没说清楚。
 
 ### Glossary 页的定位
 
@@ -75,6 +89,11 @@ Glossary 是**深度卡片集合**，给想系统过一遍术语的读者用。�
 的 lede 也不能写"先读这一章再去 Walkthrough"——这是把责任推给读者。
 正确的关系是：walkthrough 里有就地短解保证当下读得动，glossary 里有 card
 保证想深究时找得到。两层都要有。
+
+**Glossary 不是孤立词典。** 每条术语必须 link 回 walkthrough 里它真出现的那个
+stage——「这一段在 Walkthrough 07 那段三列筛选表里实际跑了一遍」。读者从
+glossary 跳回 walkthrough 看到真表格、从 walkthrough 跳到 glossary 看到深度解释，
+两边互相印证。Glossary 和 walkthrough 之间互不引用 = 抽象孤岛。
 
 ## 6. Each stage opens with a pre-test, carries real material, ends with challenges
 
@@ -315,4 +334,5 @@ AI 没得挑：
 - 如果几乎没创作自由，叙事里有没有主动说"这里没发散空间，因为上游已经把 X 钉死"？
 - 每个 stage 开头有 `**接上一步：**` 一行钩子吗？第一站用 `**从这里开始：**`。
 - 每个 stage 结尾有 `**下一步靠这个：**` 一行钩子吗？最后一站用 `**这里把账结清：**`。
-
+- 写完这个 stage 后有没有立刻过 page voice gate？也就是反装样自检、去 AI 味自检、
+  朗读可行性检查。命中 blocking issue 要先修，不要留到整章写完再统一清。

@@ -1,134 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
-  <title id="title">女娲跑一遍塔勒布的 5 阶段流程</title>
-  <desc id="desc">输入一个人名 → 5 个 Phase（其中 3 个之间有检查点等用户拍板）→ 输出一个自包含 skill 目录。</desc>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" role="img" aria-label="女娲全流程顶层图：从入口分流到双 agent 精炼，三道检查点用星号标记">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#a04018"/>
+    <marker id="ovf-arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,1 L11,6 L0,11 Z" fill="#8a1c0f" />
     </marker>
-    <marker id="arrow-soft" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#5d544a"/>
-    </marker>
+    <style>
+      .ovf-bg { fill: #f6f1e6; }
+      .ovf-phase { fill: #ede6d4; stroke: #d8cdb6; stroke-width: 1.4; }
+      .ovf-phase-label { font: 600 14px "Noto Serif SC", Georgia, serif; fill: #1a1410; }
+      .ovf-phase-sub { font: 11px "JetBrains Mono", ui-monospace, monospace; fill: #8a7a66; letter-spacing: 0.06em; }
+      .ovf-cp { fill: rgba(138, 28, 15, 0.08); stroke: #8a1c0f; stroke-width: 1.6; }
+      .ovf-cp-label { font: 700 13px "Noto Serif SC", Georgia, serif; fill: #8a1c0f; }
+      .ovf-cp-sub { font: 11px "JetBrains Mono", ui-monospace, monospace; fill: #8a1c0f; }
+      .ovf-arrow-line { stroke: #8a1c0f; stroke-width: 1.6; fill: none; }
+      .ovf-title { font: 700 16px "Noto Serif SC", Georgia, serif; fill: #1a1410; letter-spacing: 0.02em; }
+      .ovf-legend { font: 11px "JetBrains Mono", ui-monospace, monospace; fill: #8a7a66; letter-spacing: 0.12em; text-transform: uppercase; }
+      .ovf-star { font: 900 22px "Noto Serif SC", Georgia, serif; fill: #8a1c0f; }
+      .ovf-band { fill: rgba(26, 20, 16, 0.05); }
+    </style>
   </defs>
+  <rect class="ovf-bg" width="1000" height="360" />
+  <text class="ovf-title" x="40" y="42">女娲全流程 · 11 个 Phase · 3 道便宜返工点</text>
+  <text class="ovf-legend" x="40" y="62">从用户说一个名字 ⟶ 到一个可独立跑的人物 skill</text>
 
-  <rect width="1200" height="460" rx="12" fill="#f7f4ef"/>
+  <!-- Row 1: Phase 0 / 0A,0B / 0.5 / 1 -->
+  <g transform="translate(40, 100)">
+    <rect class="ovf-phase" x="0" y="0" width="160" height="62" rx="6" />
+    <text class="ovf-phase-label" x="80" y="28" text-anchor="middle">入口分流</text>
+    <text class="ovf-phase-sub" x="80" y="46" text-anchor="middle">Phase 0</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 200 131 L 230 131" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(240, 100)">
+    <rect class="ovf-phase" x="0" y="0" width="160" height="62" rx="6" />
+    <text class="ovf-phase-label" x="80" y="28" text-anchor="middle">需求澄清 / 诊断</text>
+    <text class="ovf-phase-sub" x="80" y="46" text-anchor="middle">Phase 0A or 0B</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 400 131 L 430 131" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(440, 100)">
+    <rect class="ovf-phase" x="0" y="0" width="160" height="62" rx="6" />
+    <text class="ovf-phase-label" x="80" y="28" text-anchor="middle">创建 skill 目录</text>
+    <text class="ovf-phase-sub" x="80" y="46" text-anchor="middle">Phase 0.5</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 600 131 L 630 131" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(640, 100)">
+    <rect class="ovf-phase" x="0" y="0" width="180" height="62" rx="6" />
+    <text class="ovf-phase-label" x="90" y="26" text-anchor="middle">6 agent 并行采集</text>
+    <text class="ovf-phase-sub" x="90" y="46" text-anchor="middle">Phase 1 · 著作 / 对话 / 表达 / 他者 / 决策 / 时间线</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 820 131 L 860 131 L 860 195" marker-end="url(#ovf-arrow)" />
 
-  <!-- Input pill -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <text x="40" y="56" font-size="11" font-weight="720" fill="#5d544a" letter-spacing="2">INPUT</text>
-    <g transform="translate(40 70)">
-      <rect width="240" height="38" rx="19" fill="#ffffff" stroke="#5d544a" stroke-width="1"/>
-      <text x="120" y="24" text-anchor="middle" font-size="13" fill="#1f1b16">一个人名 / 或一个模糊需求</text>
-    </g>
-    <text x="300" y="93" font-size="13" fill="#5d544a">例：「我想做一个塔勒布的 skill」</text>
+  <!-- Row 2: 1.5★ → 2 → 2.5★ → 3 → 4★ → 5 -->
+  <g transform="translate(860, 200)">
+    <rect class="ovf-cp" x="-50" y="0" width="100" height="62" rx="6" />
+    <text class="ovf-star" x="0" y="22" text-anchor="middle">★</text>
+    <text class="ovf-cp-label" x="0" y="42" text-anchor="middle">检查点</text>
+    <text class="ovf-cp-sub" x="0" y="56" text-anchor="middle">1.5</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 810 231 L 760 231" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(660, 200)">
+    <rect class="ovf-phase" x="0" y="0" width="100" height="62" rx="6" />
+    <text class="ovf-phase-label" x="50" y="28" text-anchor="middle">框架提炼</text>
+    <text class="ovf-phase-sub" x="50" y="46" text-anchor="middle">Phase 2</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 660 231 L 610 231" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(510, 200)">
+    <rect class="ovf-cp" x="0" y="0" width="100" height="62" rx="6" />
+    <text class="ovf-star" x="50" y="22" text-anchor="middle">★</text>
+    <text class="ovf-cp-label" x="50" y="42" text-anchor="middle">检查点</text>
+    <text class="ovf-cp-sub" x="50" y="56" text-anchor="middle">2.5</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 510 231 L 460 231" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(360, 200)">
+    <rect class="ovf-phase" x="0" y="0" width="100" height="62" rx="6" />
+    <text class="ovf-phase-label" x="50" y="28" text-anchor="middle">skill 构建</text>
+    <text class="ovf-phase-sub" x="50" y="46" text-anchor="middle">Phase 3</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 360 231 L 310 231" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(210, 200)">
+    <rect class="ovf-cp" x="0" y="0" width="100" height="62" rx="6" />
+    <text class="ovf-star" x="50" y="22" text-anchor="middle">★</text>
+    <text class="ovf-cp-label" x="50" y="42" text-anchor="middle">检查点</text>
+    <text class="ovf-cp-sub" x="50" y="56" text-anchor="middle">Phase 4</text>
+  </g>
+  <path class="ovf-arrow-line" d="M 210 231 L 160 231" marker-end="url(#ovf-arrow)" />
+  <g transform="translate(40, 200)">
+    <rect class="ovf-phase" x="0" y="0" width="120" height="62" rx="6" />
+    <text class="ovf-phase-label" x="60" y="28" text-anchor="middle">双 agent 精炼</text>
+    <text class="ovf-phase-sub" x="60" y="46" text-anchor="middle">Phase 5</text>
   </g>
 
-  <!-- 6 Phase boxes row, y = 180-290 -->
-  <!-- Phase 0+0.5 -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <g transform="translate(25 180)">
-      <rect width="150" height="110" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 0+0.5</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">入口分流</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#5d544a">+ 建 skill 目录</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#5d544a" font-style="italic">（自包含原则）</text>
-    </g>
-    <!-- Phase 1 -->
-    <g transform="translate(225 180)">
-      <rect width="150" height="110" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 1</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">6 agent</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#5d544a">并行调研</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#5d544a" font-style="italic">（6 维度独立）</text>
-    </g>
-    <!-- Phase 2 -->
-    <g transform="translate(425 180)">
-      <rect width="150" height="110" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 2</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">三重验证</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#5d544a">→ 6 心智模型</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#5d544a" font-style="italic">（候选 → 筛选）</text>
-    </g>
-    <!-- Phase 3 -->
-    <g transform="translate(625 180)">
-      <rect width="150" height="110" rx="10" fill="#a04018" stroke="#a04018"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#ffe4d4" letter-spacing="1.5">PHASE 3 ★</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#ffffff">套模板</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#fbeadc">+ 反推 Protocol</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#f7d2bb" font-style="italic">（Wow moment）</text>
-    </g>
-    <!-- Phase 4 -->
-    <g transform="translate(825 180)">
-      <rect width="150" height="110" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 4</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">独立验证</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#5d544a">已知/边缘/风格</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#5d544a" font-style="italic">（避免自评偏好）</text>
-    </g>
-    <!-- Phase 5 -->
-    <g transform="translate(1025 180)">
-      <rect width="150" height="110" rx="10" fill="#ffffff" stroke="#e0d6c5" stroke-width="1.2"/>
-      <text x="75" y="30" text-anchor="middle" font-size="11" font-weight="720" fill="#a04018" letter-spacing="1.5">PHASE 5</text>
-      <text x="75" y="58" text-anchor="middle" font-size="14" font-weight="660" fill="#1f1b16">双 agent</text>
-      <text x="75" y="78" text-anchor="middle" font-size="13" fill="#5d544a">精炼</text>
-      <text x="75" y="98" text-anchor="middle" font-size="11" fill="#5d544a" font-style="italic">（标准后置）</text>
-    </g>
-  </g>
-
-  <!-- Arrows between phase boxes -->
-  <g stroke="#a04018" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
-    <line x1="175" y1="235" x2="223" y2="235"/>
-    <line x1="375" y1="235" x2="423" y2="235"/>
-    <line x1="575" y1="235" x2="623" y2="235"/>
-    <line x1="775" y1="235" x2="823" y2="235"/>
-    <line x1="975" y1="235" x2="1023" y2="235"/>
-  </g>
-
-  <!-- Checkpoint stars (above arrows) -->
-  <!-- Star 1.5: between P1 and P2, at x=400, y=130 -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <g transform="translate(367 110)">
-      <rect width="66" height="44" rx="22" fill="#2d4858"/>
-      <text x="33" y="20" text-anchor="middle" font-size="10" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点</text>
-      <text x="33" y="34" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff">1.5</text>
-    </g>
-    <line x1="400" y1="156" x2="400" y2="178" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-  </g>
-  <!-- Star 2.5: between P2 and P3, at x=600 -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <g transform="translate(567 110)">
-      <rect width="66" height="44" rx="22" fill="#2d4858"/>
-      <text x="33" y="20" text-anchor="middle" font-size="10" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点</text>
-      <text x="33" y="34" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff">2.5</text>
-    </g>
-    <line x1="600" y1="156" x2="600" y2="178" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-  </g>
-  <!-- Star 4: between P4 and P5, at x=1000 -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <g transform="translate(967 110)">
-      <rect width="66" height="44" rx="22" fill="#2d4858"/>
-      <text x="33" y="20" text-anchor="middle" font-size="10" font-weight="720" fill="#ffffff" letter-spacing="1">★ 检查点</text>
-      <text x="33" y="34" text-anchor="middle" font-size="11" font-weight="720" fill="#ffffff">Phase4</text>
-    </g>
-    <line x1="1000" y1="156" x2="1000" y2="178" stroke="#2d4858" stroke-width="1.5" stroke-dasharray="3,3"/>
-  </g>
-
-  <!-- Checkpoint legend (right of stars) -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <text x="40" y="135" font-size="11" font-weight="720" fill="#2d4858" letter-spacing="1">3 道检查点 · 等用户拍板</text>
-    <text x="40" y="152" font-size="11" fill="#5d544a">让 AI 在改起来还便宜的时候停一下</text>
-  </g>
-
-  <!-- Output box and tree -->
-  <g font-family="ui-sans-serif, system-ui, sans-serif">
-    <line x1="600" y1="310" x2="600" y2="340" stroke="#5d544a" stroke-width="1.5" marker-end="url(#arrow-soft)"/>
-    <text x="40" y="360" font-size="11" font-weight="720" fill="#5d544a" letter-spacing="2">OUTPUT · 自包含 skill 目录</text>
-
-    <g transform="translate(40 372)">
-      <rect width="1120" height="72" rx="8" fill="#ffffff" stroke="#5d544a" stroke-width="1"/>
-      <text x="20" y="22" font-size="13" font-weight="660" fill="#1f1b16" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.claude/skills/taleb-perspective/</text>
-      <text x="20" y="42" font-size="12" fill="#5d544a" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">├── SKILL.md  (~440 行)    ├── scripts/  (4 个脚本)    ├── references/research/  (01-06.md)    └── sources/</text>
-      <text x="20" y="60" font-size="11" fill="#5d544a" font-style="italic">可以原样复制到任何 Claude Code 项目就能用，不依赖女娲本身——为开源分发设计。</text>
-    </g>
-  </g>
+  <!-- Legend band -->
+  <rect class="ovf-band" x="40" y="300" width="920" height="32" rx="4" />
+  <text class="ovf-legend" x="56" y="320">★ = 必须停下来等用户拍板的便宜返工点 · 文本都还在手里，没生成任何昂贵产物</text>
 </svg>

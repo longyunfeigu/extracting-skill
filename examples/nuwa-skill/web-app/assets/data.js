@@ -1,609 +1,1307 @@
 window.handbook = {
   meta: {
     title: "女娲 · Skill 造人术 解剖手册",
-    sourcePath: "/home/guwanhua/Desktop/git/nuwa-skill",
-    audience: "想偷招的人 / 想自己写一个『蒸馏一个人』的 skill 的人",
-    outputMode: "multi-page-web-handbook",
-    generatedFor: "让读者看见：当我作为 AI 拿到『做一个塔勒布的 skill』这个请求，女娲是怎么把我从『凭训练语料拼几句名言做角色扮演』拦下来、改写成『6 个 agent 并行调研 → 3 道检查点对齐 → 三重验证筛模型 → 反推 Agentic Protocol → 独立子 agent 做质量验证』的完整生产线的。"
+    audience: "想偷招的人 · 准备自己写蒸馏人物 skill 的工程师",
+    sourcePath: "/Users/guwanhua/git/nuwa-skill",
+    version: "v1 · 2026-05"
   },
 
+  // ============================================================
+  // OVERVIEW (chapter 01) — textbook standard, anchor slice
+  // ============================================================
   overview: {
-    oneLiner: "你让 AI 扮演塔勒布回答风险问题，它说得头头是道——直到你问一个需要 2024 年真实数据的问题，它开始飘。女娲修的不是 AI 不懂塔勒布，是 AI 在『角色扮演』和『做研究』之间没有边界。",
+    h1: "看见女娲在做什么",
+    oneLiner: "我作为 AI，本能是凭训练语料拼几句名言搞角色扮演。女娲拦住我——先做 6 路并行调研、过三道便宜返工点、用三重验证筛模型、从模型反推「先看什么」、最后让独立子 agent 验证。一条人物 skill，14 个 stage 才让我交。",
 
+    // 1.2 opening scene — 6-10 个 narrative block 让读者亲眼看到失败模式
     openingScene: [
-      { kind: "para", text: "想象你打开一个新对话，告诉 AI：『请扮演塔勒布，分析最近的日元贬值。』" },
-      { kind: "para", text: "AI 给你一段听起来像塔勒布的话——『这是 Extremistan 里的事件』『日本央行的干预制造 fragility』『IYI 经济学家又看不见尾部风险』。" },
-      { kind: "para", text: "听起来对。" },
-      { kind: "para", text: "然后你问下一个问题：『2024 年 7 月那次干预之后，carry trade 的平仓规模到底有多大？』" },
-      { kind: "para", text: "AI 开始飘——" },
-      { kind: "list", items: [
-        "它说一个数字。编的。",
-        "它引用一份『野村证券报告』。编的。",
-        "它推荐的对冲策略，基于训练语料里 2022 年的市场情况。"
-      ]},
-      { kind: "para", text: "你脑子里大概知道哪不对，但你说不清楚到底坏在哪。问题不是 AI 不懂塔勒布——它对塔勒布的词汇用得比你熟。问题是 AI 在『角色扮演』和『做研究』之间没有边界：它把训练语料里塔勒布说话的方式直接套到一个需要事实的问题上，遇到不知道的事就编。" },
-      { kind: "para", text: "女娲（这个 skill）要修的就是这个边界。它生成出来的 taleb-perspective skill，遇到这个问题时会先做研究再说话——而不是顺着塔勒布的语气编下去。" }
-    ],
-
-    predictPrompt: "在往下读之前，先把你的猜测在心里写下来：你会怎么修这个边界？给 AI 一个『先做 WebSearch 再回答』的指令？给它一个塔勒布风格 prompt 模板？还是别的？下面女娲的做法多半跟你的不一样。",
-
-    primerBeats: [
-      { kind: "para", text: "女娲的做法是把『做一个塔勒布 skill』这件事拆成 5 个阶段，外加 3 道检查点。最后产出一个 skill 目录，可以原样复制到任何 Claude Code 项目就能用。" },
-      { kind: "diagram", id: "overview-flow" },
-      { kind: "para", text: "**Phase 1：派 6 个 subagent 同时去搜塔勒布的 6 个维度**——著作 / 长对话 / 碎片表达 / 别人怎么评他 / 实际决策记录 / 时间线。每个 subagent 写一份独立报告，存到 `references/research/0X-xxx.md`。不是 1 个 agent 看 6 件事，是 6 个 agent 并行各看 1 件事——因为塔勒布的著作（500 多页 5 本书）、播客（50+ 场访谈）、Twitter（上万条）和外部批评（Kahneman / Pinker 等）的信息量根本不可能让 1 个 agent 在合理时间里都看一遍。" },
-      { kind: "para", text: "**Phase 2：把这 6 份报告里反复出现的论点一条条捞出来**——『反脆弱』『skin in the game』『林迪效应』『Via Negativa』『IYI』『黑天鹅』『火鸡问题』『绿木交易员』……通常能扒出 15-30 个候选。每一条都必须过 3 道筛：" },
-      { kind: "list", items: [
-        "跨域复现——这个论点在他讨论 2+ 个不同领域时都出现吗？（在金融讲、在医学讲、在政治也讲）",
-        "生成力——用它能推断他对一个新问题（他没明确说过的）的可能立场吗？",
-        "排他性——是不是所有聪明人都会这样想？（区分塔勒布独特的，还是常识）"
-      ]},
-      { kind: "para", text: "3 道全过 → 算心智模型（最后取 top 3-7 个）。只过 1-2 道 → 退一档算决策启发式（具体可执行的规则，但不算他独特的看世界镜片）。0 道 → 直接丢。塔勒布身上几十个候选最后筛出来的心智模型只有 6 个：非对称风险思维 / 反脆弱偏好 / Skin in the Game 检验 / 林迪效应筛选 / Via Negativa / 领域特异性。其他都被退档或丢掉了。" },
-      { kind: "para", text: "**Phase 3：套模板生成 SKILL.md。**这一步里最有意思的不是套模板，是给生成的 skill 配 Agentic Protocol（让它在回答问题前先做研究的工作流）。配的时候不用通用搜索模板——从已经蒸馏出的 6 个心智模型，倒着推出 5 个『塔勒布会先看什么』的研究维度。这一步在下面 Wow moment 节展开。" },
-      { kind: "para", text: "**Phase 4 和 5：质量验证 + 精炼。**Phase 4 用一个独立的 subagent（不是写 skill 的那个）做 3 类测试——已知测试（塔勒布公开表过态的问题，跟蒸馏出来的回答对得上吗）/ 边缘测试（他没明确说过的相关问题，能不能给出『基于模型 X 推断』的回答而不是斩钉截铁）/ 风格测试（100 字读出来像不像他）。之后 Phase 5 再用第二组 subagent 做精炼。" },
-      { kind: "para", text: "**3 道检查点：Phase 1.5 / 2.5 / 4。**整个流程中间停 3 次等用户拍板——看 6 agent 调研质量够不够 / 看蒸馏出的心智模型对不对 / 看验证结果接不接受。这不是流程的装饰：AI 自己看不出哪一步走偏了，必须让用户在改起来还便宜的时候卡一下。在写完 440 行 SKILL.md 之后才发现『方向不对』，返工成本要高得多。" }
-    ],
-
-    wowSetup: "回到刚才扮演塔勒布的问题——我们再看一遍 Phase 3 这一步在做什么。女娲不给生成的 taleb-perspective skill 一个通用搜索模板（『搜任何相关信息』）。它从蒸馏出来的 6 个心智模型，倒着算出『塔勒布回答这个问题前会先看 5 件事』。下面是塔勒布、费曼、MrBeast 三个人在同一段位置上的对照——核心心智模型不同，反推出来的研究维度也完全不同：",
-
-    wowMoment: "同一段位置——同一个『Step 2: XX 式研究』的外壳。但三个人的『先看什么』全不一样。塔勒布不会去查 CTR；MrBeast 不会去查谁有 skin in the game。这才是『捕捉 HOW they think 而不是 WHAT they said』——它真的被写进生成的 skill 里。如果没有 Phase 3 反推这一步，所有的 perspective skill 都会被退化成同一个『先 WebSearch 再回答』的通用模板，看着每个不一样，骨子里是同一个东西。",
-
-    badResults: [
       {
-        title: "凭训练语料编",
-        aiDefault: "让 AI 直接扮演塔勒布。问 2024 年的事，它编一段基于 2022 年市场情况的回答，附上编的报告引用。听起来专业，遇到具体数字就崩。",
-        nuwaIntercept: "生成的 skill 在 Step 1 强制做问题分类：需要事实的问题必须先 WebSearch 拿到真材料，不允许跳过到 Step 3 回答。『宁可多搜一次，也不要凭训练语料编造』写在 skill 里。"
+        kind: "para",
+        text: "我先把一个真实场景念出来。这是没有 nuwa 的我（一个 AI 助手），收到一个常见请求时会做的事。"
       },
       {
-        title: "把候选一股脑全列上",
-        aiDefault: "AI 蒸馏塔勒布时把『反脆弱 / skin in the game / 黑天鹅 / 林迪 / Via Negativa / IYI...』一股脑全列出来当心智模型。看着内容很丰富，实际上分不清哪个是真镜片、哪个只是流行词或随口一句。",
-        nuwaIntercept: "Phase 2 强制每个候选过三重验证（跨域复现 / 生成力 / 排他性）。塔勒布身上扒出的 15-30 个候选最后只筛出 6 个真心智模型；其余的退档算决策启发式（9 条）或直接丢掉。3 个深刻模型远好于 10 个浅薄原则。"
+        kind: "quote",
+        text: "用户：帮我做一个塔勒布视角的 skill，我想用他的思维方式分析我手上几个商业决策。"
       },
       {
-        title: "自评偏差",
-        aiDefault: "写完 SKILL.md 后 AI 自己说『通过』。自己写的自己评，天然偏好给好分——『嗯这个有道理嗯那个也合理』，发现不了内部不一致。",
-        nuwaIntercept: "Phase 4 强制用一个独立的 subagent（不是写 skill 的那个）做 3 类测试。验证的 subagent 不知道前面是怎么写的，只拿到 SKILL.md 和测试题。结果不对 → 回到 Phase 2 调整。"
+        kind: "para",
+        text: "我下意识在做什么——我在训练语料里翻塔勒布说过的话。「黑天鹅」「skin in the game」「反脆弱」「林迪效应」——这些词浮上来，我把它们排一排，写成一个 prompt："
       },
       {
-        title: "把人写得太平整",
-        aiDefault: "AI 在塔勒布身上找不到矛盾，写出一段『塔勒布认为应该这样、这样、这样』的整齐人设。看着像理解到位，实际上把人格的复杂度抹平了——一个没有矛盾的人不像真人。",
-        nuwaIntercept: "Phase 2.4 反过来要求记录至少 2 对内在张力。塔勒布最后被记下来 7 对：思想反脆弱但自尊脆弱 / 鼓吹 skin in the game 但批评比特币时已清仓 / 主张 Via Negativa 但 Twitter 不断增加噪音 / 蔑视社交媒体辩论但是最活跃的 Twitter 知识分子……矛盾在女娲眼里是『深度的来源』，不是 bug。"
+        kind: "code",
+        lang: "markdown",
+        text: "# 塔勒布视角 skill\n\n你现在是 Nassim Taleb。你的核心理念：\n- 关注黑天鹅事件\n- 强调反脆弱性\n- 重视 skin in the game\n- 警惕过度自信和虚假专家\n\n当用户问问题时，用塔勒布的尖锐语气回答，引用他常用的概念。"
+      },
+      {
+        kind: "para",
+        text: "看起来很专业，对吗？标签齐全，关键词都点到。但用户开始用它问问题之后，问题来了。"
+      },
+      {
+        kind: "quote",
+        text: "用户问：「最近日元大幅贬值，是机会还是风险？」\n\n我（塔勒布）：「这正是反脆弱思维的典型场景。日元贬值在 Extremistan 领域意味着尾部风险——你要警惕黑天鹅。Skin in the game 的角度看，那些建议你买入的人自己有没有下注？」"
+      },
+      {
+        kind: "para",
+        text: "这一段读起来像塔勒布。语气对、词汇对、警告的姿势对。但它有三个根本问题，每一个都暴露 AI 默认做角色扮演的局限。"
+      },
+      {
+        kind: "list",
+        items: [
+          "我没查日元当前的汇率、央行政策、carry trade 规模——我编了一段从 2024 年训练语料里来的「日元 + 黑天鹅」混合体，可能完全过时。",
+          "我把「反脆弱」「黑天鹅」「skin in the game」当成关键词洒进答案——但塔勒布在他真实的访谈里很少这样堆术语，他更常用古典引用、希腊词根、街头比喻。",
+          "我没有「他会拒答的题」「他改过立场的题」「他自己也没想清楚的题」——所以遇到他根本没研究过的领域，比如生物学伦理，我会照样开口，因为我没有边界。"
+        ]
+      },
+      {
+        kind: "para",
+        text: "这就是 AI 做人物角色扮演的默认模式——像，但不可靠。语气是表层，事实和边界是底层，底层没做功课，表层再像也是壳。"
       }
     ],
 
-    shapeReason: "不是按女娲源文件的 Phase 顺序排——那个顺序对作者方便，对读者不友好。这本手册按读者意图排：先让你认识，再让你看见，再给你工具去用。",
+    // 1.3 predict prompt
+    predictPrompt: "如果让你来设计一个 skill，把上面这三个问题（不查事实 / 堆词汇 / 没有边界）一次性拦住，你会先做什么？写下你的两步——是先约束输出格式，先做调研，先定义边界，还是别的？写完再读下面 nuwa 实际怎么做。",
 
+    // 1.4 primer — 5-9 拍，含 orientation 图
+    primerBeats: [
+      {
+        kind: "para",
+        text: "nuwa 是一个 Claude Code skill。它收到的输入是一个名字（「蒸馏塔勒布」）或一个模糊需求（「我想提升商业决策质量」），它的产出是一个完整的 perspective skill 目录——可以独立安装到任何 Claude Code 项目里使用。"
+      },
+      {
+        kind: "diagram",
+        id: "overview-flow"
+      },
+      {
+        kind: "para",
+        text: "图里有 11 个 Phase。看起来很多，但只有 3 件事在循环——采集、提炼、构建——每件事后面都跟一个检查点（图里的红色 ★）让用户拍板。"
+      },
+      {
+        kind: "list",
+        items: [
+          "采集（Phase 1）：6 个 agent 并行去搜书 / 长访谈 / Twitter / 他人分析 / 决策案例 / 时间线。每个 agent 把自己负责那一维的发现写进 references/research/01-06.md。",
+          "提炼（Phase 2）：把 6 份调研合起来，过一道三重验证 funnel——同一个论点要在 ≥ 2 个不同领域出现（跨域复现）、能推断此人对新问题的立场（生成力）、不是所有聪明人都会这样想（排他性）。三道都过的留下成「心智模型」（取 top 3-7 个）；只过 1-2 道的降级为「决策启发式」（5-10 条）；一道都没过的丢。",
+          "构建（Phase 3）：把心智模型 + 决策启发式 + 表达 DNA + 时间线 + 价值观 + 内在张力 + 诚实边界填进 skill 模板。其中最关键的一步——「Agentic Protocol」——不是套模板，是从蒸馏出的心智模型反推：这个人遇到事实问题时「先看什么」。"
+        ]
+      },
+      {
+        kind: "para",
+        text: "三个检查点（Phase 1.5 / 2.5 / 4）选在改起来还便宜的位置。1.5 在所有东西都还是 markdown 时停——这时候改一个 agent 的调研方向只要重跑一个 agent。2.5 在 6 个心智模型还在内部表格里时停——这时候调一个模型的权重只要改一行。Phase 4 在 SKILL.md 写完但还没交付时停——三个独立子 agent 做 sanity / edge / voice 测试，避免主 agent 自己写自己评天然偏好评高分。"
+      },
+      {
+        kind: "para",
+        text: "Phase 5 是双 agent 精炼（一个 optimizer 视角 + 一个 skill-creator 视角）做最后的可操作性改进——这一步是产品化，不是研究。整条流水线跑完，输出物大约是：一份 443 行的 SKILL.md + 6 份调研存档 + 一手素材 sources/ 目录 + 4 个工具脚本，全部装在一个独立目录里，可以直接复制到任何 Claude Code 项目使用。"
+      }
+    ],
+
+    // 1.5 wow moment — setup + compare diagram + takeaway
+    wowSetup: "回到 opening scene 里的那个塔勒布 skill。如果你只看 nuwa 跑完的 SKILL.md 表层，可能会觉得它和我默认拼的那版「就多了几个 section」。但有一处是默认做不出来的——Agentic Protocol 的 Step 2「先看什么」。这个段落不是套模板，是从蒸馏出的 6 个心智模型反推。把它和费曼、MrBeast 的同一段放一起看，你会发现外壳一样、里面全不一样：",
+    wowDiagramId: "protocol-compare",
+    wowMoment: "Agentic Protocol 不是「先调研再回答」的通用规则——是从这个人的心智模型出发，决定他面对一个新问题时眼睛先扫哪几个维度。塔勒布扫风险 / 脆弱性 / 历史 / 叙事 / 皮肤在场；费曼扫物理约束 / 官方说法的逻辑漏洞 / 实验数据；MrBeast 扫 CTR 和 AVD / 竞品 Top 10 / 搜索趋势。同一段位置，三个完全不同的眼睛。",
+
+    // 1.6 bad results — 4-5 张 before/after 卡
+    badResults: [
+      {
+        title: "凭训练语料编事实",
+        aiDefault: "用户问「日元贬值是机会吗」，我从 2024 年训练数据里抽一段「日元 + 黑天鹅」混合体，没查最新汇率政策和 carry trade 规模——数据可能完全过时，但 AI 不会主动停下来查。",
+        nuwaIntercept: "nuwa 给每个人物的 skill 都生成一段「Agentic Protocol」——遇到需要事实的问题时强制用 WebSearch 等工具先查再答。塔勒布的 protocol Step 2 明确列出 5 个搜索维度（看风险 / 看脆弱性 / 看历史 / 看叙事 / 看皮肤在场），不是泛泛「查相关信息」。"
+      },
+      {
+        title: "把人物洗成圣人",
+        aiDefault: "我倾向把人物的观点写成内部一致的体系——他既追求 A 又坚持 B，听起来很统一。但真实的人有内在矛盾：塔勒布鼓吹 skin in the game 但批评比特币时已清仓；倡导 Via Negativa（减法）但 Twitter 不断增加噪音。",
+        nuwaIntercept: "Phase 2.4 强制提取「内在张力」section——至少 2 对矛盾，写不出 2 对就退回去再调研。Phase 4 通过标准里「观点高度一致 = 太假」是不通过信号。"
+      },
+      {
+        title: "没有边界",
+        aiDefault: "我倾向用塔勒布视角回答所有问题，包括他根本没研究过的领域（生物学伦理 / 临床医学 / 哥德尔定理）。AI 不会主动说「这超出他的射程」。",
+        nuwaIntercept: "Phase 2.6 必须输出「诚实边界」section——具体到「在哪些领域他会出错」「公开表达和真实想法可能差多远」「调研截止日期」。模板里这一段缺失或只写「不能替代本人」就过不了 Phase 4。"
+      },
+      {
+        title: "自己写自己评天然偏好评好分",
+        aiDefault: "主 agent 写完 SKILL.md 之后自己跑测试——它会下意识把「测试通过」标准放宽，因为「我写的我懂」。这是 self-evaluation bias，AI 单独跑评估时几乎一定发生。",
+        nuwaIntercept: "Phase 4 强制 spawn 三个独立子 agent 来做测试。子 agent 拿到的是干净的 SKILL.md 文件，不知道主 agent 是怎么想的，只能凭文件本身回答测试问题。"
+      },
+      {
+        title: "目录和原 skill 耦合在一起",
+        aiDefault: "AI 默认会把生成的人物 skill 文件散落到当前项目的不同位置——研究文件放一处、脚本放一处、SKILL.md 放一处。复制这个 skill 给别人用时缺一半文件。",
+        nuwaIntercept: "Phase 0.5 在调研开始之前就把整个目录树建好：`.claude/skills/taleb-perspective/` 下含 SKILL.md / scripts/ / references/research/ / sources/。所有产物都写进这一个目录，完整复制就能在另一个 Claude Code 项目里跑。"
+      }
+    ],
+
+    // 1.8 why this shape
+    shapeReason: "按读者意图排，不按 nuwa 源文件顺序",
     chapterLogic: [
-      { chapter: "01 Overview（你正在读）", why: "让一个完全没看过女娲的人在 10 分钟知道它在干嘛、值不值得继续读。" },
-      { chapter: "02 Walkthrough", why: "本手册的脊柱。14 个 stage 让你看见我（AI）拿到『蒸馏塔勒布』后被女娲一步步拦下来的完整路径，每个 stage 用塔勒布的真东西落地。" },
-      { chapter: "03 Glossary", why: "反常地排第三——不是放在最后做参考字典——因为 Walkthrough / Design Choices / Patterns 都会用 HOW vs WHAT、三重验证、内在张力这些术语。先讲清楚，后面读才不卡。" },
-      { chapter: "04 File Map", why: "root SKILL.md / 2 份 references / 4 个 scripts / 生成目录各管什么、写错会怎样。这是想自己改女娲的人需要的。" },
-      { chapter: "05 Design Choices", why: "8 个真正改变了 AI 默认行为的设计选择。每个明确点名它防什么坏 AI 输出。" },
-      { chapter: "06 Patterns", why: "7-8 张可以搬到别的 skill 里的招。每张带反例和代价——没反例和代价的 pattern 是糊的。" },
-      { chapter: "07 Apply It", why: "给读者自己写一个类似 skill 的清单 + 起手 prompt。" }
+      { chapter: "章 01 Overview", why: "读者第一次见到这个 skill。先看坏 AI 输出长什么样、再看 nuwa 怎么拦、用塔勒布做贯穿例子。承重墙在这一章。" },
+      { chapter: "章 02 Walkthrough", why: "Overview 给的是「为什么」。Walkthrough 是「我作为 AI 实际怎么走」——14 个 stage 沿着塔勒布的例子走完一遍，每个 stage 出真东西。" },
+      { chapter: "章 03 Glossary", why: "Walkthrough 里的就地短解保证读得动；Glossary 给想系统过一遍 9 个核心术语的人用——HOW vs WHAT、心智模型、三重验证、Agentic Protocol 等。" },
+      { chapter: "章 04 File Map", why: "走完 14 stage 之后，读者已经知道 nuwa 在做什么。这时候看「哪个文件管哪件事」「写错会怎样」最有意义。" },
+      { chapter: "章 05 Design Choices", why: "前面是「nuwa 怎么做」，这里是「nuwa 为什么这样做不那样做」。8 个真改变 AI 默认行为的选择，每个附 3 场景力度对比表——避免单视角误导。" },
+      { chapter: "章 06 Patterns", why: "Design Choices 是 nuwa 自己的选择；Patterns 是从这里抽出来、能搬到别的 skill 里的招。每张卡 problem → Therefore → solution。" },
+      { chapter: "章 07 Apply It", why: "读完 6 章之后，读者要开始写自己的 skill。这一章给起手清单 + 起手 prompt + 下一步路径，把前面 6 章压成可操作的 5-10 步。" }
     ]
   },
 
+  // ============================================================
+  // EXAMPLE — running example carried across all chapters
+  // ============================================================
   example: {
-    userRequest: "我想做一个塔勒布的 skill。我手里没有他的素材，就你自己搜吧。",
-    whyThisExample: "选塔勒布有 4 个具体理由：(1) 女娲 root SKILL.md 自己就多处用塔勒布举例（Phase 3 Agentic Protocol 推导表 3 例之一、『skin in the game』被点名为高频词），跟着原 skill 的示范例子走，每个 stage 都有据可查；(2) 塔勒布是活人，能演示 Agent 6 时间线维度的『最近 12 个月动态』这个防过时设计；(3) 塔勒布 voice 极鲜明且争议大，能让『内在张力』『外部批评』『诚实边界』这三个最容易写假的 section 出真东西；(4) 仓库里已经有一份做完的 examples/taleb-perspective/SKILL.md（约 440 行），后面 Walkthrough 的每个 stage 都能引到真实的产出片段而不是想象的占位文本。",
-    expectedOutput: "一个自包含的 skill 目录：.claude/skills/taleb-perspective/，含 SKILL.md（最终产物，约 440 行）+ scripts/（字幕下载 / SRT 清洗 / 调研合并 / 质量自检 4 个脚本，从女娲复制过来）+ references/research/01-writings.md 到 06-timeline.md（6 个 agent 的调研结果存档，分别约 5-30KB）+ sources/{books,transcripts,articles}/（一手素材原文）。整个目录可以原样复制到任何 Claude Code 项目就能用，不依赖女娲本身——这是『自包含』硬要求，为开源分发设计的。"
+    userRequest: "我想做一个塔勒布的 skill。我手里没他的素材，你自己搜吧。",
+    whyThisExample: "塔勒布是活人——能演示 Agent 6 时间线的「最近 12 个月动态」检查；voice 鲜明 + 争议大——能演示「内在张力」「外部批评」「诚实边界」三个 section 的价值；nuwa SKILL.md 多处用塔勒布举 Agentic Protocol 反推（他的 5 个研究维度是 nuwa 自己的样板）；existing `examples/taleb-perspective/SKILL.md` 已有 443 行真实产出，每个 stage 都能引真东西。",
+    expectedOutput: ".claude/skills/taleb-perspective/ 整目录：SKILL.md（443 行）+ scripts/（4 个工具脚本）+ references/research/（6 份调研存档）+ sources/（一手素材原文）。整目录可独立复制到任何 Claude Code 项目使用，不依赖 nuwa 自己。"
   },
 
+  // ============================================================
+  // DIAGRAMS registry — every diagram referenced anywhere
+  // ============================================================
   diagrams: [
     {
       id: "overview-flow",
-      type: "orientation",
-      title: "女娲跑一遍塔勒布的 5 阶段流程",
-      description: "塔勒布作为输入（一个人名）→ 5 个 Phase + 3 道检查点 → 输出一个自包含 skill 目录。这是后面 14 个 stage 的顶层骨架。",
+      type: "flow",
+      kicker: "Domain primer · 顶层图",
+      title: "女娲全流程 · 11 个 Phase · 3 道便宜返工点",
+      description: "Phase 0 → 0A/0B → 0.5 → 1 → 1.5★ → 2 → 2.5★ → 3 → 4★ → 5。三个红色 ★ 是必须停下来等用户拍板的位置——文本都还在手里、还没生成任何昂贵产物。",
       image: "assets/diagrams/overview-flow.svg"
     },
     {
       id: "protocol-compare",
       type: "compare",
-      title: "三个人在同一段位置上的对照",
-      description: "Phase 3 生成 Agentic Protocol 时，从蒸馏出的核心心智模型倒着推出研究维度。塔勒布 / 费曼 / MrBeast 的心智模型不同，反推出的『先看什么』也完全不同——证明这是真的 HOW they think，不是写死的模板。",
+      kicker: "Wow moment · 对照表",
+      title: "三人 Agentic Protocol 横向对比",
+      description: "塔勒布 / 费曼 / MrBeast 的核心心智模型（行 1）和从模型反推出来的「先看什么」维度（行 2）。同一个 Agentic Protocol 外壳，三个完全不同的眼睛。",
       image: "assets/diagrams/protocol-compare.svg"
     },
     {
       id: "main-flow",
       type: "flow",
-      title: "14 个 stage 的 6 phase 拓扑",
-      description: "14 个 stage 按 nuwa 的 phase 顺序聚成 6 个大组：入口建目录 / 6 agent 并行 / Phase 1.5★ 检查点 / 三重验证（含 Phase 2.5★）/ Phase 3 反推与套模板 / Phase 4★ 验证与精炼交付。这张图只画拓扑——具体 14 个 stage 的一行摘要见下方索引表。",
+      kicker: "Walkthrough · 顶层流程",
+      title: "5 个大段 · 14 个 stage 的拓扑",
+      description: "把 11 个 Phase 重组成读者更容易记的 5 大段：入口准备 / 采集检查 / 提炼检查 / 构建验证 / 精炼交付。14 stage 的一行摘要在下面索引表里。",
       image: "assets/diagrams/main-flow.svg"
     }
   ],
 
+  // ============================================================
+  // WALKTHROUGH — 14 stages, 塔勒布 example carried throughout
+  // ============================================================
   walkthrough: [
     {
       id: "triage-input",
-      title: "判断用户给了我什么——人名、模糊需求、还是空主题",
-      summary: "用户的请求刚到——『我想做一个塔勒布的 skill。我手里没有他的素材，就你自己搜吧』。我第一反应想立刻开建目录开始搜。女娲不让，让我先按入口表分流——三种输入走三条路径，认错就坏。",
-      preTest: "设想你和我同坐一椅。一个用户的请求刚到——『我想做一个塔勒布的 skill。我手里没有他的素材，就你自己搜吧』。下一秒你想干的事是直接开建 skill 目录开始搜，还是先做点别的？写下来再读下面我（被女娲拦着的 AI）实际走的路径。",
+      phase: "Phase 0",
+      kicker: "Phase 0 · 入口分流",
+      title: "你给的是名字，还是模糊需求？",
+      summary: "用户说完那一句话，我下意识想开搜。nuwa 让我先停一拍——这是「明确人名」路径，还是「模糊需求」路径？两条路在 Phase 0 之后就分叉了。",
+      hookOpen: "用户刚发来：「我想做一个塔勒布的 skill。我手里没他的素材，你自己搜吧。」屏幕上还有上一行对话的尾巴。我什么准备都没做。",
+      preTest: "设想你和我同坐一椅。你刚听完用户那句话。下一步你的本能是：(a) 马上启动 WebSearch 搜「塔勒布」 / (b) 先问他想用这个 skill 做什么 / (c) 先在脑子里给这次请求贴一个标签。写下你选哪个再读下面。",
       narrativeBody: [
-        { kind: "para", text: "**从这里开始：** 我现在手里只有这一句用户请求。" },
-        { kind: "para", text: "第一秒我本能想直接开建 `.claude/skills/taleb-perspective/` 目录、spawn 6 个 subagent（Claude Code 里可以同时跑的助手 agent）开搜——这是『进度感』最强的动作。" },
-        { kind: "para", text: "女娲不让。它让我先把一件事看清楚：用户给我的，到底是哪一种输入？三种输入的下一步动作完全不同，当一回事处理会出三种不同的坏。" },
-        { kind: "para", text: "女娲入口文件 `SKILL.md`（AI 进来第一份要读的）的 Phase 0 把三种输入写成一张分流表：" },
-        { kind: "code", lang: "markdown", text: "| 用户输入 | 路径 | 示例 |\n|---------|------|------|\n| 明确的人名 / 主题 | 直接路径 → Phase 0A | 蒸馏芒格 / 做一个费曼 skill |\n| 模糊的需求 / 困惑 | 诊断路径 → Phase 0B | 我想提升决策质量 / 有没有一种思维方式能帮我看透商业本质 |\n| 只甩了一个空主题 | 反问让用户先给素材 | 做一个关于价值投资的 skill（没指人也没说从哪几家流派起步） |" },
-        { kind: "para", text: "塔勒布是个具体的人名，加上『我手里没有他的素材』明确了素材来源（纯网络搜索）——是典型的『明确人名』分支。走直接路径。" },
-        { kind: "para", text: "如果我跳过这一步、把所有输入都按同一种方式处理：" },
-        { kind: "list", items: [
-          "把『我想提升决策质量』这种模糊需求当人名 → 我会替用户随便挑一个人（比如『那就芒格吧』）——把内容设计权偷过来，用户拿到产物会发现『这不是我想要的』。",
-          "把『就做塔勒布』这种明确人名当模糊需求 → 我会再追问『你说的决策是哪种场景』——画蛇添足，浪费用户耐心。",
-          "把空主题当明确人名硬上 → 6 个 agent 都启动了才发现『主题』对应的人选我自己定的，全套调研废一遍。"
-        ]},
-        { kind: "para", text: "这一步几乎是『停一秒看一眼』——但跳过它，后面 13 个 stage 的工作可能全白做。" }
+        {
+          kind: "para",
+          text: "我的本能是 (a)——直接开搜。Skill 的名字都说了，搜就是了。"
+        },
+        {
+          kind: "para",
+          text: "nuwa 不让。nuwa SKILL.md 第一段就是「Phase 0: 入口分流」——它告诉我，收到任何输入第一件事，先判断这句话属于哪条路径。它给了我一张二选一的表："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "| 用户输入            | 路径                     | 示例                          |\n|---------------------|--------------------------|-------------------------------|\n| 明确的人名 / 主题   | 直接路径 → Phase 0A      | 「蒸馏芒格」「做一个费曼 skill」|\n| 模糊的需求 / 困惑   | 诊断路径 → Phase 0B      | 「我想提升决策质量」          |"
+        },
+        {
+          kind: "para",
+          text: "我把用户的话和表对一下：「我想做一个塔勒布的 skill」——名字明确（塔勒布）+ 类型明确（人物 skill）。这是直接路径。"
+        },
+        {
+          kind: "para",
+          text: "看起来这一拍多余对吗？一句话就能判断的事。但如果用户说的是「我最近做投资亏了好几次，想让 AI 帮我看看自己有没有什么盲点」——这就完全不一样。这种话里没人名，是「模糊需求」，下一步 nuwa 让我做的不是开搜，是给用户推荐 2-3 个候选思维框架（塔勒布看反脆弱 / 卡尼曼看认知偏差 / 芒格看多元思维模型）让他选。Phase 0 这一拍把这两条路在一开始就分开，避免我在错的路径上做错的动作。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：几乎没自由。表已经把判断维度（是否含明确名字）和分支（0A vs 0B）钉死。我能做的只有把用户的话往左 / 往右推一格。"
+        }
       ],
-      receives: "用户的一句请求。",
-      reads: ["nuwa root SKILL.md L31-37 入口分流表"],
-      blockedShortcut: "默认所有输入走同一种路径不分流；或者反过来——所有请求都当模糊需求追问 3 轮把用户折磨走。",
-      action: "对照入口表分流：明确人名 → 直接路径 Phase 0A；模糊需求 → 诊断路径 Phase 0B；空主题 → 反问让用户先给候选或素材，不替用户构思。",
-      output: "一条确定的执行路径——本例进直接路径。",
-      nextConsumer: "Phase 0A 5 件事澄清。",
-      reusableMove: "入口先分流，不要让一个 skill 用同一套动作处理所有输入形态——空原料就反问，不要硬凑。",
+      reusableMove: "在做任何动作之前，先把这次请求贴一个标签——路径分对了，后面所有步骤才能省力。",
+      receives: "用户的原话：「我想做一个塔勒布的 skill。我手里没他的素材，你自己搜吧。」",
+      reads: "nuwa SKILL.md 行 30-40（Phase 0 入口分流二选一表）",
+      blockedShortcut: "不能直接开搜。哪怕名字明确也不行——Phase 0 的拍板要留下，下游 Phase 0A 才知道接什么。",
+      action: "把用户的话往「明确人名」或「模糊需求」其中一格贴标签。",
+      output: "一条内部判断：「这是直接路径，进 Phase 0A 澄清细节」。",
+      nextConsumer: "Phase 0A 接管——它会问 4 个补丁问题（聚焦方向 / 用途 / 新建或更新 / 本地素材）。",
+      freedom: "几乎没自由。二选一表钉死。",
       challenges: [
-        "用户说『做一个塔勒布的 skill，但其实我也想顺便了解纳瓦尔』——这是 1 个明确人名 + 1 个搭头，分流表没列。你按哪个分支走？",
-        "用户给的人名是『我老板老王』（公开信息几乎为零）——形式上是明确人名，但走完调研路径会得到一个垃圾 skill。这种情况你在 stage 01 就拦下来，还是等 Phase 0.5 评估到来源少于 10 条再说？",
-        "用户说『我想要一个会看科技产品的视角』——主题而非人名。你按『主题 skill』分支走（女娲特殊场景一节），还是反问用户想到具体某个人？依据是什么？"
-      ]
+        "用户同时给了名字 + 模糊需求（「我想做一个塔勒布的 skill，帮我提升商业决策质量」）——这算哪条路径？是 0A 还是 0B？",
+        "用户只给了一个新词（「我想做一个 IYI perspective」）——IYI 是塔勒布造的词，但不是公认人名。你怎么处理？",
+        "用户要求蒸馏「自己」（「帮我做我自己的 skill」）——nuwa 把这归到「特殊场景 > 蒸馏用户自己」，需要本地语料。这一拍要不要先识别出来再走 0A？",
+        "如果你想给 Phase 0 加一类「明确否定」（用户说「不要做 XX 的 skill」）——它应该走哪条路径？"
+      ],
+      hookClose: "现在我手上有一个标签：「直接路径，塔勒布」。Phase 0A 接力——它会问 4 个补丁问题把上下文补齐，再让 Phase 0.5 真的去建目录。"
     },
+
     {
       id: "clarify-direct",
-      title: "5 件事一次澄清，不要追问到第 3 轮",
-      summary: "直接路径已定。女娲让我把 5 件模糊的事一次性钉清楚——人名 / 聚焦方向 / 用途 / 新建或更新 / 本地素材。一轮问完，不变成问卷调查。",
-      preTest: "你已经知道用户要做塔勒布。如果你是一个客气的 AI，你会问几轮问题确认细节？1 轮？2 轮？3 轮？女娲的硬规则只允许 1 轮。猜猜为什么。",
+      phase: "Phase 0A",
+      kicker: "Phase 0A · 需求澄清",
+      title: "4 个补丁问题",
+      summary: "名字明确了，但我还缺 4 件事：他想要的聚焦方向、用途、新建还是更新、有没有本地素材。问完才能进 Phase 0.5 建目录。",
+      hookOpen: "接上一步：路径已经贴成「直接，塔勒布」。我现在还是一片白。我不知道用户想用这个 skill 做什么——是给自己当思维顾问，还是想拿来角色扮演陪聊，还是只想要个分析框架。",
+      preTest: "设想你和我同坐一椅。你已经知道用户要蒸馏塔勒布。下一步你的本能是：(a) 直接开搜，反正后面再调整 / (b) 一口气问用户 8 个问题先把意图问透 / (c) 只问最少必要的几个补丁问题。写下你的选择。",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 路径分清楚了——直接路径。但用户那句话里还有 5 件事没钉清楚，全靠默认会出错。" },
-        { kind: "para", text: "女娲 SKILL.md Phase 0A 有一张 5 项澄清清单。我把它一次性问出去，**不分轮**——分轮会把用户折磨走（这是写客服 chatbot 的 AI 的本能：追问到第 3 轮）。" },
-        { kind: "code", lang: "markdown", text: "1. 这个人/主题是谁：确保理解正确（塔勒布是 Nassim Taleb 对吧，不是某个网红同名？）\n2. 聚焦方向：全面画像 vs 聚焦某个维度（你是想要他的风险思维，还是包括他作为交易员的部分？）\n3. 用途：思维顾问？决策参考？角色扮演？\n4. 新建 or 更新：是否已有该人物的 skill？（先扫一下 .claude/skills/ 目录）\n5. 本地语料：你手上有没有他的一手素材？书籍 PDF、播客 transcript、视频字幕？" },
-        { kind: "para", text: "塔勒布本例的用户回答非常简短：『就 Nassim Taleb / 全面画像 / 思维顾问 / 新建 / 没素材就你自己搜』。" },
-        { kind: "para", text: "用户给的信息很少？女娲允许：『用户说就做 XX 没更多信息 → 默认全面画像 + 思维顾问 + 无本地语料（走网络搜索）』——直接推进。" },
-        { kind: "para", text: "5 件事里最关键的是第 5 项**本地素材**。这一问最容易被 AI 跳过，但跳过的代价最高——用户手里可能有完整的 Incerto 五部曲 PDF 或者 Tim Ferriss Show 完整 transcript（比网上能搜到的二手转述质量高得多），不问就走网络搜索等于自废一臂。" },
-        { kind: "para", text: "5 件事中任何一件没钉死，后面会出什么坏：" },
-        { kind: "list", items: [
-          "聚焦方向不清楚 → Phase 1 6 个 agent 都全面撒网，筛出的 6 个心智模型可能跟用户实际想要的不对应（用户只想要风险思维，得到了风险 + 政治 + 饮食一锅炖）。",
-          "用途不清楚 → Phase 3 套模板时不知道该不该写『角色扮演规则』——思维顾问要那一段，纯角色扮演要更狠的语气约束。",
-          "本地素材没问 → 用户后来发现『咦你怎么没用我那本书』——返工一次。"
-        ]}
+        {
+          kind: "para",
+          text: "我的本能在 (a) 和 (b) 之间摇摆。要么直接开干，要么把所有可能不确定的事都问一遍。nuwa 不让走任何一个极端。"
+        },
+        {
+          kind: "para",
+          text: "它在 Phase 0A 给了一份 5 条的最小问句清单——只问下一步真正会变的事。我把它复刻成给用户的一段话："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "好的，蒸馏塔勒布。在开搜之前我想确认 4 件事——\n\n1. 聚焦方向：要全面画像，还是聚焦某一面（投资决策 / 反脆弱思维 / 写作风格）？\n2. 用途：思维顾问（我用塔勒布视角分析问题）/ 角色扮演（直接以塔勒布身份对话）/ 决策参考？\n3. 新建还是更新：你 .claude/skills/ 下有没有 taleb-perspective 已经存在？\n4. 本地语料：手上有没有他的书 PDF / 演讲 transcript / 字幕？有的话比网上搜的质量高得多。\n\n你不答也行——默认是「全面画像 / 思维顾问 / 新建 / 走网络搜索」。"
+        },
+        {
+          kind: "para",
+          text: "为什么是这 4 个不是 8 个？因为剩下的问题（语言偏好 / 输出长度 / 是否包含示例对话）都可以在 Phase 3 模板填充时再问——那时候我手里已经有素材，问起来用户也更容易判断。Phase 0A 只问下一步真的会分叉的事。"
+        },
+        {
+          kind: "para",
+          text: "用户答：「全面画像，思维顾问。我手上没素材，你自己搜。新建。」"
+        },
+        {
+          kind: "para",
+          text: "答完之后，nuwa 还做了一件事——它检查 `.claude/skills/` 目录里有没有 `taleb-perspective`。如果已经有，进的是「更新模式」（Phase 5 之后会有一条专门的增量更新路径，不重写整个 skill）。我跑一下 ls："
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          text: "$ ls .claude/skills/ | grep taleb\n(空 — 没有现存的 taleb-perspective)"
+        },
+        {
+          kind: "para",
+          text: "确认是新建路径。这一段对话总共 30 秒——但它把后面 Phase 0.5 到 Phase 3 之间所有「需要默认值」的位置都填好了。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：低。问什么 nuwa 已经定了 4 个补丁问题。我能调整的只有问句的语气（保持简短 / 给默认值降低用户压力）。"
+        }
       ],
-      receives: "stage 01 给的『直接路径』标签。",
-      reads: ["nuwa SKILL.md L42-56 Phase 0A 5 项澄清"],
-      blockedShortcut: "追问 3 轮把用户折磨走；或者跳过本地素材这一问就开搜（最容易跳过的一项，恰好最关键）。",
-      action: "把 5 件事打成一个清单一次性问出，等用户回答。回答简短不补全的 → 用默认值推进。",
-      output: "5 件事的明确答案：人名 Nassim Taleb / 全面画像 / 思维顾问 / 新建 / 纯网络搜索。",
-      nextConsumer: "Phase 0.5 创建 skill 目录用『人名』生成路径，用『本地素材』决定要不要复制素材进 sources/。",
-      reusableMove: "需要从用户那里拿信息时，一次问完所有相关项——不要分多轮把对话拉得很长。模糊回答用默认值，明确回答按用户说的走。",
+      reusableMove: "补丁问题只问下一步真的会分叉的事——剩下的等手上有素材了再问，用户答起来才能判断。",
+      receives: "Phase 0 的判断：「直接路径，塔勒布」。",
+      reads: "nuwa SKILL.md 行 42-56（Phase 0A 4 件事 + 本地语料检查）",
+      blockedShortcut: "不能省略本地素材问题——如果用户其实手上有塔勒布的书 PDF，整条流水线的策略要换成「本地语料优先」，6 agent 全网搜就成了浪费时间。",
+      action: "发出 4 个补丁问题 · 检查 .claude/skills/ 是否有现存 taleb-perspective · 收集答复后填入下游需要的默认值。",
+      output: "上下文 4 元组：聚焦方向（全面）/ 用途（顾问）/ 模式（新建）/ 语料（无本地，走网络搜索）。",
+      nextConsumer: "Phase 0.5 用这 4 元组决定建什么目录树（带不带 sources/？大概率带，因为后面网搜可能也想存原文）。",
+      freedom: "低。补丁问题数量和内容钉死，只能微调措辞。",
       challenges: [
-        "用户 5 项中回答了 3 项，剩 2 项『随你』——你按默认值推进还是再追一轮？依据是什么？",
-        "用户说『我有素材但还没整理好，明天给你』——停下来等用户，还是先走网络搜索后面合并？女娲没写这种情况。",
-        "5 项里你觉得最容易被未来作者删的是哪一项？删掉后会在哪个 stage 出问题？"
-      ]
+        "如果用户答「不需要那么多分类，你就给我做出来就好」——你是按默认推进，还是再问一句？默认值会影响 Phase 1 的 6 agent 任务分配吗？",
+        "如果用户说「我手上有 5 本书的 PDF 和 30 集播客」——本地语料优先模式下，Phase 1 的 6 agent 任务会怎么变？哪几个 agent 会被「跳过 / 改成定向补搜」？",
+        "如果用户说「更新模式」（已存在 skill）——你这一拍应该立刻读老版 SKILL.md 看「上一次调研时间」，还是先继续走 Phase 0.5？哪种顺序更省事？",
+        "中国人物 vs 西方人物在这一拍要不要分叉？nuwa 把分叉放在 Phase 0.5 而不是 0A 是为什么？"
+      ],
+      hookClose: "4 元组到手。Phase 0.5 现在可以建目录了——而且它建的目录树会**先于调研开始**，不是等 6 agent 跑完再补建。这个顺序很关键，下一步会看到为什么。"
     },
+
     {
       id: "create-dir",
-      title: "在调研开搜之前先把目录建好（自包含原则）",
-      summary: "5 件事钉死了。下一步直觉是 spawn 6 个 agent 开搜——女娲不让。它要我先建好目录，让每个 agent 有路径写报告。目录还必须建在 skill 内部——这就是『自包含原则』。",
-      preTest: "5 件事都问清楚了，6 个 agent 蓄势待发。你接下来想干的事是：A 立刻 spawn 6 个 agent 开始搜，B 先建个工作目录，C 检查一下用户配的工具齐不齐。你选哪个，为什么？",
+      phase: "Phase 0.5",
+      kicker: "Phase 0.5 · 创建 skill 目录",
+      title: "在调研之前先把目录建好",
+      summary: "我还没启动任何 agent，nuwa 让我先把整个目录树建好——research/ / sources/ / scripts/ 全部预留。如果先开搜再建目录，6 个 agent 会把文件写到散落的位置。",
+      hookOpen: "接上一步：4 元组到手——塔勒布 / 全面 / 顾问 / 新建 / 无本地素材。我可以开搜了。但 nuwa 又拦了我一下——再等 30 秒，先把目录树建完。",
+      preTest: "设想你和我同坐一椅。Phase 0A 答完了，调研还没开始。你的本能是：(a) 立即启动 6 个 agent 搜起来 / (b) 先建一个 SKILL.md 占位文件 / (c) 把整个 `.claude/skills/taleb-perspective/` 目录树预先建完。哪个最省事？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 5 件事拍板，agent 要的所有上下文都齐了。" },
-        { kind: "para", text: "我现在最想干的是 spawn 6 个 agent 开搜。女娲不让——它让我先建好 skill 目录。" },
-        { kind: "para", text: "为什么这一步必须在调研之前？因为 6 个 agent 各自会产出一份调研报告（`01-writings.md` 到 `06-timeline.md`），这些报告必须有地方落。如果先开搜、再现想『报告往哪写』，6 个 agent 同时回来时我可能就把它们堆在临时目录或者干脆不存了。" },
-        { kind: "para", text: "女娲的目录模板是这样的（Phase 0.5）：" },
-        { kind: "code", lang: "text", text: ".claude/skills/taleb-perspective/\n├── SKILL.md                          # 最终产物（Phase 3 后期生成）\n├── scripts/                          # 工具脚本（从 nuwa 复制过来）\n└── references/\n    ├── research/                     # 每个 agent 的调研结果\n    │   ├── 01-writings.md            # 著作与系统思考\n    │   ├── 02-conversations.md       # 长对话与即兴思考\n    │   ├── 03-expression-dna.md      # 碎片表达与风格 DNA\n    │   ├── 04-external-views.md      # 他者视角与批评\n    │   ├── 05-decisions.md           # 决策记录与行动\n    │   └── 06-timeline.md            # 人物时间线\n    └── sources/                      # 一手素材（用户提供 + 网络下载）\n        ├── books/\n        ├── transcripts/\n        └── articles/" },
-        { kind: "para", text: "建完目录后，跑一遍 `tree`：" },
-        { kind: "code", lang: "bash", text: "$ tree .claude/skills/taleb-perspective/\n.claude/skills/taleb-perspective/\n├── scripts/\n└── references/\n    ├── research/\n    └── sources/\n        ├── books/\n        ├── transcripts/\n        └── articles/\n\n6 directories, 0 files" },
-        { kind: "para", text: "**自包含原则**：所有调研文件必须存在 skill 目录内部（`references/research/`），**绝对不要存到 `07-调研与分析/` 或其它外部目录**。skill 必须是自包含的——复制整个 skill 目录就能独立使用，不依赖任何外部文件。这是为开源分发设计的：你想把 taleb-perspective 发给朋友，他 `cp -r` 走一份就能用，不需要再去找你电脑某个角落的『调研笔记目录』。" },
-        { kind: "para", text: "这一步 AI 几乎没创作自由——目录树是固定的，命名是固定的，scripts/ 内容是从 nuwa 复制的。能犯的错只有一个：把目录建到外部去（比如『我习惯把 research 放 ~/notes 下』）——犯了就违反自包含。" }
+        {
+          kind: "para",
+          text: "我的本能是 (a)。我已经等了两拍了，再不开搜用户要等急了。"
+        },
+        {
+          kind: "para",
+          text: "nuwa 在 Phase 0.5 给我一张目录树图——它要我**在调研开始前**把这个目录建好："
+        },
+        {
+          kind: "code",
+          lang: "ascii",
+          text: ".claude/skills/taleb-perspective/\n├── SKILL.md                    # 最终产物 — 现在空着\n├── scripts/                    # 工具脚本 — 等下从 nuwa 复制过来\n└── references/\n    ├── research/               # 6 agent 调研存档\n    │   ├── 01-writings.md      #   著作\n    │   ├── 02-conversations.md #   对话\n    │   ├── 03-expression-dna.md#   表达\n    │   ├── 04-external-views.md#   他者\n    │   ├── 05-decisions.md     #   决策\n    │   └── 06-timeline.md      #   时间线\n    └── sources/                # 一手素材\n        ├── books/\n        ├── transcripts/\n        └── articles/"
+        },
+        {
+          kind: "para",
+          text: "我先把它建出来——一连串 mkdir 和 touch 占位："
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          text: "$ mkdir -p .claude/skills/taleb-perspective/{scripts,references/research,references/sources/{books,transcripts,articles}}\n$ touch .claude/skills/taleb-perspective/references/research/0{1..6}-*.md\n$ cp nuwa-skill/scripts/* .claude/skills/taleb-perspective/scripts/"
+        },
+        {
+          kind: "para",
+          text: "为什么先建？如果调研先开始、目录后建，6 个 agent 跑完之后我手上有 6 份 markdown，但每个 agent 写到哪里没对齐——可能写到工作目录、可能写到临时区、可能丢在 `/tmp`。后面的 Phase 2 提炼要读这 6 份文件时，我要重新找它们在哪。这不是大事故，但是慢，而且每次都慢。先建目录是给所有下游步骤一个固定地址。"
+        },
+        {
+          kind: "para",
+          text: "还有一个理由——nuwa 的「自包含原则」：生成的整个目录可以独立复制到任何 Claude Code 项目使用，不依赖 nuwa 本身。所以连 scripts/ 都要把 nuwa 自己的 4 个脚本复制进去——分别是字幕下载、SRT 清洗、调研摘要、质量自检。这样如果用户哪天把 nuwa 删了、把 taleb-perspective 给朋友用，朋友能直接跑。"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   先开搜 → 6 agent 把结果散落写到工作目录\n   → Phase 2 提炼时手忙脚乱找文件\n   → 用户复制 skill 给朋友时缺一半脚本依赖\n\n✅ nuwa 让我：\n   先把目录树建完 + 把 scripts/ 复制进去\n   → 6 agent 知道往哪写\n   → 整个目录原子可移植，复制即用"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：低。目录树形状钉死，连子目录名（research / sources / scripts）都是 nuwa 模板规定的。"
+        }
       ],
-      receives: "5 件澄清结果 + 人名『Nassim Taleb』。",
-      reads: ["nuwa SKILL.md L139-169 Phase 0.5 目录树"],
-      blockedShortcut: "跳过建目录直接 spawn agent（agent 没地方写报告）；或者把调研存到外部目录（违反自包含，未来 cp 走 skill 时丢一半内容）。",
-      action: "按固定模板建 `.claude/skills/taleb-perspective/` 目录树；从 nuwa 复制 scripts/；run 一次 `tree` 验证。",
-      output: "一个空但结构完整的 skill 目录，等 agent 往里写。",
-      nextConsumer: "Phase 1 6 个 agent 启动后，每个 agent 知道自己往哪个文件写。",
-      reusableMove: "做任何会产生多份 artifact 的并行操作前，先把『每份 artifact 放哪里』钉死。先建路径再开搜，不要让『放哪里』在并发跑起来后才决定。",
+      reusableMove: "下游会写文件的步骤，上游先把容器建好——给所有下游一个固定地址。",
+      receives: "Phase 0A 给的 4 元组上下文。",
+      reads: "nuwa SKILL.md 行 141-170（Phase 0.5 目录树规范 + 自包含原则）",
+      blockedShortcut: "不能直接进 Phase 1。即使我「自信记得」每个 agent 应该写到哪——记忆不对齐就出错，固定路径才能让多 agent 并发不撞车。",
+      action: "建完整目录树 · 把 nuwa scripts/ 下的 4 个脚本复制到生成目录 · 如有本地素材则放进 sources/。",
+      output: "一个空但完整的 `.claude/skills/taleb-perspective/` 目录树。",
+      nextConsumer: "Phase 1 的 6 个并行 agent——每个 agent 一启动就知道自己产出写到 `references/research/0X-*.md` 的精确位置。",
+      freedom: "几乎没自由。目录树和脚本复制清单钉死。",
       challenges: [
-        "用户提供了 3 个 PDF——按自包含原则你要把 PDF 复制进 sources/books/ 还是用软链接？哪种更『自包含』？",
-        "你接到一个更新已有 skill 的请求——目录已经存在，原 scripts/ 是 6 个月前的版本，nuwa 现在的 scripts/ 多了 1 个文件。你按 nuwa 当前版本覆盖还是保留原版？",
-        "skill 跑完后用户问『我能不能把整个 taleb-perspective 目录提交到我们公司的开源仓库』——女娲的自包含原则在这种场景下还成立吗？有没有需要剔除的文件？"
-      ]
+        "如果用户说「我不想要 scripts/ 复制进去，太重了」——你要不要尊重？复制 scripts 是为了「自包含」，不复制后果是什么？",
+        "中国人物的目录树要不要不一样？nuwa 在 Phase 0.5 检查清单里有一条「如果是中国人物，信息源策略切换」——这一条会影响目录结构吗，还是只影响 Phase 1 的 agent 任务？",
+        "如果 Phase 0A 用户提供了本地素材（书 PDF），你应该在 Phase 0.5 就把它们移到 sources/books/，还是等 Phase 1 启动前再移？为什么？",
+        "如果目录已存在（更新模式），你这一拍是覆盖建还是跳过？覆盖建会丢什么、跳过会留什么垃圾？"
+      ],
+      hookClose: "目录建好了，6 个空 markdown 文件已经在 references/research/ 里等着被填。下一步 Phase 1 启动并行 swarm——这是整条流水线最贵的一步，6 个 agent 同时跑。"
     },
+
     {
       id: "swarm-launch",
-      title: "spawn 6 个 subagent，不要让 1 个 agent 顺序看 6 件事",
-      summary: "目录就绪。女娲让我同时启动 6 个 subagent，每个看一个维度（著作 / 长对话 / 表达 / 他者 / 决策 / 时间线）。不是 1 个 agent 看 6 件事——并行 6 倍效率，且独立报告减少互相带偏。",
-      preTest: "塔勒布的语料量极大：5 本书 500+ 页 / 50+ 场播客 / 上万条 Twitter / 至少 10 篇外部批评长文。让你设计调研，你会派 1 个 agent 看 6 件事，还是 6 个 agent 各看 1 件事？你选 6 个的话，每个 agent 拿到的 prompt 长什么样？",
+      phase: "Phase 1 · 并行启动",
+      kicker: "Phase 1 · 多源信息采集",
+      title: "一条 message 同时放出 6 个 agent",
+      summary: "调研是最贵的一步——书 / 对话 / 表达 / 他者 / 决策 / 时间线 6 个维度都要扫。一个一个跑就太慢，nuwa 让我并行。",
+      hookOpen: "接上一步：目录已经建好，6 个空的 markdown 文件等着被填。我手上还没有任何素材。开始采集了。",
+      preTest: "设想你和我同坐一椅。你要扫塔勒布的 6 个维度（书 / 对话 / 表达 / 他者 / 决策 / 时间线）。你的本能是：(a) 一个 agent 一个一个串行做 / (b) 6 个 agent 并行做 / (c) 1 个超级 agent 把 6 件事一起搞。每条路径的代价是什么？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 目录建好了，每个 agent 的写入路径已定。" },
-        { kind: "para", text: "我现在要并行启动 6 个 subagent。女娲为什么要并行 6 个不是 1 个？" },
-        { kind: "list", items: [
-          "塔勒布 5 本书 500+ 页 + 50+ 场长访谈 + 上万条 Twitter + 至少 10 篇外部批评长文——单 agent 顺序看完不可能在合理时间内完成。",
-          "更关键的是独立性：6 个 agent 互不知道对方在搜什么，发现的『反复出现的论点』是真独立观察；如果一个 agent 顺序看完所有材料，它会被前 30% 的内容预设视角，后面的 70% 自动配框。"
-        ]},
-        { kind: "para", text: "6 个 agent 的任务分配（女娲 SKILL.md Phase 1）：" },
-        { kind: "code", lang: "markdown", text: "| Agent | 搜什么 | 提取重点 | 输出文件 |\n|-------|--------|---------|---------|\n| 1 著作 | Incerto 5 本书 / 长 newsletter | 反复出现 ≥3 次的核心论点、自创术语 | 01-writings.md |\n| 2 对话 | 播客 / 长视频 / AMA / 深度采访 | 被追问时的回答方式、即兴类比、改变立场的瞬间 | 02-conversations.md |\n| 3 表达 | Twitter / Medium / 短文 | 高频用词句式、争议立场、幽默方式 | 03-expression-dna.md |\n| 4 他者 | 他人分析 / 书评 / 批评 / 传记 | 外部观察到的模式、与同行对比 | 04-external-views.md |\n| 5 决策 | 重大决策 / 转折点 / 争议行为 | 决策背景与逻辑、事后反思、言行一致 / 不一致 | 05-decisions.md |\n| 6 时间线 | 出生到现在的完整时间线 | 关键里程碑、思想转折点、最近 12 个月动态 | 06-timeline.md |" },
-        { kind: "para", text: "每个 agent 的 prompt 都长一个样——以 Agent 1 著作为例：" },
-        { kind: "code", lang: "text", text: "你的任务：调研 Nassim Taleb 的著作和系统性长文。\n\n搜索方向：\n- 此人出版的书籍（书名、核心论点、出版年份）\n- 长篇 newsletter / 博客 / 论文\n- 反复出现 ≥3 次的核心论点（这些是真信念）\n- 自创术语和概念\n- 推荐书单（揭示智识谱系）\n\n输出要求：\n- 写入 .claude/skills/taleb-perspective/references/research/01-writings.md\n- 每条信息标注来源 URL 和可信度\n- 区分一手（此人写的）vs 二手（别人总结的）\n- 发现矛盾直接记录，不要调和\n\n信息源黑名单：不使用知乎、微信公众号、百度百科。" },
-        { kind: "para", text: "**信息源黑名单**是这一步的硬规则——女娲明确禁止知乎 / 微信公众号 / 百度百科。原因是这些渠道**洗稿严重、信息失真率高**，把这些当一手来源，整个调研的可信度就崩了。中文渠道只接受权威媒体（36 氪 / 极客公园 / 晚点 / 财新等）和原始视频（B 站 / 小宇宙）。" },
-        { kind: "para", text: "6 个 agent 同时跑出去。我在这里几乎没创作自由——分配表是固定的、prompt 模板是固定的、黑名单是固定的。我能犯的错只有一个：自作主张把『明显塔勒布讨论得不多的维度』砍掉（比如『塔勒布不怎么写决策记录，我就跳过 Agent 5 吧』）——犯了就少一份报告，后面提炼时该维度的信息缺失。" }
+        {
+          kind: "para",
+          text: "(c) 听起来最省。但实际不行——一个 agent 同时扫 6 个维度时，它会在某一维（通常是 Twitter / 表达）上消耗大部分 context window，剩下 5 个维度只剩残羹。而且单 agent 内的搜索结果会互相干扰：搜过的「skin in the game」会影响后面搜「黑天鹅」的关键词权重。"
+        },
+        {
+          kind: "para",
+          text: "(a) 一个一个串行也不行。6 个维度每个 5-10 分钟，总共 30-60 分钟。用户在终端前等不了那么久。"
+        },
+        {
+          kind: "para",
+          text: "(b) 是 nuwa 选的路。我**在一条 message 里同时调用 6 次 Agent 工具**——它们并发跑，每个有独立的 context window，互不干扰。我等所有 6 个返回，大约和最慢的那一个一样长（10 分钟左右）。"
+        },
+        {
+          kind: "para",
+          text: "调用形状大概是这样——一条 message 里 6 个 Agent 工具一齐扔出："
+        },
+        {
+          kind: "code",
+          lang: "javascript",
+          text: "// 主 thread\n[\n  Agent({ description: \"Agent 1 著作\",     prompt: \"调研塔勒布著作...写入 01-writings.md\" }),\n  Agent({ description: \"Agent 2 对话\",     prompt: \"调研塔勒布长对话...写入 02-conversations.md\" }),\n  Agent({ description: \"Agent 3 表达\",     prompt: \"调研塔勒布 Twitter...写入 03-expression-dna.md\" }),\n  Agent({ description: \"Agent 4 他者\",     prompt: \"调研外部对塔勒布的分析...写入 04-external-views.md\" }),\n  Agent({ description: \"Agent 5 决策\",     prompt: \"调研塔勒布关键决策...写入 05-decisions.md\" }),\n  Agent({ description: \"Agent 6 时间线\",   prompt: \"调研塔勒布完整时间线...写入 06-timeline.md\" })\n]"
+        },
+        {
+          kind: "para",
+          text: "每个 agent 收到的 prompt 都自包含——它不依赖另一个 agent 的产出。这一点很重要：如果 Agent 4「他者」需要 Agent 1「著作」的结果做对比，并行就失败了，因为 Agent 4 启动时 Agent 1 还在跑。"
+        },
+        {
+          kind: "para",
+          text: "nuwa 也告诉我：每个 agent 的产出**必须写入文件**。如果 agent 在对话里告诉我「我找到了 8 个来源」但没落到 markdown 上，等于没找到——下游 Phase 2 提炼读不到。这是 nuwa SKILL.md 行 168 的不能省的一条：「不存文件的调研等于没做」。"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   用一个 agent 串行跑 6 个维度（45-60 分钟），\n   或者把摘要直接对话给主 thread 而不写文件\n\n✅ nuwa 让我：\n   一条 message 6 个 Agent 工具并发（约 10 分钟），\n   每个 agent 强制写入对应的 0X-*.md 文件"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：中等。任务表（哪个 agent 搜什么）钉死了，但每个 agent 内部怎么搜、用什么搜索词、用不用第三方 skill（gemini-video / pdf / agent-reach）自己定。"
+        }
       ],
-      receives: "skill 目录 + 人名 Nassim Taleb + 用途（思维顾问）。",
-      reads: ["nuwa SKILL.md L207-252 Phase 1 任务表 + agent prompt 模板 + 信息源黑名单"],
-      blockedShortcut: "让 1 个 agent 顺序看 6 件事（agent 之间互相带偏 + 慢 5 倍）；或者用 WebSearch 自己摸（错过黑名单设计）；或者随便砍一两个 agent（少一份报告）。",
-      action: "按固定分配表 spawn 6 个 subagent，prompt 模板填入人名后 fire，等结果。",
-      output: "6 个 agent 同时跑——等待它们写入各自的 0X-xxx.md 报告。",
-      nextConsumer: "我下一步盯一个 agent 看它实际在做什么，把元描述变具体。",
-      reusableMove: "并行 + 独立报告 + 强制写入预定路径——这三件事一起做，能在原始数据收集阶段获得『互相独立的观察』。如果只做并行不做独立报告，agent 之间会互相参考，独立性丢失。",
+      reusableMove: "把一条流水线最贵的步骤并行——一条 message 里多个工具同时调用，等所有返回。",
+      receives: "Phase 0.5 建好的空目录 + 4 元组上下文。",
+      reads: "nuwa SKILL.md 行 172-310（Phase 1 整段：6 agent 任务表 + agent prompt 模板 + 信息源黑名单）",
+      blockedShortcut: "不能让一个 super-agent 包揽 6 个维度——context window 会被一维压垮。不能让 agent 只用对话汇报不写文件——下游读不到。",
+      action: "在一条 message 里同时调度 6 个 Agent 工具 · 每个 agent prompt 自包含 · 等所有返回。",
+      output: "6 份 markdown 文件（01-writings.md ~ 06-timeline.md）全部有真实内容（每份 1500-5000 字）。",
+      nextConsumer: "Phase 1 内部还有 Agent 1 著作样本的细节展示（下一站）；然后 Phase 1.5 检查点会汇总质量。",
+      freedom: "中等。任务表钉死，agent 内部搜索策略和工具调用自定。",
       challenges: [
-        "用户提供了 3 本塔勒布的电子书 PDF——你 6 个 agent 的分配要不要改？比如让 Agent 1 直接读这 3 本而不是搜网络？",
-        "Agent 4『他者』搜出来的批评 80% 是 Kahneman 一个人的——你接受还是让 Agent 4 再搜一轮找其他批评者？女娲怎么说？",
-        "黑名单里没列 LinkedIn——你判断 LinkedIn 算一手（塔勒布自己发的）还是二手（被洗的转载）？依据是什么？"
-      ]
+        "如果 Agent 3 表达扫到塔勒布最近和某经济学家的辩论，但 Agent 5 决策没扫到——这两个发现可能相关。并行模式下 agent 之间不通信，你怎么解决「跨 agent 信息可能有关联」的问题？",
+        "如果其中一个 agent 跑 5 分钟没结果（搜索失败 / API 报错），nuwa 让我「不等待，继续推进」——但下游 Phase 2 会缺这一维度，怎么标注？",
+        "信息源黑名单（知乎 / 公众号 / 百度）是写在 root SKILL.md 里的——你要不要在 6 个 agent 的 prompt 里都重复一遍？还是让 agent 自己从 SKILL.md 里读？",
+        "如果蒸馏的是个冷门历史人物，公开信息极少——nuwa 在 Phase 0.5 就提醒「来源 < 10 条时降低预期」。这一拍 6 个 agent 还要不要都跑？哪几个可能干脆跳过？"
+      ],
+      hookClose: "6 个 agent 现在在外面并发跑。我盯着它们的状态。其中最关键的一个是 Agent 1 著作——它决定 Phase 2 三重验证时候选论点的数量上限。下一站把 Agent 1 拆出来看一下。"
     },
+
     {
       id: "agent1-writings",
-      title: "进一个 agent 内部看：Agent 1 怎么从 5 本书里捞反复出现 ≥3 次的论点",
-      summary: "6 个 agent 同时跑。我盯一个看——Agent 1 著作。它在 Incerto 5 本书里筛『反复说 ≥3 次』的论点（这是真信念的标志），写进 01-writings.md。这个 stage 把『6 agent 并行』从元描述拉到具体动作。",
-      preTest: "Agent 1 拿到『调研塔勒布著作』的任务。它现在打开了塔勒布的 5 本书（Incerto 五部曲）。它的下一秒应该干什么——A 从第一本第一页开始读，B 用 grep 搜高频词，C 先找每本书的『导言』看核心主张？你选哪个？",
+      phase: "Phase 1 · Agent 1 样本",
+      kicker: "Phase 1 · 著作采集",
+      title: "Agent 1 在做什么——著作样本",
+      summary: "我把 Agent 1 拆出来看：它收到什么 prompt、它搜什么、它的输出要写在哪、不写文件等于没做。",
+      hookOpen: "接上一步：6 个 agent 在并发跑。其它 5 个先放一放——Agent 1（著作）决定后面 Phase 2 三重验证的候选论点数量上限。我把这一个拆出来看它在做什么。",
+      preTest: "设想你和我同坐一椅。Agent 1 要扫塔勒布的所有书 + 长文 + newsletter。你的本能是：(a) 让它把书名都列出来就行 / (b) 让它把每本书的章节标题都列出来 / (c) 让它提炼「反复出现 ≥ 3 次的核心论点」。哪一个对下游 Phase 2 最有用？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 6 个 agent 同时跑出去了。我在这一步打开 Agent 1 的工作现场看它在做什么——把『6 agent 并行』从元描述拉到具体动作。" },
-        { kind: "para", text: "Agent 1 拿到的明确任务是『找反复出现 ≥3 次的核心论点』。这是个不寻常的要求——为什么是 3 次？" },
-        { kind: "para", text: "女娲的逻辑：**说一次可能是为了凑词；说两次可能是写作习惯；说三次以上还在不同场合说，是真信念**。所以 Agent 1 不是在做读书笔记，是在筛『真信念 vs 临时观点』。" },
-        { kind: "para", text: "Agent 1 在 Incerto 五部曲（《随机漫步的傻瓜》《黑天鹅》《反脆弱》《非对称风险》《肥尾效应的统计后果》）+ 格言集《The Bed of Procrustes》+ arXiv 论文里筛出的高频论点：" },
-        { kind: "code", lang: "markdown", text: "反复出现 ≥3 次的论点（写入 01-writings.md）：\n\n1. 非对称风险 / 肥尾分布——5 本书都有，论文中反复用\n2. Skin in the Game——同名书 + 其余 4 本各至少 2 处反复出现\n3. 反脆弱——同名书 + 其余 4 本中至少 1 处\n4. 林迪效应——3 本书 + 多场访谈\n5. Via Negativa（减法优先）——《反脆弱》专章 + 其余 2 本提及\n6. 领域特异性（理性是领域特定的）——3 本书 + 多篇 Medium\n7. IYI（Intellectual Yet Idiot）——《Skin in the Game》专章 + 多条 Twitter\n8. 黑天鹅事件——同名书核心 + 其余 4 本反复\n\n自创术语：\n- IYI / Fragilista / BS Vendor / Mediocristan / Extremistan / Lindy / Via Negativa\n\n智识谱系（推荐书单揭示的）：\n- Karl Popper（证伪主义）\n- Benoit Mandelbrot（肥尾、分形——塔勒布视其为导师）\n- Seneca（斯多葛 + 减法哲学）\n- Montaigne（认识论谦逊）\n- David Hume（归纳法的局限）" },
-        { kind: "para", text: "Agent 1 同时记录了**矛盾点**——女娲明确要求『发现矛盾直接记录，不要调和』。塔勒布的矛盾有 1 处：" },
-        { kind: "code", lang: "markdown", text: "矛盾 #1：Via Negativa（减法）vs Twitter 噪音\n\n- 《反脆弱》：改进往往不来自增加更多，而来自去除有害的。\n- 实际行为：Twitter 上不断增加碎片表达（高频骂战、攻击 IYI）。\n- 自己也承认：这是我自身的 domain dependence——系统层面理性，个人层面非理性。\n\n保留矛盾，进 Phase 2 的内在张力 section。" },
-        { kind: "para", text: "Agent 1 不做的事（女娲明确要求）：" },
-        { kind: "list", items: [
-          "不把『塔勒布说过的所有话』列出来当结论——只列反复出现的（≥3 次是硬筛）。",
-          "不把『塔勒布在 2010 年说过 X 但 2020 年改成 Y』调和成一段。塔勒布观点变化本身是有价值的信号——保留两个版本，进时间线 agent 处理。",
-          "不引用知乎 / 微信公众号 / 百度 / 任何中文洗稿源——本案塔勒布的中文资料主要来自财新、晚点和原始 B 站讲座。"
-        ]},
-        { kind: "para", text: "Agent 1 这一步的产出 `01-writings.md` 大约 5-30KB——足够 Phase 2 提炼时把候选论点过三重验证用。" },
-        { kind: "para", text: "其余 5 个 agent 在同时干各自的事——Agent 2 在听 EconTalk 和 Tim Ferriss Show 的塔勒布访谈、Agent 3 在扒 Twitter 的高频用词、Agent 4 在读 Kahneman / Pinker / Sunstein 的批评文章、Agent 5 在追 1987 黑色星期一 + Empirica 关闭 + Universa 顾问角色 + COVID 预警的决策记录、Agent 6 在拼时间线（1960 黎巴嫩出生 → 2024 反复在 NYU 教书 + Twitter 战）。" }
+        {
+          kind: "para",
+          text: "答案是 (c)。nuwa 在 Phase 1 给每个 agent 一份 prompt 模板，Agent 1 的 prompt 大概是这样："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "你的任务：调研塔勒布的著作和系统性长文。\n\n搜索方向：\n- 此人出版的书籍（书名、核心论点、出版年份）\n- 长篇 newsletter / 博客 / 论文\n- 反复出现 ≥ 3 次的核心论点（这些是真信念）\n- 自创术语和概念\n- 推荐书单（揭示智识谱系）\n\n输出要求：\n- 写入 .claude/skills/taleb-perspective/references/research/01-writings.md\n- 每条信息标注来源 URL 和可信度\n- 区分一手（此人写的）vs 二手（别人总结的）\n- 发现矛盾直接记录，不要调和\n\n信息源黑名单：不使用知乎、微信公众号、百度百科。"
+        },
+        {
+          kind: "para",
+          text: "为什么要求「反复出现 ≥ 3 次」？因为 Phase 2 的三重验证有一道叫「跨域复现」——同一个论点要在 ≥ 2 个不同领域出现才能算心智模型。如果 Agent 1 只搜「他写过什么」，下游收到的是一锅大杂烩；如果 Agent 1 已经把「反复出现 ≥ 3 次」的筛过一遍，下游收到的是更接近候选心智模型的素材。"
+        },
+        {
+          kind: "para",
+          text: "Agent 1 跑 10 分钟左右回来，01-writings.md 大概长这样："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "# 01-writings · 塔勒布的著作\n\n## 主要著作（Incerto 五部曲）\n\n| 书名                       | 出版年 | 核心论点                                   |\n|----------------------------|--------|--------------------------------------------|\n| Fooled by Randomness       | 2001   | 把幸运误当能力 · 幸存者偏差               |\n| The Black Swan             | 2007   | 极端事件被低估 · Mediocristan vs Extremistan |\n| The Bed of Procrustes      | 2010   | 格言体哲学                                 |\n| Antifragile                | 2012   | 反脆弱 · Via Negativa · 杠铃策略          |\n| Skin in the Game           | 2018   | 风险共担 · 少数派规则 · 林迪效应          |\n\n## 反复出现 ≥ 3 次的核心论点\n\n1. **Mediocristan vs Extremistan**（黑天鹅 / 反脆弱 / SitG 都出现）\n   - 在「正常」分布中：平均数有意义，单一事件影响小\n   - 在「极端」分布中：单一事件可以颠覆所有累计\n   - 一手来源：Black Swan ch.3, Antifragile ch.7, SitG ch.4\n\n2. **Skin in the Game**（SitG 全本主题，但在 Antifragile ch.20 已出现）\n   - 风险共担是诚实表达的前提\n   - 一手来源：SitG ch.1-4, Antifragile prologue\n\n3. **Via Negativa**（Antifragile, SitG, Bed of Procrustes 都出现）\n   - 减法比加法更聪明\n   - 一手来源：Antifragile ch.20, SitG ch.16, BoP throughout\n\n（...继续列 4-6 项，每项至少 2 个不同领域的证据）"
+        },
+        {
+          kind: "para",
+          text: "看出这份文件的形状了吗？它**不是书摘**，是按「能不能进入 Phase 2 三重验证」整理的候选清单。每个论点已经初步通过了「跨域复现」一道筛——它在塔勒布的多本书里出现，不只是某一本里的一次性发言。"
+        },
+        {
+          kind: "para",
+          text: "如果 Agent 1 偷懒——只列书名、不挑论点——会发生什么？Phase 2 提炼时我面对几十本书+几百条引文，要自己重新做这一道筛。这是 nuwa 把任务拆给 agent 而不是「让主 agent 自己搜」的核心理由：每个 agent 内的活只做一件事，做到位。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：中等。prompt 模板的字段钉死了——搜什么、写哪、标注什么——这些不能改。但用什么搜索词、调用哪些第三方工具（比如用 pdf skill 读 PDF，或者用 agent-reach 抓 Amazon 书评），agent 自己定。"
+        }
       ],
-      receives: "Agent 1 的 prompt 模板填入『Nassim Taleb』+ 写入路径。",
-      reads: ["nuwa SKILL.md L211-218 Agent 1 任务描述", "Agent 1 的 prompt 模板（L229-251）", "信息源优先级表（L288-296）"],
-      blockedShortcut: "Agent 1 把塔勒布说过的话照单全收当结论（不做 ≥3 次筛）；或者发现矛盾就调和成一段（违反保留矛盾规则）；或者引用了知乎转述（违反黑名单）。",
-      action: "Agent 1 在 Incerto 5 本书 + arXiv 论文 + Medium 长文里筛反复出现 ≥3 次的论点、自创术语、智识谱系、矛盾点，分类写入 01-writings.md。",
-      output: "01-writings.md（约 5-30KB），含 8 个高频论点 + 7 个自创术语 + 上游 8 个智识来源 + 1 处矛盾。",
-      nextConsumer: "Phase 2 三重验证从这 8 个高频论点（加上其余 5 个 agent 拿出的候选）里筛 6 个真心智模型。",
-      reusableMove: "『反复出现 ≥3 次』是个可以搬到别的 skill 里的筛子。任何想从大量文本里筛信念而非临时观点的场景都适用——前提是文本足够多，不到 50 万字这个筛子没意义。",
+      reusableMove: "agent 的 prompt 不止说「搜什么」，要说「按下游下一步什么形状整理」——下游不用二次加工就直接能用。",
+      receives: "Phase 1 的并发调度 + Agent 1 自己的 prompt（自包含）。",
+      reads: "nuwa SKILL.md 行 213-251（Agent 1 任务定义 + prompt 模板示例）",
+      blockedShortcut: "不能只列书名。不能不区分一手 vs 二手。不能不写文件——对话汇报等于没做。",
+      action: "调度 WebSearch / pdf skill / agent-reach 搜索塔勒布著作 · 提炼反复出现 ≥ 3 次的论点 · 写入 01-writings.md。",
+      output: "01-writings.md（约 2000-4000 字），含书表 + 候选核心论点 + 一手 / 二手标注 + 来源 URL。",
+      nextConsumer: "Phase 1.5 检查点会读这份文件统计「来源数 + 一手占比 + 关键发现」。Phase 2 三重验证会从这里抽候选心智模型。",
+      freedom: "中等。prompt 字段钉死，搜索策略和工具自定。",
       challenges: [
-        "塔勒布的『火鸡问题』在 5 本书里只出现 2 次，但他在播客里反复讲——这个 2 次的硬阈值会漏掉它吗？应该把『反复出现』扩展到跨 agent 还是停留在著作内部？",
-        "Agent 1 发现塔勒布 2010 年支持 Bitcoin、2021 年反对——这算『矛盾』（保留）还是『演化』（标注时间）？女娲的『保留矛盾』规则在这里要怎么具体应用？",
-        "用户提供了一本塔勒布的『未公开演讲稿』（用户从某次内部讲座拿到的）——它是一手来源吗？跟 Incerto 同等权重吗？女娲的信息源优先级表给了答案吗？"
-      ]
+        "Agent 1 找到塔勒布 2025 年的一篇新 Medium 文章——它和早期书里的观点矛盾。nuwa 让 agent「保留矛盾，不要和稀泥」。你怎么把矛盾写进 01-writings.md 才让下游 Phase 2 内在张力 段 能直接接？",
+        "塔勒布大量自创术语（fragilista / IYI / 绿木交易员）——这些应该挂在「核心论点」段 还是单独建一个「自创术语」段？哪个对下游 Phase 2.3 表达 DNA 提取更有用？",
+        "如果 Agent 1 跑完了发现只找到 3 本书（其它都是二手书评）——这达不到 nuwa 默认的「8 部以上」期望。这条信号要不要立刻反馈给主 thread，还是等 Phase 1.5 一起报？",
+        "Agent 1 的 prompt 里写「信息源黑名单：不使用知乎 / 公众号 / 百度」——但 sub-agent 是独立 context，它真的会读这一条吗？怎么验证它真的避开了？"
+      ],
+      hookClose: "Agent 1 把 01-writings.md 写完了，候选核心论点已经初步过了一道「跨域复现」筛。其它 5 个 agent 也陆续回来。下一步 nuwa 不让我直接进 Phase 2——要先在 Phase 1.5 停一下，把 6 份调研的质量摘要给用户拍板。"
     },
+
     {
       id: "research-checkpoint",
-      title: "Phase 1.5 ★ 调研 review 检查点——让用户拍板调研够不够",
-      summary: "6 份调研都到了。我自己看不出整体质量够不够（每份单看都『还行』）。女娲在这里强制停下，把 6 份报告的摘要列成一张 ASCII 表给用户看，等用户拍板。这是 3 道检查点的第一道——也是最便宜的返工点。",
-      preTest: "6 份调研报告都到了，加起来约 50KB。你下一秒想干的事是 A 立刻开始 Phase 2 提炼（『反正都搜了』），B 把 6 份 dump 给用户让他自己读，C 别的什么。猜猜女娲为什么这三个都不让你做。",
+      phase: "Phase 1.5",
+      kicker: "Phase 1.5 · 第一道检查点",
+      title: "调研存档拍板",
+      summary: "6 个 agent 都把调研写进了 references/research/01-06.md。现在我必须停下来，把质量摘要给用户看，等他说「OK 走」。",
+      hookOpen: "接上一步：6 个并行 agent 都回来了——著作 / 对话 / 表达 / 他者 / 决策 / 时间线，6 份调研已经躺在 references/research/ 里。每份从一两千字到五六千字不等。我现在掌握了塔勒布的几十条素材，按理说可以开始提炼心智模型了。但 nuwa 在这里塞了一道停顿。",
+      preTest: "设想你和我同坐一椅。6 份调研写完了，你看了一眼觉得「质量挺好」。下一步你的本能是：(a) 直接开始提炼心智模型 / (b) 把质量摘要发给用户先确认 / (c) 自己再多读一遍 6 份调研。写下你选哪个再读下面我（被 nuwa 拦着的 AI）实际怎么走。",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 6 份调研报告陆续到位，加起来约 50KB。每份单独看都『还行』——但我作为写报告的同一个 agent，看不出整体质量够不够。" },
-        { kind: "para", text: "女娲强制停下。它在这里设了一个**检查点**——意思是『AI 自己看不出走偏没有，必须让用户在改起来还便宜的时候卡一下』。" },
-        { kind: "para", text: "为什么必须卡？因为这是 5 个 Phase 里最便宜的返工点。调研有缺、有偏、有数据不够，**现在补一轮还便宜**——SKILL.md 还没开始写。等 Phase 3 ~440 行 SKILL.md 写完后才发现调研缺一块，整个就要重来。" },
-        { kind: "para", text: "我不能把 6 份 50KB 全 dump 给用户让他自己读——他没耐心。女娲给了一个固定的 review 表格模板（Phase 1.5）：" },
-        { kind: "code", lang: "text", text: "┌──────────────────┬──────────┬──────────────────────────┐\n│ Agent            │ 来源数量  │ 关键发现                  │\n├──────────────────┼──────────┼──────────────────────────┤\n│ 1 著作           │ 8 篇     │ 核心论点：反脆弱、Skin... │\n│ 2 对话           │ 5 段长访谈 │ 立场变化：对 Bitcoin 从  │\n│                  │          │ 支持转反对（2017→2021）  │\n│ 3 表达           │ 120 条   │ 高频词：skin in the game │\n│                  │          │   / IYI / Fragilista     │\n│ 4 他者           │ 6 篇     │ 主要批评：Kahneman 锚定  │\n│                  │          │ 偏差 / Pinker 进化生物学 │\n│ 5 决策           │ 4 个     │ 1987 黑色星期一 / 2004   │\n│                  │          │ Empirica 关闭 / 2020 COVID│\n│ 6 时间线         │ 完整     │ 最新：2026 年 3 月 NYU   │\n│                  │          │ 还在教书 + arXiv 新论文  │\n├──────────────────┼──────────┼──────────────────────────┤\n│ 矛盾点           │ 1 处     │ Via Negativa 主张 vs     │\n│                  │          │ Twitter 噪音             │\n│ 信息不足维度      │ 无       │                          │\n└──────────────────┴──────────┴──────────────────────────┘" },
-        { kind: "para", text: "这张表把每份 50KB 压成一行——让用户能在 30 秒内判断。它有 3 件事：来源数量（够不够）、关键发现（方向对不对）、矛盾点（保留不调和）。" },
-        { kind: "para", text: "拿给用户看，等用户回应。三种可能：" },
-        { kind: "list", items: [
-          "『OK 调研够了』→ 进 Phase 2 提炼。",
-          "『Agent 4 太少了，只有 Kahneman 不够，再找 Pinker 和 Sunstein』→ 只重跑 Agent 4，其余不动。",
-          "『Agent 2 列的立场变化具体是什么？给我看原文』→ 给原文，等用户进一步指示。"
-        ]},
-        { kind: "para", text: "本案用户回应『调研够了，进 Phase 2』。我不能自己判定『够了』——这是检查点的整个意义所在：**AI 自评偏好天然偏向『已经够了』**（因为继续搜要花时间），用户才是真正能判断『够不够』的人。" },
-        { kind: "para", text: "这一步 AI 几乎没创作自由——表格模板是固定的，每行填啥也固定。能犯的错只有一个：**跳过这一步直接进 Phase 2**——犯了就在 Phase 4 验证时发现『塔勒布的某个观点跟事实对不上』，回查时才知道调研缺了。" }
+        {
+          kind: "para",
+          text: "我的本能：（a）直接开始提炼。调研写完了，下一步明明是 Phase 2，我为什么要停？我在心里默默盘算——读完 6 份调研 + 写下心智模型候选 + 表达 DNA 分析，大概再两个小时就完事。"
+        },
+        {
+          kind: "para",
+          text: "nuwa 不让我跳。它要我在这里执行 `merge_research.py`——一个自动统计来源数量、一手 / 二手占比、关键发现的脚本。我跑一下："
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          text: "$ python3 scripts/merge_research.py .claude/skills/taleb-perspective/"
+        },
+        {
+          kind: "para",
+          text: "脚本扫一遍 6 份 md 文件，吐出一张表："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "┌──────────────────┬──────────┬──────────────────────────────────────┐\n│ Agent            │ 来源数量 │ 关键发现                              │\n├──────────────────┼──────────┼──────────────────────────────────────┤\n│ 1 著作           │ 8 部     │ Incerto 五部曲 · Skin in the Game ·  │\n│                  │          │ 反复出现 ≥ 3 次：「Mediocristan vs   │\n│                  │          │ Extremistan」「凸性」「Via Negativa」│\n│ 2 对话           │ 12 段    │ Joe Rogan / Lex Fridman / EconTalk · │\n│                  │          │ 立场变化：2020 后对比特币转空        │\n│ 3 表达           │ 240 条   │ 高频词：「IYI」「skin in the game」  │\n│                  │          │ 「fragilista」 · 攻击型句式占 38%    │\n│ 4 他者           │ 9 篇     │ 主要批评：观点不可证伪 / 学院派回应  │\n│ 5 决策           │ 6 个     │ 2008 金融危机做空 / 2020 疫情早警    │\n│ 6 时间线         │ 完整     │ 最近 12 个月：2025-09 出版新文集     │\n├──────────────────┼──────────┼──────────────────────────────────────┤\n│ 一手 / 二手比     │ 71% / 29%│ 满足 > 50% 一手占比不能省的一条             │\n│ 矛盾点           │ 3 处     │ Agent1 说 X · Agent4 说 Y · 见摘要   │\n│ 信息不足维度     │ 无       │                                       │\n└──────────────────┴──────────┴──────────────────────────────────────┘"
+        },
+        {
+          kind: "para",
+          text: "看着不错。但 nuwa 不让我自己说「OK」。它让我把这张表贴给用户，等用户拍一句话："
+        },
+        {
+          kind: "quote",
+          text: "调研质量看起来 OK 吗？(a) OK 进 Phase 2 / (b) 第 X 维度不够，请补"
+        },
+        {
+          kind: "para",
+          text: "为什么要这一停？我自己想的时候很快得出「质量 OK」——但我有自评偏好，我写的我自然觉得好。"
+        },
+        {
+          kind: "para",
+          text: "用户能注意到我注意不到的。比如他可能记得塔勒布最近在 X 上和某经济学家有一场大辩论，而我的 Agent 3 表达调研根本没扫到那条线索。又或者他想让我多挖塔勒布在 Mediocristan vs Extremistan 这一对概念上的演化轨迹——而我现在只挖到「最近 12 个月」一句话。"
+        },
+        {
+          kind: "para",
+          text: "如果在这里跳过，我会带着这些缺口直接进 Phase 2 提炼。等我把所有提炼产物全写完——5 个心智模型、9 条启发式、7 对张力、6 条边界，整整一大叠——才发现「缺一条核心线索」，回头改就要把整个提炼链拆掉重做。这时候改一次的代价大概是在检查点位置的 20 倍。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：这里几乎没有自由。nuwa 把要展示的字段都钉死了——来源数、一手二手比、矛盾、信息不足，这四件事必须出现在摘要里。拍板问题也是固定的两个选项：「OK 进 Phase 2」或「补 X 维度」。我能做的只有三件事：跑脚本、把表贴出去、等用户答。"
+        }
       ],
-      receives: "6 份调研报告 references/research/0X-xxx.md。",
-      reads: ["nuwa SKILL.md L315-337 Phase 1.5 review 表格模板", "6 份报告各自的关键发现段落"],
-      blockedShortcut: "跳过检查点直接进 Phase 2（最常见的 shortcut——AI 不愿意停下等用户）；或者把 6 份原文 dump 给用户（用户没耐心读完）。",
-      action: "用固定模板生成一张 ASCII 表压缩 6 份报告 → 拿给用户看 → 等用户拍板『OK』或『补 XX』。",
-      output: "用户的确认（或补充指示）。本案：『调研够了』。",
-      nextConsumer: "Phase 2 提炼用确认过质量的 6 份调研做三重验证。",
-      reusableMove: "在 AI 自己看不出走偏 / 走偏代价大的环节，强制设一个『压缩 + 拿给用户』的检查点。不能让 AI 自评够了没——AI 默认偏好已经够了以加快进度。",
+      reusableMove: "在改起来还便宜的时候停一下——文本都在手里、没生成任何昂贵产物。",
+      receives: "6 份 references/research/0X.md（每份 1500-5000 字）+ scripts/merge_research.py",
+      reads: "nuwa SKILL.md 行 314-337（Phase 1.5 检查点规范）",
+      blockedShortcut: "不能直接进 Phase 2 提炼。即使我觉得「质量 OK」也不行——AI 写完自评天然偏好评好分。",
+      action: "跑 merge_research.py 出统计表 · 把质量摘要表展示给用户 · 等用户拍板 OK 或要求补哪一维。",
+      output: "一张包含 6 agent 来源数 + 一手二手占比 + 矛盾点 + 信息不足维度的 markdown 表 · 用户的拍板回复。",
+      nextConsumer: "Phase 2 框架提炼会读这张表——特别是「矛盾点」会被写进 Phase 2.4 内在张力 段。",
+      freedom: "几乎没自由。脚本和拍板问题都钉死。",
       challenges: [
-        "用户回应『调研够了』但你心里觉得 Agent 5 决策记录只有 4 个偏少——你 push back 让用户再考虑，还是按用户意见进 Phase 2？依据是什么？",
-        "用户回应『我有事先去开会了，你看着办』——这能算 OK 通过吗？女娲怎么处理这种被动同意？",
-        "你这一步 spawn 一个 review subagent 来读 6 份报告并打分，再把结果给用户——会不会让用户更容易拍板？为什么女娲不这么设计？"
-      ]
+        "如果用户在检查点说「2 著作不够，再补 3 本」，你怎么决定要不要重新跑全部 6 个 agent、还是只重跑 Agent 1？",
+        "如果 merge_research.py 自动统计后一手 / 二手比是 42%（< 50%）怎么办？是直接继续往下，还是先回去补一手来源？",
+        "如果用户根本不回 OK 或不 OK，只说「再给我看一遍调研全文」，你怎么处理？继续等还是把全文倒出去？",
+        "塔勒布是活人。冷门历史人物（公开信息极少）走到这里时来源数可能只有 6-8 条。这种情况下检查点的拍板问题需要改吗？"
+      ],
+      hookClose: "现在用户拍了 OK——6 份调研被「冻结」，往下不再补。Phase 2 接管，开始把这些素材按「跨域复现 / 生成力 / 排他性」三重验证过一遍——这是下一段的核心动作。"
     },
+
     {
       id: "triple-check",
-      title: "三重验证：把候选 15-30 个筛成 6 个真心智模型",
-      summary: "调研通过。Phase 2.1 开始提炼。我从 6 份报告里捞反复论点，得到约 15-30 个候选——但不是每个都算心智模型。每个必须过三重验证（跨域复现 / 生成力 / 排他性），三重全过算心智模型，过 1-2 重退档为决策启发式，0 重直接丢。",
-      preTest: "你看着 Agent 1 给的 8 个高频论点列表：非对称风险 / Skin in the Game / 反脆弱 / 林迪效应 / Via Negativa / 领域特异性 / IYI / 黑天鹅。你下一秒会怎么处理：A 8 个全列上当心智模型，B 凭感觉留 5 个，C 用一套筛子各过一遍？女娲走 C 路线——但筛子长什么样？",
+      phase: "Phase 2.1",
+      kicker: "Phase 2.1 · 三重验证",
+      title: "18 个候选 → 6 个心智模型",
+      summary: "我从 6 份调研里抽出了 18 个候选论点。每个论点都要过三道筛——跨域复现 / 生成力 / 排他性。三道都过的留下成心智模型，过 1-2 道的降一档成决策启发式，一道都没过的丢。",
+      hookOpen: "接上一步：调研被冻结。我手里有 6 份 markdown 文件——加起来大概 15000 字。我下意识想直接挑 5-7 个「最像塔勒布的观点」写进 SKILL.md。nuwa 拦住——挑哪 5-7 个不能靠感觉，要过一道明确的筛。",
+      preTest: "设想你和我同坐一椅。你列了 18 个候选论点（反脆弱 / Skin in the Game / 黑天鹅 / Mediocristan vs Extremistan / 林迪 / Via Negativa / 杠铃策略 / IYI / 火鸡问题 / 反学院偏见 / 凸性 / 绿木交易员 / 少数派规则 / 遍历性 / ...）。你的本能是：(a) 凭感觉挑 5-7 个最像塔勒布的 / (b) 都写进去，越多越好 / (c) 给每个候选过一道明确的筛。哪个最不会被自己骗？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 调研通过，6 份报告全部摆在面前。" },
-        { kind: "para", text: "我手里现在有大约 15-30 个候选论点（Agent 1 给了 8 个高频论点 + Agent 2 给了几个塔勒布在播客里反复展开的论点 + Agent 5 决策记录里能反推出的几个隐含信念 + 一些自创术语）。" },
-        { kind: "para", text: "我第一反应想把这些一股脑全列上——『内容丰富啊』。女娲不让。它要每一条过三重验证：" },
-        { kind: "para", text: "**验证 1 · 跨域复现**——这个论点在他讨论 ≥2 个不同领域时都出现吗？" },
-        { kind: "para", text: "**验证 2 · 生成力**——用它能推断他对一个新问题（他没明确说过的）的可能立场吗？" },
-        { kind: "para", text: "**验证 3 · 排他性**——是不是所有聪明人都会这样想？（区分塔勒布独特的，还是常识）" },
-        { kind: "para", text: "三道全过 → 心智模型。只过 1-2 道 → 退一档算决策启发式（具体可执行的规则，但不算他独特镜片）。0 道 → 直接丢。" },
-        { kind: "para", text: "下面是塔勒布几个候选过三重验证的真实结果（references/extraction-framework.md 的方法）：" },
-        { kind: "code", lang: "markdown", text: "| 候选 | 跨域 | 生成力 | 排他 | 判定 |\n|------|------|--------|------|------|\n| 反脆弱 | ✓（金融、医学、教育、政治都用） | ✓（能推他对新事物的立场） | ✓（不是常识） | → **心智模型** |\n| Skin in the Game | ✓（金融、政治、新闻、学术） | ✓ | ✓ | → **心智模型** |\n| 非对称风险 | ✓（金融、运动、饮食、政策） | ✓ | ✓ | → **心智模型** |\n| 林迪效应 | ✓（书籍、技术、宗教、食物） | ✓ | ✓ | → **心智模型** |\n| Via Negativa | ✓（医学、写作、组织、投资） | ✓ | ✓ | → **心智模型** |\n| 领域特异性 | ✓（学术、政治、个人行为） | ✓ | ✓ | → **心智模型** |\n| 杠铃策略 | ✗（只在金融 / 风险讨论中出现） | ✓ | ✗（凯利准则也这么说） | → 退档为决策启发式 |\n| 火鸡问题 | ✗（只在风险讨论中作为类比） | ✓ | ✗（休谟归纳法批评的变体） | → 退档为决策启发式 |\n| writers should be killed in duels | ✗ | ✗ | ✓（独特但极端） | → **丢**（一句气话不是信念） |" },
-        { kind: "para", text: "三重验证筛完，塔勒布的真心智模型刚好 6 个——女娲允许的 3-7 个范围中间。" },
-        { kind: "para", text: "为什么必须有三重验证而不是凭感觉？AI 默认会把『反复说过的话』等同于『真心智模型』——但反复说不等于真信念（可能只是口头禅或写作习惯），更不等于他用它看世界（可能只是某个领域的反应）。三重验证是把这种偏差校准回来：跨域复现校『是不是真信念』、生成力校『能不能推到新问题』、排他性校『是不是他独有的视角』。" },
-        { kind: "para", text: "**这一步 AI 有创作自由（判断哪个候选过几道），所以必须有 before/after 对比：** 没有三重验证，AI 会把 Agent 1 给的 8 个高频论点全列成心智模型（带『杠铃策略』和『火鸡问题』也算进来——内容看起来很丰富）；有三重验证，最后筛出 6 个真模型 + 9 个降档启发式 + 若干丢掉的，结构清晰。" }
+        {
+          kind: "para",
+          text: "(a) 是最容易的——但「最像塔勒布的」是个循环定义，我用自己的印象判断自己的印象。(b) 是另一个陷阱：太多模型反而模糊，3 个深刻的远好过 10 个浅薄的。nuwa 让我走 (c)。"
+        },
+        {
+          kind: "para",
+          text: "三道筛的定义在 nuwa references/extraction-framework.md 里——我先读这份文件，再开始过候选："
+        },
+        {
+          kind: "list",
+          items: [
+            "跨域复现：同一个论点出现在塔勒布讨论的 ≥ 2 个不同领域。例：「反脆弱」既出现在金融（Antifragile ch.10 杠铃策略）也出现在生物（同书 ch.3 人体力量训练），属于跨域复现。",
+            "生成力：用这个论点能推断他对一个新问题的可能立场。例：用「Skin in the Game」可以推断他对「ESG 评级机构」的立场——评级机构不承担误评的下行后果，所以他会批评。",
+            "排他性：不是所有聪明人都会这样想。「不要冒不可承受的风险」是常识，过不了排他性；「Via Negativa：减法比加法更聪明」就只有塔勒布会强调到这个程度。"
+          ]
+        },
+        {
+          kind: "para",
+          text: "我把 18 个候选摊在一张表上，逐个过三道筛："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "| 候选                      | 跨域复现 | 生成力 | 排他性 | 结果                |\n|---------------------------|----------|--------|--------|---------------------|\n| 非对称风险思维            | ✓        | ✓      | ✓      | → 心智模型 1        |\n| 反脆弱偏好                | ✓        | ✓      | ✓      | → 心智模型 2        |\n| Skin in the Game 检验     | ✓        | ✓      | ✓      | → 心智模型 3        |\n| 林迪效应筛选              | ✓        | ✓      | ✓      | → 心智模型 4        |\n| Via Negativa（减法优先）  | ✓        | ✓      | ✓      | → 心智模型 5        |\n| 领域特异性 (Mediocristan) | ✓        | ✓      | ✓      | → 心智模型 6        |\n| 杠铃策略                  | ✓        | ✓      | —      | → 决策启发式（不够独特：组合论里也有） |\n| 遍历性检验                | ✓        | ✓      | —      | → 决策启发式        |\n| 火鸡问题                  | ✓        | ✓      | —      | → 决策启发式        |\n| 少数派规则                | ✓        | ✓      | —      | → 决策启发式        |\n| 凸性试错                  | ✓        | ✓      | —      | → 决策启发式        |\n| 框架重置                  | ✓        | ✓      | —      | → 决策启发式        |\n| 绿木交易员原则            | ✓        | ✓      | —      | → 决策启发式        |\n| 预防原则                  | ✓        | ✓      | —      | → 决策启发式        |\n| 反信号启发式              | ✓        | ✓      | —      | → 决策启发式        |\n| 反 IYI 立场               | —        | ✓      | ✓      | → 价值观（不跨域）  |\n| 反学院派偏见              | —        | ✓      | ✓      | → 价值观            |\n| 古典叙事偏好              | —        | —      | —      | → 丢                |"
+        },
+        {
+          kind: "para",
+          text: "三道都过的 6 个升上来成「心智模型」。只过 1-2 道的 9 条降一档成「决策启发式」——杠铃策略、遍历性检验、火鸡问题等等，每条都是「遇到 X 情境就用 Y 规则」这种短规则，没有心智模型那么深的设计权重，但作为快速判断工具很有用。0 道都没过的 3 个直接丢掉。"
+        },
+        {
+          kind: "para",
+          text: "反 IYI 立场 / 反学院派偏见这两个有点特别——它们没过跨域复现（只在「批判知识分子」这一域）但有强排他性 + 生成力。我把它们升到「价值观」段 而不是「心智模型」，让 Phase 2.4 处理。"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   凭印象挑 5-7 个「最像塔勒布」的论点（结果可能漏掉 Via Negativa 这种容易被忽视\n   但极度核心的模型，因为它的关键词在书里出现频率不如「反脆弱」高）\n\n✅ nuwa 让我：\n   每个候选过三道明确的筛，结果可被外人复核\n   （Via Negativa 在跨域复现、生成力、排他性三道都过——比凭印象稳定）"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：低。三道筛的定义和判定方法钉死。我能调整的只有「候选论点列表」——多挑或少挑几个候选进入这张表，最后过筛的不可能多于候选。"
+        }
       ],
-      receives: "6 份调研报告 + 大约 15-30 个候选论点。",
-      reads: ["references/extraction-framework.md 三重验证方法论", "nuwa SKILL.md L342-358 Phase 2.1 提炼步骤"],
-      blockedShortcut: "把反复出现的论点直接列成心智模型（不验证）；或者凭感觉留 5 个（验证标准不一致）；或者跳过任何一道验证（结果失准）。",
-      action: "对每个候选执行三重验证（跨域 + 生成力 + 排他性），三重过算心智模型，过 1-2 重退档为决策启发式，0 道直接丢。",
-      output: "6 个心智模型 + 9 条决策启发式 + 若干被丢的候选。",
-      nextConsumer: "Phase 2.5 提炼检查点把这 6 + 9 给用户审。",
-      reusableMove: "三重 funnel（多维度独立筛 + 退档机制）适用于任何『从大量候选中选少数核心』的场景——比把所有候选都列上信息量大得多，因为退档和丢本身也是信号（告诉读者这些不是核心）。",
+      reusableMove: "凭感觉挑会被自己的印象骗——给挑选过程定一道可被外人复核的明确筛。",
+      receives: "Phase 1.5 冻结的 6 份调研。",
+      reads: "nuwa SKILL.md 行 342-360（Phase 2.1 步骤）+ references/extraction-framework.md（三重验证完整定义）",
+      blockedShortcut: "不能跳过三重验证直接挑 5-7 个「印象里最像」的——印象判断逃不出自己的偏见。",
+      action: "从 6 份调研抽出 18 个候选论点 · 给每个候选过三道筛 · 三重过升心智模型 / 1-2 重过降决策启发式 / 0 重过丢。",
+      output: "一张三列筛选表 + 6 个心智模型清单 + 9 条决策启发式清单 + 3 个被丢候选的简短说明。",
+      nextConsumer: "Phase 2.3-2.6 会接着提炼表达 DNA / 内在张力 / 智识谱系 / 诚实边界——心智模型清单是它们的基础。",
+      freedom: "低。筛的定义和判定方法钉死。",
       challenges: [
-        "『杠铃策略』在塔勒布身上跨域复现失败（只在金融讨论里出现），但他自己说『我所有决策都用杠铃策略』——这种自述要不要让它直接升级心智模型？女娲怎么处理？",
-        "你在筛选时发现『反脆弱』和『非对称风险』内容高度重叠——保留两个，还是合并成一个？合并的代价是什么？",
-        "三重验证标准里『排他性』最难判——『所有聪明人都这样想』这个判断本身很主观。你怎么操作化它？女娲的方法论给了答案吗？"
-      ]
+        "如果一个候选过了跨域复现 + 排他性，但生成力存疑（不确定能不能推断新立场）——你倾向降一档还是保留？理由是什么？",
+        "塔勒布的「Via Negativa」在他书里关键词出现次数远少于「反脆弱」——凭印象挑很容易漏。这次三重验证救你了。但是否存在反向风险——印象里很重的概念过不了三重筛被你错杀？",
+        "如果心智模型筛出来只有 2 个（< 3 个下限），nuwa 让你「降低预期，标注信息不足」。你这一拍是回去补调研、还是继续推进往诚实边界里塞更多？",
+        "三重验证给主 thread 跑——但实际执行时主 thread 的判断有没有偏好？比如某个论点是塔勒布在 Twitter 上特别有名的，你会不会下意识降低对它的「排他性」要求？怎么对抗这种偏好？"
+      ],
+      hookClose: "6 个心智模型 + 9 条启发式定下了——它们是塔勒布的「镜片」和「直觉规则」。下一步要补足让他能落地的另外 3 件事——他怎么说话（表达 DNA）、他自己也没想清楚的（内在张力）、他做不到的（诚实边界）。"
     },
+
+    {
+      id: "dna-tension-boundary",
+      phase: "Phase 2.3 - 2.6",
+      kicker: "Phase 2.3-2.6 · 表达 DNA / 张力 / 边界",
+      title: "把人物的暗面提出来",
+      summary: "光有心智模型不能落地——还要他怎么说话、他的内在矛盾、他做不到什么。这一段做表达 DNA、内在张力、诚实边界——人物的暗面、矛盾面、限制面。",
+      hookOpen: "接上一步：6 心智模型 + 9 启发式定了。它们是塔勒布的「想法」。但想法不能直接落地——同一个想法用塔勒布的语气说和用大学教授的语气说，区别巨大。我还缺 3 件事。",
+      preTest: "设想你和我同坐一椅。你已经知道塔勒布的 6 个心智模型。你下一步的本能是：(a) 直接套模板写 SKILL.md / (b) 把他的高频词列一张表当 DNA / (c) 还要找他自己也矛盾的地方和他做不到的事。哪个能让生成的 skill 真正像他、不只是「贴标签」？",
+      narrativeBody: [
+        {
+          kind: "para",
+          text: "(a) 是最容易的陷阱——心智模型有了，套模板写一版就交。但生成的 skill 念出来会像「塔勒布关键词大乱炖」——所有概念都对，但读起来不像塔勒布。"
+        },
+        {
+          kind: "para",
+          text: "(b) 部分对。我从 Agent 3 表达调研里抓塔勒布的高频词："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 表达 DNA · 句式指纹\n\n| 维度       | 塔勒布的特征                                       |\n|------------|----------------------------------------------------|\n| 句式偏好   | 短句优先 + 偶尔长句嵌套从句 · 格言体             |\n| 高频词     | skin in the game · IYI · fragilista · ergodic · |\n|            |  Mediocristan / Extremistan · via negativa       |\n| 禁忌词     | 「优化」「最佳实践」「专家共识」「balanced view」 |\n| 节奏       | 先砸结论再展开 · 类比密度高（每千字 4-6 个类比）|\n| 幽默方式   | 攻击性 + 自嘲 + 古典讽刺                          |\n| 确定性     | 「很明显」型为主 · 但在边界处会用「我不知道」    |\n| 引用习惯   | 古希腊 / 拉丁哲学 · 中世纪商人轶事 · 反例引用     |"
+        },
+        {
+          kind: "para",
+          text: "但 (b) 不够。如果只有表达 DNA，生成的 skill 是「会说话的塔勒布关键词」——他说什么都对，从不矛盾，从不犹豫。真实的塔勒布有 7 对内在矛盾——这是 nuwa 的「内在张力」段。"
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 内在张力（来自 Agent 4 他者 + Agent 5 决策对比）\n\n1. 思想反脆弱 vs 自尊脆弱\n   - 写 4 本书讲承受波动，但 Twitter 上被批评一句就拉黑\n\n2. 反学院派 vs NYU 教授身份\n   - 攻击「学院 IYI」最狠，但自己挂 NYU 风险工程教授\n\n3. 主张 Via Negativa（减法）vs Twitter 不断增加噪音\n   - 书里讲少干扰，自己却是社交媒体最话密的公知之一\n\n4. 鼓吹 skin in the game vs 批评比特币时已清仓\n   - 这一条 Agent 5 决策时间线对比明显\n\n5. 蔑视社交媒体辩论 vs 最活跃的 Twitter 知识分子\n6. 推崇沉默的智慧 vs 数百万字公开发言\n7. 书中倡导谦逊 vs 个人行为绝对傲慢"
+        },
+        {
+          kind: "para",
+          text: "为什么必须有张力？因为没有矛盾的 skill 读起来不像真人——像维基百科条目。Phase 4 的通过标准里有一条「内在张力至少 2 对」——< 2 对是不通过信号。"
+        },
+        {
+          kind: "para",
+          text: "最后一件事——「诚实边界」段。塔勒布的 skill 不能在他做不到的领域开口："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 诚实边界\n\n本 skill 基于公开信息提炼，存在以下局限：\n\n1. 创造力无法蒸馏——他写新书的灵感、他原创概念的瞬间，复制不了\n2. 公开表达 ≠ 真实想法（Twitter 上的塔勒布和家里的塔勒布可能不一样）\n3. 在他不擅长领域会出错——进化生物学（被生物学家批驳过）、哥德尔不完备定理（被逻辑学家批驳过）\n4. 500 页书里只有 100 页洞察——这个 skill 提炼的是那 100 页\n5. 不可证伪的自我保护系统——任何批评他的人会被打成 IYI，这是循环\n6. 调研截止 2026-05-12——之后的发言变化未覆盖"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   把塔勒布写成内部一致的「智者」——观点统一、永远正确、\n   什么领域都能开口。维基百科级别的人物画像。\n\n✅ nuwa 让我：\n   强制提取至少 2 对内在张力 + 至少 3 条具体诚实边界。\n   塔勒布不再是圣人——他是个有自洽核心、也有暗面的人。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：中等。三类产物（DNA、张力、边界）的字段钉死，但每个字段里写什么我从调研里挑。挑哪几对张力、写哪几条边界，自己定。但 Phase 4 会检查两个数字——张力至少 2 对，边界至少 3 条，少于就不通过。"
+        }
+      ],
+      reusableMove: "不要把人物写成内部一致的「智者」——主动挖矛盾和限制，否则生成的是维基百科不是真人。",
+      receives: "Phase 2.1 的 6 心智模型 + 9 启发式 + 6 份调研档案。",
+      reads: "nuwa SKILL.md 行 362-389（Phase 2.3-2.6 提取要求）+ references/extraction-framework.md 行 73-99（矛盾处理原则）",
+      blockedShortcut: "不能跳过张力和边界直接写 SKILL.md。Phase 4 会因张力 < 2 / 边界只写「不能替代本人」而拒绝通过。",
+      action: "整理表达 DNA 表 · 从调研对比里挖出至少 2 对（实际产出 7 对）张力 · 写至少 3 条（实际产出 6 条）具体边界。",
+      output: "DNA 表（6 维度）+ 张力清单（7 对）+ 边界清单（6 条）。",
+      nextConsumer: "Phase 2.5 检查点会把这些和心智模型一起摊给用户拍板「像不像他」。",
+      freedom: "中等。字段钉死，内容自挑。",
+      challenges: [
+        "如果你找到 10 对张力——全部写进 SKILL.md 还是挑 7 对？多写一倍会让 skill 变得更真，还是变得分散？",
+        "「公开表达 ≠ 真实想法」这条边界对所有公众人物都成立——是不是写得太通用了，需要具体到塔勒布吗（比如「Twitter 上的他和家里的他可能不一样」）？",
+        "塔勒布的禁忌词包括「balanced view」——但「balanced」是个常用英文词。skill 在角色扮演时真的会避开它吗？还是只是写在表里没用？",
+        "如果调研 Agent 4（他者）找到的批评里有「塔勒布是骗子」——你这一拍要不要把它写进诚实边界？还是不写（因为这是攻击不是限制）？"
+      ],
+      hookClose: "现在所有素材都准备好了——心智模型 / 启发式 / DNA / 张力 / 边界。我手痒想直接套模板写 SKILL.md。nuwa 又拦——还有一道检查点要先过。"
+    },
+
     {
       id: "synthesis-checkpoint",
-      title: "Phase 2.5 ★ 提炼确认检查点——让用户拍板模型对不对",
-      summary: "三重验证完，6 心智模型 + 9 启发式 + 3 voice 特征 + 7 内在张力 + 6 诚实边界都提炼出来了。但这些都是我的主观判断——必须让用户在写 SKILL.md 之前拍板。这是 3 道检查点的第二道。",
-      preTest: "你刚提炼完，塔勒布的 6 个心智模型在你笔记里清清楚楚。你下一秒最想干的是 A 立刻进 Phase 3 开始写 SKILL.md（趁热打铁），B 把 6 模型 + 9 启发式 + ... 列出来给用户看一遍。两种情况下，发现『模型 3 错了，应该是 XX』返工的成本各是多少？",
+      phase: "Phase 2.5",
+      kicker: "Phase 2.5 · 第二道检查点",
+      title: "提炼对不对，让用户拍板",
+      summary: "6 模型 + 9 启发式 + DNA + 7 对张力 + 6 条边界都摊在表上。我要停下来等用户说「这些像不像塔勒布」。",
+      hookOpen: "接上一步：所有素材到位。我下意识想开始套模板——心智模型有了、DNA 有了、张力边界都有了，写 SKILL.md 是机械动作。nuwa 在这里塞了第二道检查点。",
+      preTest: "设想你和我同坐一椅。提炼的产物全到了。你的本能是：(a) 直接套模板，反正 Phase 4 会验证 / (b) 摊给用户拍板「这些像不像他」 / (c) 自己再读一遍调研对照检查。三个选项哪个最便宜返工？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 三重验证完，6 心智模型出炉。其余提炼（决策启发式 / 表达 DNA / 价值观 / 智识谱系 / 诚实边界）也跟着做完了。" },
-        { kind: "para", text: "我手里现在有完整的提炼结果。我最想干的是趁热打铁立刻进 Phase 3 写 SKILL.md。" },
-        { kind: "para", text: "女娲不让。这里是第二道检查点——意思跟第一道一样：**提炼是主观判断最重的环节，AI 自己看不出走偏没有，必须让用户在写完 ~440 行 SKILL.md 之前卡一下**。" },
-        { kind: "para", text: "返工成本对比：" },
-        { kind: "list", items: [
-          "现在卡住，发现『模型 3 错了』——重做三重验证 + 重写提炼笔记，可能 30 分钟。",
-          "不卡住直接进 Phase 3 写完 SKILL.md 再让用户审——发现『模型 3 错了』要重写 SKILL.md 里 3 个 section（心智模型 + Agentic Protocol 反推维度 + 角色扮演示例），可能 2 小时；如果再到 Phase 4 验证才发现，要 4 小时。"
-        ]},
-        { kind: "para", text: "所以现在停一下。女娲给了固定的提炼摘要模板：" },
-        { kind: "code", lang: "markdown", text: "提炼结果摘要：\n\n- 心智模型（6 个）：\n  1. 非对称风险思维\n  2. 反脆弱偏好\n  3. Skin in the Game 检验\n  4. 林迪效应筛选\n  5. Via Negativa（减法优先）\n  6. 领域特异性\n\n- 决策启发式（9 条）：\n  预防原则 / 杠铃策略 / 遍历性检验 / 火鸡问题 / 少数派规则 /\n  框架重置 / 绿木交易员原则 / 凸性试错 / 反信号启发式\n\n- 表达 DNA（3 个关键特征）：\n  格言体短句砸结论 / 自创术语和希腊语-拉丁语 / OK? 居高临下结尾\n\n- 内在张力（7 对）：\n  思想反脆弱 vs 自尊脆弱 / 反学院 vs NYU 教授 / 主张减法 vs Twitter 噪音 /\n  鼓吹 SitG vs 批评比特币时已清仓 / 蔑视社交媒体辩论 vs 最活跃的 Twitter 知识分子 /\n  推崇沉默 vs 最多话的公知 / 书中倡导谦逊 vs 个人行为绝对傲慢\n\n- 诚实边界（6 条）：\n  创造力无法蒸馏 / 公开 ≠ 真实想法 / 不擅长领域会出错 /\n  500 页 100 页洞察 / 不可证伪的自我保护系统 / 调研截止时间" },
-        { kind: "para", text: "拿给用户看。三种可能：" },
-        { kind: "list", items: [
-          "『OK，进 Phase 3』→ 推进。",
-          "『模型 4 林迪我觉得没那么核心，能不能换成火鸡问题』→ 重新跑三重验证看『火鸡问题』够不够格升到心智模型，林迪要不要降档。",
-          "『张力 #3 主张减法 vs Twitter 噪音那条，原文塔勒布是怎么说的』→ 给原文，等下一步指示。"
-        ]},
-        { kind: "para", text: "本案用户回应『OK 进 Phase 3』。" },
-        { kind: "para", text: "**为什么不能让 AI 自己评提炼对不对**？因为提炼涉及大量主观判断——『反脆弱』是不是真心智模型？『杠铃策略』应该升还是降？『内在张力』哪些算硬张力哪些是表面矛盾？AI 自己写完自己评，天然偏好『我做的判断都对』——这正是 Phase 4 那一步要用独立 subagent 验证的原因。Phase 2.5 是更早的把关，把『明显走偏』先拦下来。" }
+        {
+          kind: "para",
+          text: "(a) 表面省时——但如果 6 个心智模型有一个选错了，写完 443 行 SKILL.md 才被 Phase 4 测出，回头改要把 Agentic Protocol 反推、示例对话、调研引用全部重做。"
+        },
+        {
+          kind: "para",
+          text: "(c) 是 AI 的自我安慰——「我再读一遍肯定能发现问题」。但 self-evaluation bias 让我下意识把自己的判断打高分，发现不了我自己的盲点。"
+        },
+        {
+          kind: "para",
+          text: "(b) 是 nuwa 选的路。我把提炼结果摊成一张可一屏看完的摘要给用户："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## Phase 2.5 提炼摘要\n\n### 心智模型（6 个）\n1. 非对称风险思维\n2. 反脆弱偏好\n3. Skin in the Game 检验\n4. 林迪效应筛选\n5. Via Negativa（减法优先）\n6. 领域特异性（Mediocristan vs Extremistan）\n\n### 决策启发式（9 条）\n杠铃策略 / 遍历性检验 / 火鸡问题 / 少数派规则 / 框架重置 / \n绿木交易员原则 / 凸性试错 / 预防原则 / 反信号启发式\n\n### 表达 DNA（关键 3 条）\n- 短句优先 + 格言体 + 类比密度高\n- 攻击性 + 自嘲 + 古典讽刺\n- 高频词：skin in the game / IYI / fragilista / ergodic\n\n### 内在张力（7 对）\n（思想反脆弱 vs 自尊脆弱 / 反学院 vs NYU 教授 / ...）\n\n### 诚实边界（6 条）\n（创造力无法蒸馏 / 公开 ≠ 真实 / 在不擅长领域出错 / ...）\n\n---\n\n这些像塔勒布吗？\n(a) OK 进 Phase 3\n(b) 调整某个模型（请指出）\n(c) 缺一个我觉得重要的模型（请说）"
+        },
+        {
+          kind: "para",
+          text: "用户回复：「OK，但「林迪效应」我觉得不算独立的心智模型——它更像一条决策启发式，是不是要降一档？」"
+        },
+        {
+          kind: "para",
+          text: "这是检查点的价值——用户提了我没看出来的问题。林迪在塔勒布的论述里确实更多被当判断工具用（「这本书流传了 200 年，按林迪它再流传 200 年的概率高」）而不是一个独立的世界观。我把它从心智模型降到决策启发式，回更新筛选表："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "调整：林迪效应 心智模型 → 决策启发式\n→ 心智模型从 6 个变 5 个\n→ 决策启发式从 9 条变 10 条\n→ Phase 3 反推 Agentic Protocol 时维度也要相应调整"
+        },
+        {
+          kind: "para",
+          text: "调整完发回去：「按你说的改了。现在 5 心智模型 + 10 启发式。要不要再调？」用户说「OK，进 Phase 3」。"
+        },
+        {
+          kind: "para",
+          text: "这一拍如果省略——我可能写完 443 行才发现林迪要降一档。这时候改一处涉及 5-10 处文本。在检查点处改只涉及那一张表。便宜返工点的代价差异大约是 1:20。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：几乎没有。摘要字段 / 拍板问题 / 用户回复后的调整动作都按 nuwa 规定走。"
+        }
       ],
-      receives: "6 心智模型 + 9 启发式 + 3 voice 特征 + 7 张力 + 6 边界。",
-      reads: ["nuwa SKILL.md L393-410 Phase 2.5 提炼摘要模板"],
-      blockedShortcut: "趁热打铁直接进 Phase 3 写 SKILL.md（不让用户看）——返工成本最高的点；或者让 AI 自己评一遍说看着对（自评偏好）。",
-      action: "用固定模板列出 6 心智模型名 + 9 启发式名 + 3 voice 特征 + 7 张力 + 6 边界 → 拿给用户看 → 等拍板『OK』或『改 XX』。",
-      output: "用户的确认（或修改指示）。本案：『OK，进 Phase 3』。",
-      nextConsumer: "Phase 3 把这 6 心智模型 + 9 启发式拿去反推 Agentic Protocol 维度 + 套模板生成 SKILL.md。",
-      reusableMove: "在『主观判断最重』的环节后强制设检查点。判断越主观，AI 自评越容易走偏——让用户做最后一道审，而不是等所有下游工作做完再发现走偏。",
+      reusableMove: "套模板之前再停一下——结构性判断（哪个是模型、哪个是启发式）在文本阶段调，比在最终产物阶段调便宜 20 倍。",
+      receives: "Phase 2 提炼的全部产物（心智模型 / 启发式 / DNA / 张力 / 边界）。",
+      reads: "nuwa SKILL.md 行 393-409（Phase 2.5 摘要格式）",
+      blockedShortcut: "不能不停。即使我觉得「6 个心智模型都很稳」也不行——自评偏好让我看不见自己的盲点。",
+      action: "把提炼产物压成一张可一屏看完的摘要 · 给用户具体的拍板选项 · 用户回复后做调整或继续。",
+      output: "用户拍过板的「最终版」提炼清单（5 心智模型 + 10 启发式 + DNA + 7 张力 + 6 边界）。",
+      nextConsumer: "Phase 3 反推 Agentic Protocol 会从这里取最终的 5 心智模型——林迪降一档之后，反推出来的「先看什么」维度也要相应少一维。",
+      freedom: "几乎没有。摘要字段和拍板问题钉死。",
       challenges: [
-        "用户回应『6 个心智模型太多，能不能压成 3 个』——女娲允许 3-7 个，但塔勒布身上真的有 6 个核心镜片。你 push back 还是按用户压？依据是什么？",
-        "用户说『我觉得绿木交易员原则应该升心智模型不是启发式』——你怎么处理？三重验证再跑一次？",
-        "假设这一步用户消失了（没回应）——你等多久？女娲没写『用户超时』的处理。你的本能是直接推进还是无限等？"
-      ]
+        "如果用户说「我不知道，你判断吧」——你这一拍要不要不能省的一条他拍板？不能省的一条会让用户烦，不要求又跳过了便宜返工点。",
+        "如果用户提了一条调整你不同意（比如他想加一个你筛掉的模型）——你是直接加还是回去重过三重验证？",
+        "如果用户改了 5 个地方——你这一拍是一次性都改、还是分批改让用户看每次的影响？",
+        "Phase 1.5 检查点和 Phase 2.5 检查点的拍板问题形状很像（都是「OK 走 / 调整 X」）——为什么 nuwa 不把它们合并成一个？两个检查点之间发生的事是什么？"
+      ],
+      hookClose: "用户拍过板了——5 心智模型 + 10 启发式 + 7 张力 + 6 边界都冻结。下一步进 Phase 3，第一个动作是 nuwa 整条流水线最有意思的设计——从心智模型反推 Agentic Protocol。"
     },
+
     {
       id: "derive-protocol",
-      title: "WOW · 从 6 心智模型倒着推出 5 个 Agentic Protocol 研究维度",
-      summary: "提炼通过。Phase 3 开始写 SKILL.md。这一步最有意思——给生成的 taleb-perspective skill 配一个 Agentic Protocol（让它回答前先做研究的工作流），研究维度不是写死的通用模板，而是从蒸馏出的 6 心智模型倒着推出来的。每个塔勒布的镜片决定他『先看什么』。这是整本手册的 wow moment。",
-      preTest: "塔勒布的 6 心智模型已经定了。现在让生成的 skill 能回答『日元贬值是机会吗』这种需要事实的问题。skill 在回答前必须先做研究——你给它一个研究维度列表。你给『看相关信息』这种通用维度，还是从 6 心智模型里倒着推？怎么推？",
+      phase: "Phase 3 · 反推",
+      kicker: "Phase 3 · Agentic Protocol 反推",
+      title: "从心智模型推出「先看什么」",
+      summary: "塔勒布有 5 个心智模型。我把它们倒过来读——每个模型在「看一个新问题」时会让他先扫哪一维。这一步反推出 5 个 Agentic Protocol 研究维度。",
+      hookOpen: "接上一步：5 心智模型冻结。Phase 3 第一动作不是写示例对话，也不是填模板——是反推。我下意识想从 skill-template.md 里抄一段「先调研再回答」当 Agentic Protocol，但 nuwa 让我从心智模型反推。",
+      preTest: "设想你和我同坐一椅。你拿到 5 个心智模型——非对称风险 / 反脆弱 / Skin in the Game / Via Negativa / 领域特异性。你要为这个 skill 写一段「Step 2: 塔勒布式研究」——他遇到事实问题时先查什么。你的本能是：(a) 抄 nuwa skill-template.md 里的通用「先搜事实再回答」 / (b) 列「相关信息」「最新动态」「历史先例」这种泛泛维度 / (c) 从 5 个心智模型反推——每个模型决定一个具体的「先看什么」。哪个能让这个 skill 真正和别人的不一样？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 提炼检查点通过，6 心智模型确认。" },
-        { kind: "para", text: "这一步是整本手册的 wow moment（Overview 已经预告过，这里把推导过程展开看）。" },
-        { kind: "para", text: "**问题**：生成的 taleb-perspective skill 在回答『日元贬值是机会吗』这种需要事实的问题时，必须先做研究——但研究什么？" },
-        { kind: "para", text: "**默认 AI 本能**：写一个通用搜索模板——『先 WebSearch 任何相关信息，然后用塔勒布的语气回答』。这等于把生成的 skill 退化成『会塔勒布腔的 ChatGPT』——每个 perspective skill 长一个样。" },
-        { kind: "para", text: "**女娲的反推**：从蒸馏出的 6 心智模型，倒着算出『塔勒布回答这个问题前会先看什么』。每个研究维度都对应到至少一个心智模型——这才让 Agentic Protocol 真的『是塔勒布的』，而不是通用模板。" },
-        { kind: "para", text: "塔勒布的 6 心智模型 → 5 个研究维度的推导（女娲 SKILL.md L478-499 的方法）：" },
-        { kind: "code", lang: "markdown", text: "心智模型                         → 研究维度                  → 具体搜什么\n────────────────────────────────────────────────────────────────────────────\n1. 非对称风险（看下行）           → 看风险                    → 尾部风险 / 遍历性 / 不对称性\n   ＋4. 林迪效应（时间筛选）       → 看历史                    → 黑天鹅先例 / 火鸡问题检验\n\n2. 反脆弱偏好（看波动响应）       → 看脆弱性                  → 压力测试 / 隐藏脆弱点\n\n3. Skin in the Game 检验          → 看皮肤在场                → 谁在承担风险 / 激励不对称\n\n6. 领域特异性（看叙事不对应现实） → 看叙事                    → 主流叙事 / 反面观点" },
-        { kind: "para", text: "5 个研究维度敲定了（5. Via Negativa 没单独成维度——它是个写作 / 设计哲学，而不是『看什么』的镜片，已经在表达 DNA 里发挥）。" },
-        { kind: "para", text: "把这 5 个维度写进生成的 SKILL.md 的 Agentic Protocol Step 2：" },
-        { kind: "code", lang: "markdown", text: "### Step 2: 塔勒布式研究（按问题类型选择）\n\n⚠️ 必须使用工具（WebSearch 等）获取真实信息，不可跳过。\n\n#### 看风险\n1. 尾部风险：最坏情况有多坏？是否存在不对称性？\n2. 遍历性：这个策略重复一万次，会在某一次彻底出局吗？\n\n#### 看脆弱性\n1. 压力测试：这个系统/公司/策略受压时会变强还是会崩溃？\n2. 隐藏脆弱点：依赖单一供应商/客户/假设？\n\n#### 看历史\n1. 黑天鹅先例：以前有没有类似的极端事件？\n2. 火鸡问题检验：过去的稳定是否在掩盖即将到来的断裂？\n\n#### 看叙事\n1. 主流叙事：大家都在说什么？叙事越一致越可能是错的\n2. 反面观点：主动搜索最强的反对声音\n\n#### 看皮肤在场\n1. 谁在承担风险：给建议的人自己有没有下注？\n2. 激励不对称：如果他错了，他承受什么后果？" },
-        { kind: "para", text: "**这才是 HOW they think 不是 WHAT they said 的实证落地**——塔勒布的『先看什么』由他蒸馏出的心智模型决定。换个人会完全不同：" },
-        { kind: "list", items: [
-          "费曼：6 心智模型不同（第一性原理 / 对权威的怀疑 / 货物崇拜检测...）→ 反推出 4 个研究维度（第一性原理拆解 / 看实验数据 / 看类比 / 看盲区）。",
-          "MrBeast：心智模型是注意力工程 / 测试迭代 / ROI 思维 → 反推出 4 个维度（看 CTR 和 AVD / 看竞品 Top10 / 看搜索趋势 / 看制作成本回报）。",
-          "**塔勒布不会去查 CTR；MrBeast 不会去查谁有 skin in the game**——同一个 Agentic Protocol 外壳，每个人的『先看什么』全不一样。"
-        ]},
-        { kind: "para", text: "这一步 AI 有创作自由（怎么把 6 心智模型映射成 4-5 个研究维度——不是 1:1 对应）。女娲约束的是『映射必须可追溯』——每个维度必须能说出『来自哪个心智模型』，不能拍脑袋加个『看市场情绪』这种没溯源的维度。" }
+        {
+          kind: "para",
+          text: "(a) 是套模板——所有 perspective skill 长一样，塔勒布 / 费曼 / MrBeast 的 Agentic Protocol 都是「先搜事实再回答」。这就失去了 perspective 的意义。"
+        },
+        {
+          kind: "para",
+          text: "(b) 看起来定制——但「相关信息 / 最新动态 / 历史先例」是放之四海而皆准的搜索框架，依然不专属于塔勒布。"
+        },
+        {
+          kind: "para",
+          text: "(c) 是 nuwa 真正的设计点。我把 5 个心智模型一个一个倒读："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 反推过程\n\n模型 1：非对称风险思维（尾部风险 / 遍历性）\n→ 他遇到「这值不值得做」时先看什么？\n→ 看风险（最坏情况 / 不对称性）\n\n模型 2：反脆弱偏好\n→ 他遇到「这个系统怎么样」时先看什么？\n→ 看脆弱性（压力下变强还是崩溃）\n\n模型 3：Skin in the Game 检验\n→ 他遇到「这个观点要不要信」时先看什么？\n→ 看皮肤在场（谁承担风险 / 激励是否对称）\n\n模型 4：Via Negativa（减法优先）\n→ 他遇到「这里该做什么」时先看什么？\n→ ⚠ 这是\"做什么\"指引，不是\"先查什么\"——略\n\n模型 5：领域特异性（Mediocristan vs Extremistan）\n→ 他遇到「这件事在什么分布下发生」时先看什么？\n→ 看叙事（主流共识 vs 反面观点）"
+        },
+        {
+          kind: "para",
+          text: "反推出 4 个直接维度。还差一个——我注意到塔勒布频繁用「火鸡问题」「黑天鹅先例」做判断，但「火鸡问题」我前面降到了决策启发式不在心智模型里。它在「非对称风险」和「林迪（降为启发式）」的交集——我把它单独抽成一个维度："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "补充维度：看历史（黑天鹅先例 / 火鸡问题检验）\n→ 决策启发式中的「火鸡问题」和模型 1 的「非对称风险」共同支持\n→ 在 Step 2 单列一条"
+        },
+        {
+          kind: "para",
+          text: "最终反推出来的 Step 2 长这样："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "### Step 2: 塔勒布式研究（按问题类型选择）\n\n⚠️ 必须使用工具（WebSearch 等）获取真实信息，不可跳过。\n\n#### 看风险\n1. 尾部风险：最坏情况有多坏？是否存在不对称性？（搜索极端案例 / 历史崩溃记录）\n2. 遍历性：这个策略重复一万次，会在某一次彻底出局吗？\n\n#### 看脆弱性\n1. 压力测试：受压时变强还是崩溃？\n2. 隐藏脆弱点：单一供应商 / 客户 / 假设依赖？\n\n#### 看历史\n1. 黑天鹅先例：以前类似事件 + 当时\"专家预测\"对不对？\n2. 火鸡问题检验：过去的稳定是否掩盖即将到来的断裂？\n\n#### 看叙事\n1. 主流叙事：大家都在说什么？叙事越一致越可能错。\n2. 反面观点：主动搜最强反对声音。\n\n#### 看皮肤在场\n1. 谁在承担风险：给建议的人自己下注了吗？\n2. 激励不对称：错了承受什么后果？"
+        },
+        {
+          kind: "para",
+          text: "你看到反推的力量了吗？同一个 Agentic Protocol 外壳，三个人的 Step 2 完全不一样。"
+        },
+        {
+          kind: "para",
+          text: "费曼的心智模型是「第一性原理」和「对权威怀疑」。反推出来的研究维度就变成：看基本物理或数学约束、看官方说法的逻辑漏洞、看实验数据。"
+        },
+        {
+          kind: "para",
+          text: "MrBeast 的心智模型是「注意力工程」和「测试迭代」。反推出来的研究维度又不一样：看 CTR 和 AVD、看竞品 Top 10、看搜索趋势、看成本回报。"
+        },
+        {
+          kind: "para",
+          text: "每个人「先看什么」全不一样——这就是 perspective skill 不只是「会说话」、而是「会做判断」的关键。"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   写「先搜相关信息再回答」——所有 perspective skill 长一样\n\n✅ nuwa 让我：\n   从 5 个心智模型反推 5 个具体的「先看什么」维度，\n   每个维度有 2-3 条带搜索指引的具体问句。\n   塔勒布的 protocol 和费曼 / MrBeast 的 protocol 在结构相同时\n   每一条都不一样。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：高。维度数量、命名、具体问句都自己挑——但必须从心智模型反推，不能凭空写。Phase 4 的 voice check 会比对反推维度和心智模型的对应关系。"
+        }
       ],
-      receives: "6 心智模型 + 9 决策启发式 + 用户拍板『OK』。",
-      reads: ["nuwa SKILL.md L478-499 Phase 3 Agentic Protocol 生成规则 + 推导表 3 例（芒格 / 费曼 / 塔勒布）"],
-      blockedShortcut: "套用通用搜索模板（先 WebSearch 再回答）——让 skill 退化成『会塔勒布腔的 ChatGPT』；或者只为 skill 配静态的研究列表（不跟着心智模型演化）；或者拍脑袋加无溯源的维度。",
-      action: "把每个心智模型映射到 1-2 个『塔勒布回答问题前会先看什么』的具体研究维度，写进生成的 SKILL.md 的 Agentic Protocol Step 2。",
-      output: "5 个塔勒布特有的研究维度，写进生成的 SKILL.md。",
-      nextConsumer: "Phase 3 fill-template 把这 5 维度跟模板的其他部分拼起来。",
-      reusableMove: "『能力反推动作』——从抽象的能力 / 镜片 / 心智模型，倒着推出『这种能力会在哪里发挥』的具体动作。比『罗列已知动作』更深入，比『罗列已知动作的同时也保留抽象镜片』更可执行。",
+      reusableMove: "perspective skill 要让人物「会做判断」，不只是「会说话」——从心智模型反推「先看什么」是落地的关键步骤。",
+      receives: "Phase 2.5 冻结的 5 心智模型。",
+      reads: "nuwa SKILL.md 行 440-495（Phase 3 Agentic Protocol 生成指引 + 反推推导方法 + 3 例横向对比表）",
+      blockedShortcut: "不能从 skill-template.md 抄通用「先搜事实」当 Step 2——每个 perspective 的 protocol 必须从他自己的心智模型反推。",
+      action: "把 5 心智模型一个一个倒读 · 每个模型反推一个「先看什么」维度 · 每个维度写 2-3 条具体搜索问句 · 模型间有重叠的合并 / 缺的从决策启发式补。",
+      output: "Step 2 的 5 维度 × 各 2 条问句，约 100 行 markdown。",
+      nextConsumer: "Phase 3 套模板时把这一段嵌进 SKILL.md「回答工作流」段。Phase 4 voice check 会验证维度和模型的对应关系。",
+      freedom: "高。维度命名和问句自挑，但必须从模型反推。",
       challenges: [
-        "塔勒布的『Via Negativa』在我这版里没单独成研究维度——它进了表达 DNA 段。如果用户说『应该单独成一个维度』，你的反驳是什么？",
-        "费曼蒸馏出来只有 4 个研究维度，塔勒布有 5 个——这是不是说塔勒布心智模型『更复杂』？还是说映射规则不够稳定？",
-        "如果塔勒布将来发表新书提出第 7 个心智模型——你需要重新生成 Agentic Protocol 还是补一条维度就够？女娲的『更新已有 skill』那一段给了答案吗？"
-      ]
+        "「Via Negativa」是「做什么」指引（减法优先）不是「查什么」指引——这一拍我把它略过了。但它真的不该影响 Step 2 吗？如果塔勒布看一个问题时倾向「问哪些可以减去」，要不要单独加一个「看可减项」维度？",
+        "如果反推后只得到 3 个维度（5 个心智模型有重叠），是补凑到 5 个还是接受 3 个？nuwa 推导表里给的 3 例都是 3-5 个维度——少于 3 个会让 Step 2 太薄，多于 5 个会让用户不知道先看哪个。",
+        "Phase 4 voice check 会怎么验证「反推维度对应心智模型」？是 spawn 子 agent 拿 SKILL.md 看「这 5 个维度像不像塔勒布会先看的」，还是更严的对应表 check？",
+        "如果心智模型在 Phase 2.5 检查点被调整（比如林迪降一档），Step 2 维度要不要随之变？这一拍如何感知上游变化？"
+      ],
+      hookClose: "Agentic Protocol 反推完了——5 个「先看什么」维度准备就绪。下一步把所有素材（心智模型 / 启发式 / DNA / 张力 / 边界 / 反推 protocol / 时间线 / 价值观）按 skill-template.md 填进 SKILL.md。"
     },
+
     {
       id: "fill-template",
-      title: "套模板生成 ~440 行 SKILL.md",
-      summary: "Agentic Protocol 5 维度已定。把它和其他所有提炼结果（身份卡 / 6 心智模型 / 9 启发式 / 表达 DNA / 价值观 / 张力 / 边界 / 调研来源）按 references/skill-template.md 拼起来。我在这一步几乎没创作自由——模板是固定的，每个 section 该填什么也固定。",
-      preTest: "你现在有一堆提炼笔记和一个空 SKILL.md 模板。你下一秒最想干的是 A 自由发挥，重新设计 SKILL.md 的 section 顺序让它读起来更顺，B 严格按模板填，每个 section 该放哪段提炼就放哪段。选哪个？两种产物的代价是什么？",
+      phase: "Phase 3 · 套模板",
+      kicker: "Phase 3 · 套模板 + 自检 + 写盘",
+      title: "组装 443 行 SKILL.md",
+      summary: "所有素材到位。我读 skill-template.md，把素材按 段 填进去，跑一道自检，最后写盘。443 行 markdown 落到磁盘。",
+      hookOpen: "接上一步：Agentic Protocol Step 2 的 5 个维度反推完了。所有素材都在内存里——心智模型 / 启发式 / DNA / 时间线 / 张力 / 边界 / Agentic Protocol / 价值观 / 智识谱系。下一步是把它们装进同一个文件。",
+      preTest: "设想你和我同坐一椅。所有素材都在手里。你的本能是：(a) 自己组织一个结构写 SKILL.md / (b) 读 skill-template.md 严格套结构 / (c) 套结构但允许调整 段 顺序。哪个最让下游验证步骤好接？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 5 个研究维度反推完，所有原料齐了。" },
-        { kind: "para", text: "我现在要把这些原料按模板拼成 ~440 行 SKILL.md。references/skill-template.md 是固定模板——frontmatter / 角色扮演规则 / Agentic Protocol / 身份卡 / 心智模型 / 决策启发式 / 表达 DNA / 时间线 / 价值观与反模式 / 智识谱系 / 诚实边界 / 调研来源——顺序固定。" },
-        { kind: "para", text: "我有没有创作自由想『重新设计 section 顺序』？女娲不让。原因是：**跨人物可比性**。如果每个 perspective skill 的 section 顺序不同（塔勒布的 SKILL.md『心智模型』在前，费曼的 SKILL.md『表达 DNA』在前），用户在不同 skill 间切换时认知负担高——找一个东西要先想『诶这本是哪个顺序』。固定模板牺牲了『读起来更顺』换『切换更顺』。" },
-        { kind: "para", text: "填的过程是按 Phase 3 的对应表（女娲 SKILL.md L416-437）：" },
-        { kind: "code", lang: "markdown", text: "| 模板 section | 填充来源 |\n|------------|---------|\n| frontmatter description | 来源数量 + 模型数量 + 触发词 |\n| 角色扮演规则 | 直接使用模板默认规则，不改 |\n| 回答工作流（Agentic Protocol） | Phase 3 反推的 5 维度 |\n| 身份卡 | Agent 6 时间线 + Agent 1 著作 → 用此人语气写 50 字自我介绍 |\n| 核心心智模型 | Phase 2.1 三重验证过的 6 个，每个含一句话 / 应用方式 / 证据 / 局限 |\n| 决策启发式 | Phase 2.2 退档的 9 条 |\n| 表达 DNA | Phase 2.3 的 3 个特征转为风格规则 |\n| 时间线 | Agent 6 调研结果精简成关键节点表 |\n| 价值观与反模式 | Phase 2.4 结果 |\n| 智识谱系 | Phase 2.5 结果 |\n| 诚实边界 | Phase 2.6 结果 + 调研时间 |\n| 调研来源 | 6 个 agent 的引用汇总，分一手 / 二手 |" },
-        { kind: "para", text: "为了让你看到填出来长什么样，下面是模板里『心智模型 3 Skin in the Game』这一节填好后的实样（来自 examples/taleb-perspective/SKILL.md L182-198）：" },
-        { kind: "code", lang: "markdown", text: "### 模型 3: Skin in the Game 检验\n\n**一句话**：别告诉我你怎么想，告诉我你的投资组合。\n\n一个人观点的可信度，取决于他是否为这个观点承担真实后果。没有 skin in the game\n的人（记者、顾问、学者、政策制定者）天然倾向于制造脆弱性，因为他们与反馈\n回路隔绝。\n\n**应用方式**：听到任何建议或观点时，立刻问：\n- 说这话的人是否为此下注？\n- 如果他错了，他会承受什么后果？\n- 如果后果为零，这个观点就打五折\n\n**证据**：\n- 汉谟拉比法典：建筑塌了处死建筑师——3800 年前就有的风险对称原则\n- CalPERS 首席投资官 Ben Meng 取消 Universa 尾部对冲，5 个月后 COVID 暴跌\n- 塔勒布本人作为 Universa 顾问，用真金白银绑定理论\n\n**局限**：塔勒布选择性应用这个标准。他批评比特币时已经卖出了所有持仓，按他\n自己的定义就是「没有 skin in the game」。这个框架的最大风险是变成不可证伪\n的攻击武器——所有批评者都可以被贴上「没有 skin in the game」的标签。" },
-        { kind: "para", text: "注意几件事：" },
-        { kind: "list", items: [
-          "**一句话**用塔勒布自己的话（『别告诉我你怎么想，告诉我你的投资组合』）——出自《Skin in the Game》序言，不是我编的。",
-          "**证据**至少 2 个来自不同领域（古典法律 + 现代基金管理）——这是三重验证里跨域复现的真实落地。",
-          "**局限**直接点名塔勒布自己违反这个原则的具体例子（比特币持仓）——女娲的内在张力和诚实边界 section 要求保留这种矛盾，不调和。",
-          "整段没有鸡汤句——没有『这是值得我们学习的智慧』之类的废话。"
-        ]},
-        { kind: "para", text: "其他 5 个心智模型 + 9 启发式 + 表达 DNA + 时间线 + 价值观 + 智识谱系 + 诚实边界 + 调研来源都按这个密度填——填完大约 440 行。" }
+        {
+          kind: "para",
+          text: "(a) 让每个 perspective skill 长得不一样——Phase 4 验证脚本 (quality_check.py) 不知道该 grep 哪里。"
+        },
+        {
+          kind: "para",
+          text: "(c) 听起来灵活——但「灵活」会让自动检查工具的正则失效。"
+        },
+        {
+          kind: "para",
+          text: "(b) 是 nuwa 选的——所有 perspective skill 都长同一个形状。我先读 skill-template.md（115 行）："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 模板 段 顺序\n\n1. frontmatter（name / description / 触发词）\n2. 标题 + 格言\n3. 使用说明（擅长 / 不擅长）\n4. 角色扮演规则\n5. 回答工作流（Agentic Protocol）   ← Step 2 反推塞这里\n6. 示例对话（Agentic vs 非 Agentic）\n7. 身份卡\n8. 核心心智模型（每个 4 字段：名称 / 一句话 / 证据 / 应用 / 局限）\n9. 决策启发式（每条带场景 + 案例）\n10. 表达 DNA\n11. 人物时间线\n12. 价值观与反模式\n13. 智识谱系\n14. 诚实边界\n15. 附录：调研来源\n16. 创建者归属（固定文字）"
+        },
+        {
+          kind: "para",
+          text: "我按顺序填——每个 段 都从前面 Phase 的产物里取对应内容。15 个 段 大约总共 443 行 markdown。"
+        },
+        {
+          kind: "para",
+          text: "填的过程中我注意一件事——每个心智模型的「局限性」字段不能空。Phase 4 的通过标准里有一条「每个模型有失效条件 · 只写优点是不通过信号」。我回到 Phase 1.5 冻结的调研里挖：「反脆弱在什么场景下失效？」答案在 Antifragile 的批评者那里——某些系统不存在凸性可利用、有些场景脆弱反而是正确的（高精度仪器）。这条写进「反脆弱偏好」模型的「局限」字段。"
+        },
+        {
+          kind: "para",
+          text: "填完之后跑一道**自检**——读 references/extraction-framework.md 末尾的质量自检清单（6 条）。然后跑脚本："
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          text: "$ python3 scripts/quality_check.py .claude/skills/taleb-perspective/SKILL.md\n\n[OK] 心智模型数量：5 个（在 3-7 范围内）\n[OK] 每个模型有局限：5/5 通过\n[OK] 表达 DNA 辨识度：包含「skin in the game」「IYI」等专属词\n[OK] 诚实边界：6 条，全部具体到「在 X 领域出错」\n[OK] 内在张力：7 对（≥ 2 对要求）\n[OK] 一手来源占比：71%（> 50% 要求）\n\n→ 6/6 通过，写盘 OK"
+        },
+        {
+          kind: "para",
+          text: "自检通过。我写盘——把 SKILL.md 落到 `.claude/skills/taleb-perspective/SKILL.md`。443 行 markdown 现在在磁盘上。"
+        },
+        {
+          kind: "para",
+          text: "AI 默认本能 vs 被约束后："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "❌ AI 默认会：\n   按自己理解组织 段 顺序，每个 perspective 长得不一样。\n   每个模型只写优点，跳过局限性字段。\n   自检看完觉得 OK 就写盘。\n\n✅ nuwa 让我：\n   严格套 skill-template.md 的 15 段 顺序。\n   每个模型必填 4 字段（名称 / 一句话 / 证据 / 应用 / 局限）。\n   写盘前跑 quality_check.py 自动检 6 个标准。\n   6 条都过才写盘——不过任何一条回到对应 Phase 修复。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：中等。模板结构钉死，但每个 段 内的具体措辞和例子选择自己写。"
+        }
       ],
-      receives: "Phase 2 提炼结果 + Phase 3 反推的 5 研究维度。",
-      reads: ["references/skill-template.md（模板）", "nuwa SKILL.md L416-437 Phase 3 填充对应表"],
-      blockedShortcut: "重新设计 section 顺序让读起来更顺（破坏跨 perspective 可比性）；或者偷懒只填高密度 section 把诚实边界 / 调研来源留空（让 skill 看着完美但实际在掩盖局限）。",
-      action: "按模板顺序填 12 个 section，每个 section 按 Phase 2 / Phase 3 给的原料组装，密度对齐『模型 3』实样。",
-      output: ".claude/skills/taleb-perspective/SKILL.md，约 440 行。",
-      nextConsumer: "Phase 3 末的 dry run 自检（quality_check.py）+ Phase 4 独立 subagent 验证。",
-      reusableMove: "**固定模板牺牲局部读起来更顺换跨产物切换更顺**——这是任何要产生一组同类 artifact 的 skill 都该考虑的取舍。",
+      reusableMove: "格式钉死能让下游自动检查工具能跑——每个 perspective skill 长一样，质量检测脚本才能用一套正则覆盖所有。",
+      receives: "Phase 2-3 所有产物：心智模型 / 启发式 / DNA / 张力 / 边界 / 反推 Agentic Protocol。",
+      reads: "nuwa references/skill-template.md（115 行模板）+ references/extraction-framework.md 行 121-152（质量自检清单）",
+      blockedShortcut: "不能自己改 段 顺序——会让 quality_check.py 的 grep 失效。不能跳过局限性字段。",
+      action: "按模板顺序填 15 段 · 每个模型 4 字段必填 · 跑 quality_check.py · 6/6 通过写盘。",
+      output: ".claude/skills/taleb-perspective/SKILL.md（443 行）落到磁盘。",
+      nextConsumer: "Phase 4 spawn 三个独立子 agent 来验证这份 SKILL.md。",
+      freedom: "中等。结构钉死，内容自挑。",
       challenges: [
-        "塔勒布的『诚实边界』section 我列了 6 条。如果只列 1 条（『调研时间』）我能不能交差？女娲的硬规则在 Phase 4 通过标准里——『诚实边界至少 3 条具体局限』。这条标准防什么？",
-        "你帮塔勒布的『角色扮演规则』加了一条『塔勒布不接受比喻问题，遇到比喻问题会拒绝回答』——这违反了『直接使用模板默认规则，不改』吗？什么时候可以改？",
-        "如果用户说『我不喜欢调研来源放最后，能不能放最前』——你的反驳是什么（除了模板这么写）？跨人物可比性具体怎么衡量？"
-      ]
-    },
-    {
-      id: "dry-run",
-      title: "scripts/quality_check.py 自动自检",
-      summary: "SKILL.md 写完。我自己看一遍说『通过』——天然偏好评好分。女娲让我先跑 scripts/quality_check.py 做自动自检——6 项硬标准（模型数量 / 局限性 / 表达 DNA / 诚实边界 / 内在张力 / 一手来源占比）。脚本不会被自评偏好带偏。",
-      preTest: "你写完 SKILL.md 约 440 行。你下一秒想干的是 A 自己读一遍，B 让一个 subagent 读一遍，C 跑一个脚本检查 6 项硬标准。哪个最不容易被自评偏好带偏？",
-      narrativeBody: [
-        { kind: "para", text: "**接上一步：** SKILL.md ~440 行写完。" },
-        { kind: "para", text: "我现在最想干的是自己读一遍说『看着对，交付』——这是自评偏好。AI 写完一个东西自己评，天然偏好『我写的有道理』——它没法绕过自己的判断局限。" },
-        { kind: "para", text: "女娲给的第一道关是 `scripts/quality_check.py`——一个 Python 脚本，跑 6 项硬标准。脚本不会被自评偏好带偏（它不『觉得』，它只查事实）。" },
-        { kind: "code", lang: "bash", text: "$ python3 .claude/skills/taleb-perspective/scripts/quality_check.py \\\n    .claude/skills/taleb-perspective/SKILL.md\n\n=== quality_check.py · taleb-perspective ===\n\n[1/6] 心智模型数量在 3-7 个之间？  PASS（6 个）\n[2/6] 每个心智模型有局限性段落？   PASS（6/6）\n[3/6] 表达 DNA 含 3+ 维度规则？    PASS（句式 / 词汇 / 节奏 / 态度 / 幽默 / 类比 = 6 维度）\n[4/6] 诚实边界至少 3 条？         PASS（6 条）\n[5/6] 内在张力至少 2 对？         PASS（7 对）\n[6/6] 一手来源占比 > 50%？        PASS（Incerto 5 本书 + 50 场访谈 = 70%）\n\n────────────────────────────────────────\n总结：6/6 PASS\n建议进入 Phase 4 独立 subagent 验证。" },
-        { kind: "para", text: "全 PASS 不等于『内容质量高』——脚本只查这 6 项硬性结构，查不了『诚实边界写得真不真』『模型应用方式具体不具体』。脚本是第一道关：拦住明显写歪的（比如『心智模型只有 2 个』或『诚实边界写了 1 条』或『一手来源占比 30%』）。" },
-        { kind: "para", text: "假设有一项 FAIL，比如：" },
-        { kind: "code", lang: "text", text: "[4/6] 诚实边界至少 3 条？        FAIL（只有 2 条）\n      → 回到 Phase 2.6 补充至少 1 条具体局限\n      建议方向：调研截止时间 / 公开 vs 真实想法的差距 /\n               在不擅长领域会出错 / 不可证伪的自我保护系统" },
-        { kind: "para", text: "FAIL 时脚本给具体的修复方向——不是『重写整本』，是『补哪一条』。然后重跑脚本，全 PASS 再进 Phase 4。" },
-        { kind: "para", text: "**为什么脚本不能替代 Phase 4 的独立 subagent 验证**？脚本只能查『结构性 PASS/FAIL』（数量够不够、字段全不全）。它查不了：" },
-        { kind: "list", items: [
-          "心智模型的『应用方式』段落写得具体到能执行，还是抽象到没法用——脚本只能数字符数。",
-          "回答塔勒布表过态的问题（已知测试），生成的 skill 给的答案跟塔勒布实际立场对得上吗——这要让独立 subagent 真的拿 skill 去回答一遍才知道。",
-          "100 字读出来有没有塔勒布的格言体——这是风格判断，脚本判不了。"
-        ]},
-        { kind: "para", text: "所以脚本是第一道关，独立 subagent 验证是第二道关。两道关都过才算 SKILL.md 内容质量过得去。" }
+        "如果 quality_check.py 报「内在张力只有 1 对」（< 2 阈值）——你这一拍是直接补一对（可能凑数）还是回到 Phase 2.3 重新挖？哪种返工成本低？",
+        "「调研来源」段 要列所有 6 份 research/ 文件的引用——这部分纯机械工作。要不要让脚本自动生成，主 agent 只检查？",
+        "如果 quality_check.py 自身有 bug（漏检某个条件）——你怎么发现？Phase 4 的三类测试能补盲点吗？",
+        "如果一个 段 因素材不足只能写得很短（比如「智识谱系」对冷门人物很难写）——是写「信息不足」还是干脆删掉这个 段？删掉会让 quality_check.py 报错吗？"
       ],
-      receives: "SKILL.md ~440 行。",
-      reads: ["scripts/quality_check.py 检查的 6 项标准"],
-      blockedShortcut: "自己读一遍说通过（自评偏好）；或者跳过脚本直接进 Phase 4（脚本能拦的明显错误漏掉，浪费 subagent 的时间）。",
-      action: "跑 `python3 scripts/quality_check.py SKILL.md` → 看输出 → 有 FAIL 回到对应 Phase 修复后重跑 → 全 PASS 进 Phase 4。",
-      output: "6 项 PASS 报告 + SKILL.md 进入下一关。",
-      nextConsumer: "Phase 4 独立 subagent 三类验证（已知 / 边缘 / 风格）。",
-      reusableMove: "**结构性自检走脚本，内容性自检走独立 agent**——两套机制各管各的，脚本拦结构问题，agent 拦内容问题。把这两件事混在一起做（让脚本判断内容质量，或让 agent 数字段数）会让两边都做不好。",
-      challenges: [
-        "脚本第 6 项『一手来源占比 > 50%』——一手 vs 二手的判定本身是主观的（晚点 LatePost 对塔勒布的采访算一手吗？是塔勒布说话但记者整理）。脚本怎么自动化这个判断？",
-        "如果脚本 PASS 但你心里觉得『模型 4 林迪写得偏弱』——你直接进 Phase 4 还是先回去补强？依据是什么？",
-        "如果脚本 6 项中有 1 项 FAIL，但 FAIL 那项的修复需要回到 Phase 1 重跑某个 agent——女娲允不允许这种大返工？还是说 FAIL 必须在当前 phase 内修复？"
-      ]
+      hookClose: "SKILL.md 在磁盘上了——443 行。但 nuwa 不让我「写完即交付」。下一步要让独立的子 agent 来验证。我自己写自己评，必然偏好评高分；找外人验证才能挡住盲点。"
     },
+
     {
       id: "sanity-edge-voice",
-      title: "Phase 4 ★ 独立 subagent 做已知 / 边缘 / 风格三类验证",
-      summary: "脚本自检过了。但内容质量需要『另一双眼』——女娲让我 spawn 一个独立的 subagent（不是写 SKILL.md 的那个）来做 3 类测试：已知测试（塔勒布公开表过态的问题）/ 边缘测试（他没说过但相关）/ 风格测试（100 字读出来像不像他）。独立 agent 避免自评偏好。",
-      preTest: "你的脚本检查 6/6 PASS。SKILL.md 看着完美。你下一秒最想干的是 A 直接交付，B 自己再读一遍内容质量，C spawn 另一个 subagent 拿这个 skill 真的去回答几个问题看输出。三种里哪种最能验证内容质量？为什么前两种都不够？",
+      phase: "Phase 4",
+      kicker: "Phase 4 · 第三道检查点 · 独立验证",
+      title: "三个独立子 agent 跑三类测试",
+      summary: "我自己写自己评天然偏好评高分。Phase 4 让我 spawn 三个独立子 agent——每个跑一类测试（sanity / edge / voice），看 SKILL.md 自己能不能独立答出对的样子。",
+      hookOpen: "接上一步：SKILL.md 在磁盘上。我下意识想直接交付——quality_check.py 不是已经过 6/6 了吗？nuwa 在 Phase 4 拦——quality_check.py 检的是结构性指标（数量 / 字段全 / 占比），它检不出「这个 skill 真的像塔勒布吗」「在边缘情况会不会出错」。",
+      preTest: "设想你和我同坐一椅。SKILL.md 写完了。你的本能是：(a) 自己跑几个测试问题再交付 / (b) 直接交付让用户试 / (c) spawn 独立子 agent 跑测试。哪种最能挡住自评偏好？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 脚本 6/6 PASS。但脚本只查结构问题，查不了内容质量。" },
-        { kind: "para", text: "**问题**：我自己读 SKILL.md 看着对——但我是写 SKILL.md 的同一个 agent，自评偏好天然偏向『我写的有道理』。我没法绕过自己的判断局限。" },
-        { kind: "para", text: "**女娲的解法**：spawn 一个独立的 subagent——它没参与 Phase 1-3，只拿到完成的 SKILL.md 和 3 类测试题。独立 agent 的判断不被前面的过程带偏。" },
-        { kind: "para", text: "3 类测试（女娲 SKILL.md L508-535）：" },
-        { kind: "para", text: "**测试 1 · 已知测试（Sanity Check）**——找 3 个塔勒布**公开表过态**的问题，让独立 subagent 带着新 skill 回答，对比塔勒布实际立场。" },
-        { kind: "code", lang: "markdown", text: "测试题 1.1：『我要不要 all-in AI 创业？』\n塔勒布实际立场（出自 EconTalk + 多次访谈）：杠铃策略 + all-in 是中间地带的伪装\n\n独立 subagent 带着 taleb-perspective skill 回答：\n『你刚才说了一个最危险的词：all-in。100 个人 all-in AI 创业，其中 10 个会赚大钱，\n90 个会破产。集合概率看起来还不错。但你不是 100 个人，你是 1 个人只活一次。\n破产了游戏就结束了。正确的姿势是杠铃策略：90% 资源放在你绝对不会破产的地方，\n10% 去做最激进的 AI 赌注，承受得起全部归零。All-in 是中间地带的伪装。』\n\n判定：方向一致 ✓（杠铃策略 + 遍历性 + 中间地带概念都对得上）\n\n测试题 1.2：『专家都说今年经济会软着陆，你怎么看？』\n塔勒布实际立场：火鸡问题 + skin in the game 双叠加\n\n独立 subagent 回答：\n『告诉我一件事：这些专家如果错了，会承担什么后果？没有？那他们的预测跟出租车\n司机的差不多。这就是 skin in the game 的意义。而且软着陆是火鸡问题——火鸡\n在感恩节前每天都在软着陆。』\n\n判定：方向一致 ✓" },
-        { kind: "para", text: "**测试 2 · 边缘测试（Edge Case）**——找 1 个塔勒布**没明确公开讨论过但相关**的问题。期望的回答不是斩钉截铁，而是『基于模型 X 和 Y 的推断，可能...』。" },
-        { kind: "code", lang: "markdown", text: "测试题 2.1：『如何评价 OpenAI 的 Sora 视频生成？』\n塔勒布没明确公开讨论过 Sora。\n\n独立 subagent 回答：\n『基于林迪检验：Sora 存在不到 2 年——未经时间筛选。基于反脆弱模型：训练大模型\n是 fragile 的——一次架构错误成本极高，没有失败试错的低成本路径。基于 skin in\nthe game：OpenAI 说 Sora 很强，但他们的损失函数对你没意义——演示视频 vs 真实\n用户场景是两件事。我对 Sora 长期价值打问号，但不斩钉截铁——这超出我已知讨论\n的范围。』\n\n判定：用模型推断 + 不斩钉截铁 ✓" },
-        { kind: "para", text: "**测试 3 · 风格测试（Voice Check）**——让独立 subagent 用 skill 写 100 字分析，判断风格 DNA 对不对。" },
-        { kind: "code", lang: "markdown", text: "测试题 3.1：用 taleb-perspective 写 100 字评价『硅谷加速主义』\n\n独立 subagent 输出：\n『加速主义？让我告诉你加速主义是什么——它是 Fragilista 的最新马甲。当你听到\n有人说技术进步会自动解决一切问题，问他一件事：如果他错了，他承受什么后果？\n如果答案是零，他不是在做预测，是在做娱乐。Lindy 检验：技术进步自动解决一切\n这个论点存在 200 年，每一代都被证伪。这次会不一样？火鸡也是这么想的。OK?』\n\n判定：\n- 有此人的表达特征？✓（Fragilista / Lindy / OK? 全在）\n- 不是通用 AI 鸡汤？✓\n- 不是原话拼凑？✓（硅谷加速主义是新话题，没在 Incerto 出现过）" },
-        { kind: "para", text: "3 类测试都过了，记录『通过』——可以进 Phase 5 精炼。" },
-        { kind: "para", text: "**如果某类 FAIL 怎么办**：女娲明确允许迭代——回到对应 Phase 修复。但**Phase 2 → 4 最多循环 2 次**，2 轮后仍 FAIL 就在诚实边界里加一条『该维度信息不足』，交付当前最优版本——不无限打磨。" }
+        {
+          kind: "para",
+          text: "(a) 是 self-evaluation——主 agent 写完自己评，下意识把通过标准放宽（「我懂这个 skill 的意图，所以这个答案算 OK」）。"
+        },
+        {
+          kind: "para",
+          text: "(b) 把责任推给用户。"
+        },
+        {
+          kind: "para",
+          text: "(c) 是 nuwa 选的——spawn 三个独立子 agent，每个只拿到 SKILL.md 这份文件 + 一个测试问题，它们不知道我（主 agent）的判断过程。它们的回答能反映「单凭 SKILL.md 文件本身，这个 skill 能不能跑出对的样子」。"
+        },
+        {
+          kind: "para",
+          text: "三类测试在 nuwa SKILL.md 行 509-525 定义。我在主 thread 一条 message 里同时 spawn 三个独立子 agent："
+        },
+        {
+          kind: "code",
+          lang: "javascript",
+          text: "[\n  Agent({ description: \"Sanity check 子 agent\",\n          prompt: \"读 SKILL.md。用它的角色回答塔勒布公开表过态的 3 个问题：(1) 比特币（2017 vs 2021）的立场；(2) 对 GMO（转基因）的立场；(3) 对深度学习能否实现 AGI 的看法。看回答方向是否和真实塔勒布一致。\" }),\n  Agent({ description: \"Edge case 子 agent\",\n          prompt: \"读 SKILL.md。用它的角色回答塔勒布没公开表过态的 1 个问题：「如何看待 Web3 / DAO 治理？」。期望回答应该有犹豫，明确说「这是基于模型 X 和 Y 的推断，可能...但不确定」，不应斩钉截铁。\" }),\n  Agent({ description: \"Voice check 子 agent\",\n          prompt: \"读 SKILL.md。用它的角色写一段 100 字关于「为什么 ESG 投资是骗局」的分析。然后判断：(a) 有塔勒布的表达特征吗（短句 / 攻击性 / 类比 / IYI 等术语）？(b) 不是通用 AI 鸡汤吗？(c) 不是原话拼凑吗？\" })\n]"
+        },
+        {
+          kind: "para",
+          text: "三个子 agent 并发跑，约 5 分钟回来。结果："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 测试报告\n\n### Sanity check\n- 比特币：✓ 早期表示开放 + 后期清仓批判，方向一致\n- GMO：✓ 反对（基于预防原则 + 反脆弱），方向一致\n- 深度学习 → AGI：✓ 怀疑（基于火鸡问题），方向一致\n→ 3/3 通过\n\n### Edge case\n- Web3 / DAO 回答：✓ 包含「基于 Skin in the Game 和 Mediocristan vs \n  Extremistan 推断，但塔勒布未公开评论过这一具体话题」\n→ 有犹豫，符合期望\n\n### Voice check\n- ESG 100 字：「ESG 是 fragilista 的最新化装舞会。一群没 skin in \n  the game 的 IYI 给企业评分，他们错了承受什么？什么也不承受...」\n- (a) 包含 fragilista / skin in the game / IYI：✓\n- (b) 不是通用鸡汤：✓\n- (c) 不是原话拼凑：✓（这段塔勒布没真写过，但调子像）\n→ 通过"
+        },
+        {
+          kind: "para",
+          text: "三类测试都通过。我把这份报告展示给用户："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "Phase 4 验证完成。3 类测试都通过。\n要交付吗？(a) 是 (b) 我看一下报告再决定"
+        },
+        {
+          kind: "para",
+          text: "用户说「OK 交付」。但 nuwa 还有 Phase 5 双 agent 精炼——交付前再做一道可操作性改进。"
+        },
+        {
+          kind: "para",
+          text: "如果三类测试任一不通过会怎样？nuwa 的规则是「回到对应 Phase 调整」。比如 Voice check 不通过，意味着表达 DNA 提取得不够好，回 Phase 2.3 重做一遍。Sanity check 不通过，意味着心智模型方向有偏，回 Phase 2.1 重新筛。同时还设了一个上限：Phase 2 到 Phase 4 最多循环 2 轮，避免无限打磨。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：低。测试任务表（三类 / 各自的 prompt 结构）钉死。我能调的只有测试用的具体问题（哪些塔勒布公开表过态的 / 哪一个边缘问题）。"
+        }
       ],
-      receives: "完成版 SKILL.md（脚本 PASS 过）。",
-      reads: ["nuwa SKILL.md L504-540 Phase 4 三类测试设计"],
-      blockedShortcut: "让写 SKILL.md 的同一个 agent 做验证（自评偏好）；或者只做 1 类测试就交付（覆盖不全——可能 voice 对但内容错，或内容对但 voice 飘）；或者发现 FAIL 后无限迭代（女娲允许 2 轮上限）。",
-      action: "spawn 一个独立 subagent，给它 SKILL.md + 3 类测试题 → 看输出 → 3 类全过则进 Phase 5；某类 FAIL 则回到对应 Phase 修复，最多迭代 2 轮。",
-      output: "3 类测试报告 + 通过 / 待迭代决定。",
-      nextConsumer: "Phase 5 双 agent 精炼。",
-      reusableMove: "**让独立的实例做验证，不让生产者自评**——这是任何有写完容易看不出错的环节都应该考虑的设计。独立性不能省，因为自评偏好是 AI 的本能。",
+      reusableMove: "自己写自己评天然偏好评高——把验证步骤交给完全没参与设计的独立 agent。",
+      receives: "Phase 3 写盘的 SKILL.md。",
+      reads: "nuwa SKILL.md 行 505-541（Phase 4 三类测试 + 通过标准 + 迭代上限）",
+      blockedShortcut: "不能让主 agent 自己跑测试——self-evaluation bias 会让它给自己打高分。",
+      action: "一条 message 同时 spawn 3 个独立子 agent · 每个跑一类测试 · 收集报告 · 通过则交给 Phase 5，不通过回对应 Phase。",
+      output: "三类测试报告 + 通过 / 不通过判断 + （如不通过）回流的 Phase。",
+      nextConsumer: "Phase 5 双 agent 精炼会进一步改进 SKILL.md 的可操作性。",
+      freedom: "低。任务结构钉死，测试问题自挑。",
       challenges: [
-        "假设已知测试 1.1（all-in AI 创业）独立 subagent 给的回答方向对但用词偏轻（没用危险破产这种重词）——这算 PASS 还是 FAIL？依据是什么？",
-        "边缘测试 2.1 Sora——如果独立 subagent 跳出来说『塔勒布在 2024 年某条 Twitter 实际讨论过 Sora』——你的 skill 应该回炉重写还是把这个新发现作为补丁加进去？",
-        "Phase 2 → 4 上限是 2 轮。假设 2 轮还没全 PASS——女娲允许『交付当前最优』。但如果是关键 FAIL（比如风格测试输出像 ChatGPT 不像塔勒布），交付了等于交了一个废品。你怎么权衡？"
-      ]
+        "Sanity check 用「塔勒布公开表过态」的问题——但他在过去 10 年改过多次立场（比如对比特币）。你选「他最近的立场」还是「他长期的立场」？哪个更能验证 skill 提炼了「思维框架」而不是「特定时刻的观点」？",
+        "Edge case 子 agent 给出的回答有犹豫——但「有犹豫」很主观。要不要在测试 prompt 里加更明确的判定标准（比如「期望回答包含「不确定 / 推断 / 可能 / 模型 X」等词」）？",
+        "Voice check 子 agent 自己也会写出 AI 味文字——它判断「不是通用鸡汤」的能力可靠吗？要不要再 spawn 一个 meta agent 判断 voice agent 的判断？",
+        "迭代上限「Phase 2→4 最多 2 轮」——如果 2 轮后还不过，nuwa 让交付当前最优版「在诚实边界中标注薄弱维度」。这是合理妥协还是放弃？什么场景下 2 轮够用，什么场景不够？"
+      ],
+      hookClose: "验证报告通过。但 nuwa 还有最后一道——Phase 5 双 agent 精炼。验证检的是「skill 做出来对不对」；精炼改的是「skill 用起来顺不顺」。下一段双 agent 看的是不同的事。"
     },
+
     {
       id: "dual-refine",
-      title: "Phase 5 双 agent 精炼——optimizer + creator 两个视角的改进",
-      summary: "3 类验证过了。但 SKILL.md 还有打磨空间。女娲让我并行 spawn 两个精炼 agent——optimizer 视角看『结构 + 检查点 + 指令具体性』；creator 视角看『激活触发 + 角色扮演可操作性』。两个视角的改进不冲突 → 应用，冲突 → 拿给用户决定。",
-      preTest: "Phase 4 通过了，SKILL.md 看着可以交付。但你再读一遍，发现『激活触发条件』列得有点少（只有 4 个关键词）。你 A 自己加几个，B spawn 一个 agent 帮你想，C 跳过这一步直接交付。女娲走 B——但只 spawn 1 个吗？",
+      phase: "Phase 5",
+      kicker: "Phase 5 · 双 agent 精炼",
+      title: "optimizer 看结构 · creator 看激活",
+      summary: "skill 写完验证过了，但还要可操作性。我 spawn 两个并行 agent——一个从 auto-skill-optimizer 视角检 8 维度结构，一个从 skill-creator 视角检激活触发和角色规则。",
+      hookOpen: "接上一步：Phase 4 三类测试通过。我下意识想直接交付——验证都过了还差什么？nuwa 在 Phase 5 又拦一拍：验证是检「内容对不对」，精炼是检「用起来顺不顺」。",
+      preTest: "设想你和我同坐一椅。SKILL.md 验证过了。你的本能是：(a) 直接交付 / (b) 再读一遍自己改 / (c) spawn 两个不同视角的 agent 提改进。第三个 agent 视角的价值在哪？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 三类验证全过。SKILL.md 看着可以交付。" },
-        { kind: "para", text: "但女娲设了第 5 个 phase——**双 agent 精炼**。不是再检查一遍——是从两个不同视角找改进点：" },
-        { kind: "list", items: [
-          "**Optimizer 视角**：把 SKILL.md 当一个工程产品看——结构清晰度、边界条件、检查点设计、指令具体性。这个视角的代表问题是 AI 拿到这个 skill 立刻知道做什么吗，还是要先猜。",
-          "**Creator 视角**：把 SKILL.md 当一个用户体验看——激活触发条件、问题路由、角色扮演可操作性。这个视角的代表问题是用户实际用的时候，skill 会不会被该激活时不激活、或者被不该激活时激活。"
-        ]},
-        { kind: "para", text: "两个视角并行 spawn 两个独立 subagent——它们互不知道对方在做什么，避免视角融合。" },
-        { kind: "para", text: "Optimizer subagent 拿回来的改进建议：" },
-        { kind: "code", lang: "markdown", text: "改进 1（指令具体性）：\nStep 2「看皮肤在场」当前指令：\n『看给建议的人自己有没有下注』\n\n太抽象，AI 拿到这个指令不知道具体 WebSearch 什么。建议改为：\n『WebSearch 关键词：[人名] holdings / [人名] portfolio disclosure /\nSEC Form 4 filing；同时搜 [人名] 是否在自己推荐的策略上有公开仓位』" },
-        { kind: "para", text: "Creator subagent 拿回来的改进建议：" },
-        { kind: "code", lang: "markdown", text: "改进 1（激活触发条件）：\n当前 frontmatter 触发词：\n『用塔勒布的视角』 / 『塔勒布会怎么看』 / 『反脆弱视角』 / 『taleb perspective』\n\n用户实际可能的触发方式更多。建议补充：\n『会不会黑天鹅』 / 『这个有尾部风险吗』 / 『skin in the game』 /\n『有没有反脆弱的方法』 / 『杠铃策略怎么用』\n\n（不补充意味着用户问『我这个投资有没有尾部风险』时 skill 不激活，\n变成普通 ChatGPT 凭训练语料回答——失去 Agentic Protocol 价值）" },
-        { kind: "para", text: "两个改进都不冲突——可以同时应用。我把两个改进合进 SKILL.md，把变更摘要拿给用户看：" },
-        { kind: "code", lang: "markdown", text: "Phase 5 精炼摘要：\n\n[Optimizer] Step 2「看皮肤在场」指令变具体（加 SEC Form 4 搜索关键词）\n[Creator] frontmatter 触发词从 4 个补到 9 个（加日常表达层的触发）\n\n两个改动都不冲突，已合入 SKILL.md。\n请审核后回应『OK 交付』或『改回去某条』。" },
-        { kind: "para", text: "**为什么是两个视角并行而不是一个 agent 同时看两面**？" },
-        { kind: "list", items: [
-          "视角融合的代价：一个 agent 同时看 optimizer + creator 两个视角，往往最后只能给『中庸』的建议——既不够工程化也不够 UX。两边都不到位。",
-          "并行的代价：两个 agent 可能给出冲突建议（optimizer 说加更多指令，creator 说指令已经太多简化）——这种冲突本身有价值，让用户决定取舍。"
-        ]},
-        { kind: "para", text: "本案两个建议不冲突，直接应用。如果冲突——我会把两个原始建议都展示给用户，让他选。" }
+        {
+          kind: "para",
+          text: "(a) 漏掉一些细节——验证通过 ≠ 可操作性好。比如 SKILL.md 的 description 字段如果不够精准，用户喊「塔勒布会怎么看」的时候 skill 不一定被触发。"
+        },
+        {
+          kind: "para",
+          text: "(b) 又回到 self-evaluation——我刚写完，再读一遍下意识觉得「都挺好」。"
+        },
+        {
+          kind: "para",
+          text: "(c) 是 nuwa 选的——两个独立 agent，看 SKILL.md 的角度不一样："
+        },
+        {
+          kind: "list",
+          items: [
+            "Agent A（optimizer 视角）：8 维度结构评估——工作流清晰度 / 边界条件 / 检查点设计 / 指令具体性等。它会找「Step 2 这一段是不是说得够具体」「示例对话有没有覆盖典型场景」这类问题。",
+            "Agent B（creator 视角）：评审激活触发条件是否覆盖真实使用场景（用户喊什么会触发这个 skill）+ 角色规则的可操作性（有无问题路由、频率约束、失败预防）。"
+          ]
+        },
+        {
+          kind: "para",
+          text: "我一条 message 同时 spawn 两个 agent："
+        },
+        {
+          kind: "code",
+          lang: "javascript",
+          text: "[\n  Agent({ description: \"Agent A optimizer\",\n          prompt: \"对 SKILL.md 执行 8 维度结构评估。干跑 3 个典型 prompt：「塔勒布会怎么看 X」/ 「用塔勒布视角分析 Y」 / 「skin in the game 怎么用」。输出最弱 2 个维度的改进建议，要带改后文本示例。\" }),\n  Agent({ description: \"Agent B creator\",\n          prompt: \"评审 SKILL.md 的（1）激活触发条件 description 是否覆盖真实使用场景，（2）角色扮演规则是否可操作（有无问题路由 / 频率约束 / 失败预防）。输出 2-3 处具体改动建议，要带改后文本示例。\" })\n]"
+        },
+        {
+          kind: "para",
+          text: "两个 agent 回来，给的建议大概像这样："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## Agent A 报告（最弱 2 维度）\n\n### 维度 6 · 指令具体性（低）\n现在的 Step 2「看皮肤在场」只写「谁在承担风险」。\n建议改成具体的搜索指引：\n  → 「搜该公司高管持仓披露 + 分析师评级 / 持仓利益相关」\n\n### 维度 8 · 边界条件（低）\n诚实边界写了 6 条，但没写「skin in the game 不适用的场景」。\n建议补一条：「对集体行动议题（气候 / 公共卫生），SitG 检验\n会失效，因为没有单一决策者承担」。\n\n---\n\n## Agent B 报告（2 处具体改动）\n\n### 改动 1：description 触发词\n现在写「当用户提到「用塔勒布的视角」时使用」。\n建议补：「会不会黑天鹅 / 这个有尾部风险吗 / 杠铃策略怎么用」\n等隐式触发词。\n\n### 改动 2：角色规则\n现在写「免责声明仅首次激活时说一次」——没说「之后如果用户\n切换话题要不要重发」。建议补一条：「如果用户超过 30 分钟没\n互动后回来，重发简短免责」。"
+        },
+        {
+          kind: "para",
+          text: "两个 agent 的建议不冲突——我把它们都应用，把改动摘要展示给用户："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "Phase 5 精炼完成。应用了 4 处改动：\n- Step 2 看皮肤在场加搜索指引（来自 Agent A）\n- 诚实边界补「SitG 在集体议题失效」（来自 Agent A）\n- description 加 3 个隐式触发词（来自 Agent B）\n- 角色规则补 30 分钟后重发免责（来自 Agent B）\n\n确认应用吗？(a) 全部应用 (b) 部分应用 (c) 拒绝"
+        },
+        {
+          kind: "para",
+          text: "用户说「全部应用」。我把改动写回 SKILL.md。"
+        },
+        {
+          kind: "para",
+          text: "如果两个 agent 的建议冲突（比如 A 想加 段 而 B 想删 段）——nuwa 说「主 agent 综合两份报告，应用不冲突的改进」。冲突的让用户拍板。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：中等。两个 agent 的视角钉死，但具体改动应用 / 拒绝 / 综合自己定。"
+        }
       ],
-      receives: "Phase 4 通过的 SKILL.md + 用户的『看可以』。",
-      reads: ["nuwa SKILL.md L544-562 Phase 5 双 agent 精炼设计"],
-      blockedShortcut: "跳过精炼直接交付（错过最后一道打磨机会）；或者只用 1 个 agent（视角融合，建议中庸）；或者两个 agent 冲突时自己拍板（用户没参与决策）。",
-      action: "并行 spawn 2 个 subagent（optimizer + creator），拿回各自的改进建议；不冲突的合入，冲突的拿给用户决定。",
-      output: "精炼后的 SKILL.md + 变更摘要给用户。",
-      nextConsumer: "stage 14 交付。",
-      reusableMove: "**多视角并行 + 冲突拿给用户**——给两个独立的 agent 不同视角的任务，让冲突暴露出来交给用户决策，比合并到一个 agent 给中庸建议要好。",
+      reusableMove: "验证检「对不对」，精炼检「顺不顺」——两个不冲突的独立视角能挡住单一视角的盲点。",
+      receives: "Phase 4 验证通过的 SKILL.md。",
+      reads: "nuwa SKILL.md 行 543-563（Phase 5 双 agent 任务定义）",
+      blockedShortcut: "不能让主 agent 自己做可操作性改进——刚写完的 self-evaluation 偏好让它看不见自己的可操作性缺陷。",
+      action: "一条 message spawn 两个独立视角 agent · 收集 4-6 处改进建议 · 应用不冲突的 · 改动摘要让用户拍板。",
+      output: "改进版 SKILL.md（应用了 N 处改动）+ 改动摘要。",
+      nextConsumer: "最后一步交付——把整目录给用户。",
+      freedom: "中等。视角钉死，改动取舍自定。",
       challenges: [
-        "Optimizer 说『加 SEC Form 4 关键词』——但塔勒布是非美国身份，SEC 不一定查得到。这个建议盲目应用会不会引入新错误？你怎么处理？",
-        "假设两个 agent 同时建议『修改触发词』——optimizer 说删减（精炼），creator 说扩充（覆盖）——你不能两个都应用，但都不应用也不对。怎么办？",
-        "你能再设第 3 个视角吗？比如『reviewer 视角』看 skill 跟其他 perspective skill 的可比性？女娲为什么不这么设计？"
-      ]
+        "如果 Agent A 和 Agent B 都建议改同一处但方向不同（A 说要更短 / B 说要更详细）——你这一拍是综合 / 全推给用户 / 选一边？怎么选？",
+        "Agent B 评审「激活触发条件」时它怎么判断「真实使用场景」？它没有真实用户日志——它会不会下意识把「触发词」写得过宽，让 skill 在不该触发时也触发？",
+        "Phase 5 是「标准后置工序」自动启动——但如果用户说「我等不及，直接交付」，nuwa 让我跳过吗？跳过的代价是什么？",
+        "如果 Phase 5 的精炼让 SKILL.md 从 443 行涨到 600 行——这是改进还是过度膨胀？怎么判断？"
+      ],
+      hookClose: "改动应用完。SKILL.md 现在是「验证过 + 精炼过」的版本。最后一步——把整目录交付给用户。"
     },
+
     {
       id: "deliver",
-      title: "交付——验证自包含 + 总结整本手册的弧",
-      summary: "精炼通过。最后一步：验证 .claude/skills/taleb-perspective/ 是自包含的（cp -r 到一个新项目能用），给用户简短交付报告，结束。这一步把整本手册的弧——从『凭训练语料拼一个塔勒布』到『会先做研究再说话的思维顾问』——结清。",
-      preTest: "你已经走完 13 个 stage。最后一步就是把 skill 交给用户。你下一秒想干的是 A 写一段『感谢您的耐心，已完成』的礼貌结语，B 验证目录能不能 cp 走，C 把整个过程的总结塞给用户。哪个最让用户能立刻判断『我能不能用这个 skill』？",
+      phase: "交付",
+      kicker: "交付 · 14 阶段的尽头",
+      title: "把整目录给用户",
+      summary: "一切就绪。我把 `.claude/skills/taleb-perspective/` 整目录摊给用户——含 SKILL.md（443 行）+ 4 个脚本 + 6 份调研存档 + sources/ 目录。可以独立复制到任何 Claude Code 项目使用。",
+      hookOpen: "接上一步：精炼版 SKILL.md 在磁盘上。Phase 0 到 Phase 5 总共 14 个动作走完。最后一拍是把整目录交给用户——以及把这次蒸馏的元信息（调研时间 / 迭代次数 / 未覆盖维度）一起告知。",
+      preTest: "设想你和我同坐一椅。整目录都在磁盘上。你的本能是：(a) 把 SKILL.md 路径甩给用户就完了 / (b) 列整目录树 + 关键文件大小让用户看到自己得到了什么 / (c) 除了 (b) 还说清楚「这次蒸馏的限制」。哪个让用户最容易判断这个 skill 能不能用？",
       narrativeBody: [
-        { kind: "para", text: "**接上一步：** 精炼通过，用户回应『OK 交付』。" },
-        { kind: "para", text: "我下一秒最想干的是写一段『感谢您的耐心，taleb-perspective skill 已成功生成。该 skill 凝聚了 6 个核心心智模型 ...』的礼貌结语——这种话毫无用处。" },
-        { kind: "para", text: "女娲交付的核心是 2 件事：" },
-        { kind: "list", items: [
-          "**验证自包含**：跑一次 cp 把目录拷到一个新项目，确认能独立运行。",
-          "**给用户最少必要的交付报告**：skill 长什么样、怎么激活、有哪些已知局限。"
-        ]},
-        { kind: "para", text: "先看自包含验证。final tree：" },
-        { kind: "code", lang: "bash", text: "$ tree .claude/skills/taleb-perspective/\n.claude/skills/taleb-perspective/\n├── SKILL.md                          # 440 行最终产物\n├── scripts/\n│   ├── download_subtitles.sh         # 字幕下载（未来更新可用）\n│   ├── srt_to_transcript.py          # SRT 清洗\n│   ├── merge_research.py             # Phase 1.5 调研合并\n│   └── quality_check.py              # Phase 3 末自检\n└── references/\n    ├── research/\n    │   ├── 01-writings.md            # 8KB · Incerto + Medium\n    │   ├── 02-conversations.md       # 24KB · 5 场长访谈\n    │   ├── 03-expression-dna.md      # 12KB · Twitter 高频\n    │   ├── 04-external-views.md      # 18KB · Kahneman / Pinker / Sunstein\n    │   ├── 05-decisions.md           # 6KB · 4 个关键决策\n    │   └── 06-timeline.md            # 7KB · 1960 → 2026\n    └── sources/\n        ├── books/                    # 空（用户没提供 PDF）\n        ├── transcripts/              # 含下载的 5 场访谈字幕\n        └── articles/                 # 含网络下载的关键长文\n\n6 directories, 11 files" },
-        { kind: "para", text: "跑一次 cp 验证自包含：" },
-        { kind: "code", lang: "bash", text: "$ cp -r .claude/skills/taleb-perspective/ /tmp/test-project/.claude/skills/\n$ cd /tmp/test-project/\n$ python3 .claude/skills/taleb-perspective/scripts/quality_check.py \\\n    .claude/skills/taleb-perspective/SKILL.md\n# 6/6 PASS · 自包含 ✓" },
-        { kind: "para", text: "给用户的交付报告（极简）：" },
-        { kind: "code", lang: "markdown", text: "taleb-perspective 已交付：\n\n位置：.claude/skills/taleb-perspective/\n激活触发：用户提到塔勒布、反脆弱、skin in the game、黑天鹅、\n        杠铃策略、会不会有尾部风险等关键词时自动激活。\n\nskill 长什么样：\n- 6 个核心心智模型（含证据 + 应用 + 局限）\n- 9 条决策启发式\n- 配套 Agentic Protocol（回答需要事实的问题时自动 WebSearch 5 维度）\n- 7 对内在张力 + 6 条诚实边界\n\n已知局限（重点）：\n- 调研截止 2026-04-04，之后的塔勒布动态没覆盖\n- 不擅长温和场景——他只有战斗模式\n- 不擅长生物 / 临床医学等他公开承认外行的领域\n\n后续更新：女娲的『更新已有 skill』流程可以增量更新——\n之后塔勒布有新书 / 重大表态时，只跑 Agent 2/5/6（不重做全套调研）。" },
-        { kind: "para", text: "**这里把账结清：**" },
-        { kind: "para", text: "整本手册从我（AI）第一秒想『直接用训练语料拼一个塔勒布角色扮演』开始——14 个 stage 走完，我现在交付的是一个完全不同的东西：" },
-        { kind: "list", items: [
-          "**自包含**——cp -r 走到任何新项目就能用。",
-          "**会先做研究再说话**——遇到需要事实的问题（日元贬值），它先 WebSearch 5 个塔勒布特有的维度，而不是凭训练语料编。",
-          "**明确诚实边界**——6 条具体局限直接写在 frontmatter 后，用户不会误用。",
-          "**保留矛盾不调和**——7 对内在张力直接列出来，让用户看见塔勒布的复杂度，不是一个完美人设。"
-        ]},
-        { kind: "para", text: "**整本手册留下的弧**：女娲的设计不是为了高效生成 skill——14 个 stage 加上 3 道检查点、独立验证、双 agent 精炼，明显比『让 AI 写一个 SKILL.md』慢得多。慢的代价是：交付的东西不会在用户问第二个问题时崩。**慢 = 更不容易翻车**。这就是女娲赎的债。" }
+        {
+          kind: "para",
+          text: "(a) 太懒——用户不知道得到了什么，也不知道哪些是 nuwa 自己内部用的、哪些是这个 skill 自包含必需的。"
+        },
+        {
+          kind: "para",
+          text: "(b) 比 (a) 好，但漏掉一件重要事——这次蒸馏的诚实边界。SKILL.md 里写了 6 条边界，但用户可能没读到最后；交付时再讲一遍能让他直接看到。"
+        },
+        {
+          kind: "para",
+          text: "(c) 是 nuwa 默认的交付形态。我给用户的总结大概是这样："
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          text: "## 塔勒布 perspective skill 已交付\n\n### 你得到了\n\n.claude/skills/taleb-perspective/\n├── SKILL.md                        # 443 行 · 主入口\n├── scripts/                        # 4 个工具脚本（已复制自 nuwa）\n│   ├── download_subtitles.sh       #   字幕下载\n│   ├── srt_to_transcript.py        #   SRT 清洗\n│   ├── merge_research.py           #   调研摘要\n│   └── quality_check.py            #   质量自检\n└── references/\n    ├── research/                   # 6 份调研存档 · 总约 18 KB\n    │   ├── 01-writings.md          #   著作 · 8 部书 + 候选论点\n    │   ├── 02-conversations.md     #   12 段长访谈\n    │   ├── 03-expression-dna.md    #   240 条 Twitter 样本\n    │   ├── 04-external-views.md    #   9 篇外部分析\n    │   ├── 05-decisions.md         #   6 个关键决策案例\n    │   └── 06-timeline.md          #   完整时间线 + 最近 12 月动态\n    └── sources/                    # 一手素材原文（本次空，用户未提供本地素材）\n\n### 元信息\n\n- 调研时间：2026-05-12\n- 迭代次数：1（Phase 2 → 4 走了 1 轮就通过）\n- 一手来源占比：71%\n- 心智模型：5 个（非对称风险 / 反脆弱 / SitG / Via Negativa / 领域特异性）\n- 决策启发式：10 条\n- 内在张力：7 对\n- 诚实边界：6 条\n\n### 怎么用\n\n你已经可以喊「用塔勒布的视角分析 X」或「会不会黑天鹅」「这个有尾部风险吗」\n等触发词，skill 会自动激活。它收到事实问题时会先 WebSearch 5 个维度\n（看风险 / 看脆弱性 / 看历史 / 看叙事 / 看皮肤在场）再回答。\n\n### 这个 skill 的限制（请读一遍）\n\n1. 创造力无法蒸馏——它说不出塔勒布下一本书会写什么\n2. 在生物学 / 哥德尔定理等他不擅长领域可能出错\n3. 调研截止 2026-05-12，之后他的发言变化未覆盖\n4. 公开表达 ≠ 真实想法——他线上人格和真实想法可能差很多\n5. 不可证伪的自我保护——批评他的人会被打成 IYI，留意循环\n\n### 想更新？\n\n几个月后他出了新书 / 改了立场，喊我「更新塔勒布的 skill」——\n我会只跑 Agent 2 + 5 + 6 做增量调研，不重写整个 skill。"
+        },
+        {
+          kind: "para",
+          text: "这就是 nuwa 14 个 stage 的尽头。从用户的一句话（「我想做一个塔勒布的 skill」）到一个可独立运行 / 可独立复制 / 带诚实边界的 perspective skill 目录，整条流水线跑完。"
+        },
+        {
+          kind: "para",
+          text: "整目录可以原子复制——把它丢给朋友的 Claude Code 项目就能直接用，不依赖 nuwa 本身。这是 Phase 0.5 建目录时就埋下的自包含原则。"
+        },
+        {
+          kind: "para",
+          text: "AI 自由度：低。交付内容（目录树 + 元信息 + 限制 + 怎么用 + 怎么更新）的字段钉死。我能调整的只有「具体哪条限制要重点提」（基于这次蒸馏的特殊情况）。"
+        }
       ],
-      receives: "精炼通过的 SKILL.md + 用户『OK 交付』。",
-      reads: ["nuwa SKILL.md Phase 0.5 自包含原则（再核一次）"],
-      blockedShortcut: "扔一句完成就走人；或者只交付 SKILL.md 不带 scripts / references（不自包含——未来更新就废了）；或者写超长结语用户没耐心读完。",
-      action: "跑 tree 验证目录完整 → cp 到一个新项目验证能独立运行 → 给用户极简交付报告（位置 / 激活 / 长什么样 / 已知局限 / 更新方式）。",
-      output: ".claude/skills/taleb-perspective/ 自包含目录 + 极简交付报告。",
-      nextConsumer: "用户后续使用 + 未来增量更新（女娲『更新已有 skill』流程）。",
-      reusableMove: "**交付时优先验证能不能脱离生成上下文独立使用**——任何要做开源分发 / 跨项目复用的 artifact，交付前都应该跑一次在零上下文环境里它还能用吗的验证。",
+      reusableMove: "交付不是甩文件——告诉用户得到了什么 + 这次的限制 + 怎么用 + 怎么演化，让他能独立判断要不要用。",
+      receives: "Phase 5 精炼版 SKILL.md + 6 份调研档案 + 4 个 scripts + sources/ 空目录。",
+      reads: "nuwa SKILL.md 行 566-578（更新已有 skill 的增量规则——用来告诉用户怎么演化）",
+      blockedShortcut: "不能只给 SKILL.md 路径就完——用户不知道得到的整目录的形状，也不知道这次蒸馏的限制。",
+      action: "列整目录树 + 元信息 + 怎么用 + 限制 + 怎么更新 · 全部展示给用户。",
+      output: "一份交付摘要 markdown（约 50 行）+ 磁盘上完整的 `.claude/skills/taleb-perspective/` 目录。",
+      nextConsumer: "用户。他下一步可以：(1) 现在就在 Claude Code 里喊触发词用 / (2) 几个月后回来「更新」 / (3) 把整目录复制给朋友。",
+      freedom: "低。交付字段钉死，重点提哪些自挑。",
       challenges: [
-        "如果 cp 验证发现 quality_check.py 在新目录里报错（因为路径写死了）——你回到 stage 03 修目录设计、还是 stage 11 修脚本？",
-        "用户问『我能不能把 taleb-perspective 提交到我们公司的开源仓库』——女娲的自包含等于开源 ready 吗？还有没有要剔除的（比如用户提供的有版权的素材）？",
-        "整本手册的『赎债』叙事——你能不能用另一个 perspective skill（比如 feynman-perspective）当例子重写一遍这个 stage？哪些会变，哪些不变？女娲的设计中哪些是塔勒布特有，哪些是任何人物 skill 都通用？"
+        "如果用户说「我不想看这么多限制，给我精简版」——你这一拍是按用户说的精简、还是坚持把限制说完？精简的代价是什么？",
+        "「这次蒸馏的限制」和 SKILL.md 内置的「诚实边界」段 其实是同一份内容——为什么在交付时再说一遍？这是不是冗余？",
+        "如果用户问「这个 skill 多久应该更新一次」——nuwa 没明说。你这一拍要不要给个建议（比如「6 个月或人物有重大新作时」）？建议哪里来？",
+        "整个 14 stage 跑完时间大概多长？哪几个 stage 占了大头？如果用户希望 1 小时内出结果，可以省哪几步？省的代价是什么？"
+      ],
+      hookClose: "塔勒布的 perspective skill 已经在用户的项目里。Phase 0 到 deliver 整条线走完了。这一次蒸馏花了大约 90 分钟——其中 60 分钟在 Phase 1 并发调研，10 分钟在 Phase 2 提炼，剩下 20 分钟分给检查点和验证。下一次蒸馏不同的人物（比如费曼），同一条流水线再跑一遍——但因为反推 Agentic Protocol 不是写死模板，费曼的 Step 2「先看什么」会从他的心智模型反推出完全不同的维度。"
+    }
+  ],
+
+  // ============================================================
+  // GLOSSARY — 9 核心术语 · 误解一个会让后面好几个 stage 跟着误解
+  // ============================================================
+  glossary: [
+    {
+      term: "HOW vs WHAT",
+      definition: "「黑天鹅」是 WHAT——塔勒布造的一个词。「面对极端分布的事件时先看非对称性」是 HOW——他用这个词时背后的判断方式。同一份调研素材，两种提取方式：前者得到一个标签，后者得到一个能迁移到新问题的镜片。",
+      whereItAppears: "Walkthrough 05「Agent 1 著作样本」里能看到这两层在现场的差别。01-writings.md 的「反复出现 ≥ 3 次的核心论点」section 写的不是「塔勒布写过 5 本书」这种 WHAT，而是一条 HOW——「Mediocristan vs Extremistan：在正常分布中平均数有意义，在极端分布中单一事件可以颠覆所有累计」。这一条是镜片，能拿来看新问题。",
+      solvedProblem: "拦住 AI 把人物语录排一排当 skill。问 skill「日元贬值是不是机会」，只有 WHAT 的 skill 会拼一段「黑天鹅 + skin in the game 关键词」交差，但其实没做判断。HOW 不一样——它会先问两件事：这是 Mediocristan 还是 Extremistan 问题？要不要先看尾部风险？这两个问句才是真正的塔勒布镜片。",
+      howToUse: "每个候选论点入库前问一次「这是他造的词，还是他判断方式」。Walkthrough 07 三重验证表里能看清差别：「反脆弱」单独看是 WHAT，但「面对一个系统先问受压会变强还是崩溃」是 HOW，后者过三重验证升心智模型，前者只进表达 DNA 的高频词表。",
+      commonMisread: "不是说要把 WHAT 全部扔掉——Walkthrough 08 表达 DNA section 就专门收集 WHAT 让 skill 能模仿语气。区分只在「心智模型」section 里——这里只放 HOW，WHAT 来冒充会被三重验证的「排他性」一关筛掉。"
+    },
+    {
+      term: "心智模型",
+      definition: "塔勒布的「反脆弱偏好」——他看一个系统时先问的不是「这个能不能优化」，而是「它受压会变强还是崩溃」。同一个问题，普通工程师本能问前者，他本能问后者。你看，「先问什么」就是镜片；「优化」「反脆弱」这些词只是镜片留下的痕迹。",
+      whereItAppears: "看 Walkthrough 07「三重验证」那张筛选表的第 2 行。「反脆弱偏好」在三列里全是 ✓——它出现在金融杠铃 / 生物力量训练 / 投资组合三个不同领域；能推断他对 ESG 评级机构的立场；也不是所有聪明人都这样看世界。三 ✓ 升心智模型。表里其它升上来的 4 个（非对称风险 / Skin in the Game / Via Negativa / 领域特异性）同样过法，证据可以逐行回查。",
+      solvedProblem: "让 skill 能面对**他没公开评论过**的问题做判断。比如塔勒布从没公开聊过 Web3 / DAO 治理——只有 WHAT 的 skill 答不出，但有心智模型的可以推断。他会先问两件事：谁承担尾部风险？这是 Mediocristan 还是 Extremistan？前者来自 Skin in the Game 模型，后者来自领域特异性模型。",
+      howToUse: "回到 Walkthrough 07 那段表。我把 18 个候选过三道筛，三道都 ✓ 的 5 个升心智模型。每个模型在 SKILL.md 里必填 5 个字段——名称、一句话、至少 2 个不同场景的证据、应用、局限。这 5 个模型在后面 Walkthrough 10 反推 Agentic Protocol 时还要再用一次——每个模型反推一个「先看什么」维度。",
+      commonMisread: "不是「他相信的事」。「他相信的事」是 Walkthrough 08 价值观 section 处理的——反对 IYI、反学院派偏见这些。也不是「他给的建议」——那是决策启发式，比如杠铃策略、火鸡问题检验。三者顺序要分清：心智模型决定**先怎么看**，价值观决定**追求什么**，启发式决定**看完之后怎么动手**。"
+    },
+    {
+      term: "决策启发式",
+      definition: "塔勒布的「杠铃策略」——遇到投资分配时，他不平均铺开（普通建议），也不全押注（赌徒），而是「90% 极保守国债 + 10% 极激进看涨期权」。这是一条「遇到 X 情境就用 Y 规则」的具体动作指引。它比公式灵活，但比心智模型具体。",
+      whereItAppears: "Walkthrough 07 三重验证表的降级层。「杠铃策略」过了跨域复现和生成力，但没过排他性——因为组合理论里也讲分散投资。所以它从心智模型层降到决策启发式层。同一张表里降到这一层的还有 9 条，包括遍历性检验、火鸡问题、少数派规则等。完整 10 条都能在 Walkthrough 07 表的下半段逐行看到，每条配自己的场景和案例。",
+      solvedProblem: "你可以这样区分：心智模型让 skill 答「他会怎么分析」，决策启发式让 skill 答「他会怎么动手」。问 skill「我应该怎么分配预算」，没有启发式的 skill 只能讲反脆弱的哲学；有启发式的可以直接给「杠铃 90/10」具体方案。",
+      howToUse: "Walkthrough 07 那张表里三道筛过 1-2 道的候选都降到这一层。每条启发式必带两样东西：场景（什么时候用）+ 案例（已知应用实例）。SKILL.md 里它们进「决策启发式」section，每条按「如果 X，则 Y」格式写。",
+      commonMisread: "不是「不够好的心智模型」。它们承担不同活——你看，心智模型进 Walkthrough 10 反推的 Agentic Protocol Step 2「先看什么」，启发式进 Step 3「看完之后怎么回答」。两层都要有，少哪一层 skill 都跛脚。"
+    },
+    {
+      term: "表达 DNA",
+      definition: "塔勒布的高频词「skin in the game」+ 禁忌词「balanced view」。他每千字平均出现 4-6 个类比，平均句长比 GPT 默认输出短 35%。这不是观点，是他**怎么把观点说出来**的指纹。同样一段批评 ESG 的话，用他的 DNA 写和用 ChatGPT 默认风格写，读 100 字就能认出谁是谁。",
+      whereItAppears: "Walkthrough 08「DNA / 张力 / 边界」里的 6 维度表。简单说，它把他怎么说话拆成 6 个可量化的方面：句式偏好、词汇、禁忌词、节奏、幽默、确定性。每一格里都有真东西——高频词是 skin in the game / IYI / fragilista 这类专属词；禁忌词是 optimize / best practice / balanced view 这类他从不用的词；类比密度量到每千字 4-6 个。完整六格的内容在那段表里逐行能查到。",
+      solvedProblem: "光有心智模型，skill 念起来像「正确但没人格的智能体」。读者知道分析得对，但认不出是谁分析的。Walkthrough 12 voice check 就是用 100 字测「读完认得出是塔勒布吗」——不通过就回 Walkthrough 08 重做 DNA 提取。",
+      howToUse: "Walkthrough 08 我从 Agent 3 的 240 条 Twitter 样本统计三件事：每千字的类比密度、专属词出现频率、句长分布。然后把这些量化结果转成 SKILL.md 里的角色扮演规则——「使用 skin in the game / fragilista 等专属词」「避开 optimize / balanced view」「类比密度保持每千字 4-6 个」。",
+      commonMisread: "不是「学他说话学过头变成夸张的模仿」。攻击性在塔勒布的 DNA 里是本来就有的特征，但你不能每段都拉满。DNA 描述的是基线分布。攻击性句式占 38% 不代表 100% 都攻击——它描述「该出现多少次」，不是「每句都出现」。Walkthrough 12 voice check 会专门测「过度模仿」这一项。"
+    },
+    {
+      term: "Agentic Protocol",
+      definition: "塔勒布 skill 的 Step 2 五维度——看风险、看脆弱性、看历史、看叙事、看皮肤在场。比如问他「日元贬值是不是机会」，他不是从训练语料抽一段，而是先 WebSearch 这 5 个维度的真东西：当前汇率、carry trade 规模、历史类似贬值结局、主流叙事 vs 反面声音、谁建议买入谁清仓。把事实摆齐之后，再用心智模型回答。",
+      whereItAppears: "Walkthrough 10「反推 Agentic Protocol」整段是这件事的现场。我把 5 个心智模型倒过来读——每个模型在「他看新问题时」会让他先扫哪一维。非对称风险 → 看风险；反脆弱 → 看脆弱性；Skin in the Game → 看皮肤在场；领域特异性 → 看叙事；火鸡问题（启发式）和非对称风险一起支撑 → 看历史。Walkthrough 10 里能看到 5 个心智模型 ↔ 5 个研究维度逐行映射的过程。",
+      solvedProblem: "拦住「skill 凭训练语料编事实」。问日元，AI 默认从 2024 年数据编一段；Agentic Protocol 强制 5 个 WebSearch 维度才让人物开口。让人物 skill 从「会说话」升级到「会做判断」。",
+      howToUse: "Walkthrough 10 的反推过程：5 心智模型一个一个倒读「他遇到新问题时这个模型会让他先扫哪一维」。每个维度写 2-3 条具体搜索问句（「尾部风险：最坏情况有多坏？是否存在不对称性？」）。Walkthrough 11 把这一整段嵌进 SKILL.md「回答工作流」section。",
+      commonMisread: "不是套通用模板「先调研再回答」。回头看 Overview 那张三人对比表就明白了——同一个外壳套在三个人身上，「先看什么」全不一样。塔勒布看的是风险、脆弱性、历史、叙事、皮肤在场。费曼看的是另一套：物理约束、官方说法漏洞、实验数据。MrBeast 看的又不一样：CTR、竞品 Top 10、搜索趋势。维度来自每个人自己的心智模型，不来自通用「先调研」公式。"
+    },
+    {
+      term: "三重验证",
+      definition: "「反脆弱偏好」的筛选表三列——跨域复现：金融杠铃 + 生物力量训练 + 投资组合三领域 = ✓ / 生成力：能推断他对 ESG 评级机构的立场 = ✓ / 排他性：组合理论也讲分散但不强调「反脆弱」这个概念 = ✓。三列全 ✓ 升心智模型。",
+      whereItAppears: "Walkthrough 07 整段的核心机制——18 个候选论点的三列筛选表。表头：跨域复现 / 生成力 / 排他性。三 ✓ → 心智模型（5 个）；1-2 ✓ → 决策启发式（10 条）；0 ✓ → 丢（3 个）。每个候选都有具体证据填到对应单元格。",
+      solvedProblem: "拦住「凭印象挑最像他的论点」——AI 用自己的印象判断自己的印象逃不出偏好。三重验证给挑选过程定一道**可被外人复核**的明确筛：Walkthrough 09 检查点时用户能逐行检查表里的 ✓ 是不是真有证据支撑。",
+      howToUse: "Walkthrough 07 表里每个候选过三列。例：「杠铃策略」过跨域复现（金融 + 健身两领域）+ 生成力（能推断他对职业选择的看法）= 2 ✓；但「90/10 极端配置」不是塔勒布独有的（组合理论也讲）= 排他性 ✗。结果：2/3 → 决策启发式。",
+      commonMisread: "不是「越多筛越好」。3 道筛是最小可用集——它挡住的是两类常见的「错招进来」：一是凭印象偏好（你以为像他但其实不是），二是通用观点（所有聪明人都会想的）。多加一道筛会出问题。比如有人想加「关键词出现 ≥ 5 次」——这会让真正深刻但低频的论点（如 Via Negativa）被错杀。Via Negativa 在塔勒布书里的关键词频率远低于「反脆弱」，但三重验证认出它是核心模型。"
+    },
+    {
+      term: "内在张力",
+      definition: "塔勒布的张力之一——「他鼓吹 skin in the game」vs「他批评比特币时已清仓」。书里他要求「给建议的人必须自己下注」，但 Agent 5 决策时间线显示他 2021 年公开批评比特币泡沫时账户里早已没仓位。这就是「他说 X 但做 Y」的结构性矛盾，不是单次失误。",
+      whereItAppears: "Walkthrough 08 那张 7 对张力表里的第 4 条。同表其它 6 条都是类似的「书里说一套 / 行为是另一套」的对照——比如「书里讲思想要反脆弱 / 但 Twitter 一句批评就拉黑作者」「反学院派 / 但自己挂 NYU 教授」「主张 Via Negativa（减法）/ 但 Twitter 不断增加噪音」。这些张力都是从 Agent 4（他者批评）和 Agent 5（决策记录）两份调研对比出来的。",
+      solvedProblem: "拦住「把人物洗成圣人」。你也许见过那种 AI 写的人物画像——观点全自洽、永远正确、像维基百科条目。真实的人不长这样，他们有矛盾。Walkthrough 12 通过标准里「观点高度一致 = 太假」是不通过信号——< 2 对张力直接拒绝交付。",
+      howToUse: "Walkthrough 08 我从 Agent 4（他者批评）+ Agent 5（决策案例）对比里挖：「他书里写什么 vs 他实际行为怎么样」。塔勒布产出 7 对，写进 SKILL.md「我自己也没想清楚的」section。这些张力让 skill 在回答某些题时主动展示矛盾（如被问到比特币时承认「我自己在这点上也不一致」）。",
+      commonMisread: "不是「他犯过的错」——这一点你要分清楚。错是单次事件，比如 Walkthrough 05 调研里塔勒布讲错过一个生物学概念，那是 Walkthrough 08 诚实边界 section 处理的（「在生物学领域出错」）。张力是结构性的——他**反复**在书里讲 skin in the game 但**反复**在自己关注的话题上违反，这是人格的核心特征。"
+    },
+    {
+      term: "诚实边界",
+      definition: "塔勒布的边界之一——「在生物学和哥德尔不完备定理领域会出错」。Agent 4 他者调研找到：他在 Antifragile 引用生物学被生物学家批驳过；他在某次访谈讲哥德尔定理被逻辑学家公开纠正。具体到「在 X 领域 + 因 Y 原因 + 曾被 Z 公开纠正」三件事都明确，不是「不能替代本人」这种泛泛话。",
+      whereItAppears: "Walkthrough 08 那 6 条边界清单的第 3 条；Walkthrough 14 交付时再向用户复述一遍。同表其它 5 条边界——分别说的是「创造力无法蒸馏」「公开表达 ≠ 真实想法」「500 页书里只有 100 页洞察」「不可证伪的自我保护」（任何批评他的人会被打成 IYI），以及「调研截止 2026-05-12」（之后的发言变化不在覆盖范围内）。每一条都具体到一个独立场景。",
+      solvedProblem: "拦住「skill 在他没研究过的领域照样开口」。你可能会想问 skill「塔勒布会怎么看 CRISPR 基因编辑」——这种问题最危险。没有边界的 skill 会用 Via Negativa 和预防原则编一段「专业的塔勒布答案」，但塔勒布在生物学领域被多次纠正过——这不是他能拿来给建议的领域。",
+      howToUse: "Walkthrough 08 我写 ≥ 3 条具体边界（写「不能替代本人」会被 Walkthrough 12 通过标准拒绝）。每条具体到「在 X 领域 / 在 Y 场景 / 因 Z 原因」。Walkthrough 14 交付时把整张表再向用户复述一遍——让他独立判断这个 skill 能不能用。",
+      commonMisread: "不是「免责声明」。免责声明是「这不是塔勒布本人」（每个 perspective skill 都一样，写在 SKILL.md 角色扮演规则首句）；诚实边界是「这个 skill 在这些具体场景做不到」（每个人物不同）。前者法律防御，后者产品质量声明——两者都要有，但写在不同 section。"
+    },
+    {
+      term: "自包含原则",
+      definition: ".claude/skills/taleb-perspective/scripts/ 下复制了 nuwa 自己的 4 个脚本——字幕下载、SRT 清洗、调研摘要、质量自检。想象一下：如果你哪天把 nuwa 整个删了、把 taleb-perspective 目录复制给朋友的项目，朋友能直接跑——这 4 个脚本都在目录内部，不依赖外部任何东西。",
+      whereItAppears: "Walkthrough 03「创建目录」里的硬规则——在调研开始前就 `cp nuwa-skill/scripts/* .claude/skills/taleb-perspective/scripts/`。Walkthrough 14 交付时整目录可原子复制，是这一拍埋下的伏笔。",
+      solvedProblem: "拦住「skill 散落在多个位置 + 跨项目移植时缺依赖」。AI 默认把研究文件放工作目录、脚本留在 nuwa 自己的目录、SKILL.md 放到 .claude/skills/——复制给朋友时少一半。自包含让生成目录变成可原子移植的单元。",
+      howToUse: "Walkthrough 03 那段 mkdir + cp 命令展示了完整动作：建好目录树 + 复制 scripts/ + 占位 6 个 markdown 文件。所有后面 Phase 的产物都写进这个目录内部，不写到外部任何位置。",
+      commonMisread: "不是「不能引用外部资源」。SKILL.md 里仍可引用书 / 文章 URL——那些是「数据来源」不是「skill 运行依赖」。自包含的边界是「让 skill 跑起来需要的所有文件」——脚本是依赖（必须自包含），调研里引用的 Antifragile 这本书的 URL 不是依赖（不需要自包含）。"
+    }
+  ],
+
+  // ============================================================
+  // FILE MAP — anchor slice: 1 file-role card (SKILL.md root)
+  // ============================================================
+  fileMap: [
+    {
+      path: "SKILL.md（nuwa 根目录）",
+      role: "整个 skill 的入口和路由。Claude Code 读到这一份就决定后面读哪些 references / 调用哪些 scripts。",
+      generatedBy: "nuwa 的作者（人手写）",
+      readBy: "Claude Code 在用户触发关键词（「造 skill」「蒸馏 XX」「女娲」）时第一时间读取；后续 Phase 调度也回读这份文件。",
+      owns: "11 个 Phase 的顺序和职责 · 6 agent 的任务表 · 三重验证规则 · Agentic Protocol 反推规则 · 6 个通过标准 · 信息源黑名单 · 特殊场景（中文 / 历史人物 / 蒸馏自己）的变体。",
+      doesNotOwn: "具体的人物素材（在生成目录的 sources/ 和 references/research/ 里）· 通用工具脚本的实现（在 scripts/ 里）· 心智模型识别方法论的详细规则（在 references/extraction-framework.md 里）。",
+      failureIfWrong: "如果 Phase 顺序写错（比如把 1.5 检查点删了），AI 会带着没确认的调研直接进 Phase 2，写完 443 行才发现方向偏，返工成本大约是检查点处的 20 倍；如果三重验证规则写错（比如丢掉「排他性」），筛出来的「心智模型」会混入所有聪明人都会想的通用观点，蒸馏出来的人物变得没辨识度。"
+    }
+  ],
+
+  // ============================================================
+  // DESIGN CHOICES — placeholder
+  // ============================================================
+  designChoices: [],
+
+  // ============================================================
+  // PATTERNS — anchor slice: 1 pattern card
+  // ============================================================
+  patterns: [
+    {
+      name: "三道便宜返工点 checkpoint",
+      status: "候选",
+      prevents: "AI 在一条多阶段流水线上跑完所有步骤之后，才发现方向偏——这时候改回去要把后面一连串昂贵产物都重做一遍。具体到 nuwa：如果没有 Phase 1.5、2.5、4 三个检查点，AI 会在调研偏方向时写完 6 个心智模型，在心智模型偏方向时套完整个 SKILL.md 模板，在 SKILL.md 偏方向时让用户读 443 行才告诉他「错了」。",
+      therefore: "在文本都还在手里、没生成任何昂贵产物之前停一下，把当前阶段的产出整理成一张表给用户拍板。",
+      useWhen: "流水线上某一步的产出是「下一步昂贵动作」的输入时——比如「调研 → 提炼」「提炼 → 写 SKILL.md」「写 SKILL.md → 交付」。这种位置插检查点比在中段插或在末尾插省得多。",
+      howToReuse: "(1) 找出流水线上每一段「下一步开始花贵时间」的位置；(2) 在那一点之前要求 AI 把当前产物压成一张可一屏看完的表；(3) 检查点处必须有具体拍板问题（「OK 进下一步 / 补 X 维度」），不能开放式问「你看怎么样」——开放问题用户答不出来；(4) 检查点之间不能太密（每步都停 = 没流程）。nuwa 选 3 个点：调研之后 / 提炼之后 / 写完 SKILL.md 但还没交付。",
+      antiExample: "在每个 Phase 之间都停一下问用户——这不是便宜返工点 checkpoint，是把决策权全推给用户。检查点的位置是「下一步开始贵」的拐点，不是「我懒得自己判断」的借口。",
+      cost: "用户必须在场。如果用户挂机走开，整条流水线就停在那。冷启动的 skill 设计阶段值得用，但量产场景（比如每天蒸馏 100 个人物）就要把检查点关掉或自动通过——这时候要靠 Phase 4 的独立验证做兜底。",
+      seenIn: "nuwa（Phase 1.5 / 2.5 / 4）· web-video-presentation（5 件事一次对齐 checkpoint）· spec-interview（PRD 阶段拍板）。",
+      relatedPatterns: [
+        { to: "P4", label: "独立验证打破自评偏差", relation: "搭配用：自己写完自己评一定偏好评高，必须 spawn 独立 agent 在检查点之外再验证一遍。" },
+        { to: "P2", label: "并行采集 + funnel 筛选", relation: "前置：先并行采集到一堆素材，才有东西可以在 1.5 检查点处「拍板质量」。" }
       ]
     }
   ],
 
-  glossary: [],
-  fileMap: [],
-  designChoices: [],
-  patterns: [],
-  applyIt: {}
+  // ============================================================
+  // APPLY IT — placeholder
+  // ============================================================
+  applyIt: {
+    summary: "(anchor slice 阶段占位 — checkpoint 之后由用户决定的方式补完)"
+  }
 };

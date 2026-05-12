@@ -131,6 +131,11 @@ instructions and examples.
     run an editor pass, then assemble the web app. `handbook.md` is only a
     later export. See `references/web-production-flow.md`.
 
+14. **Every page passes a local voice gate before the final editor pass.**
+    反装样自检、去 AI 味自检、朗读可行性检查是每页 / 每章写完后的出门门槛，
+    不是全书写完后的清理工作。先修局部文风问题，再做全书级一致性检查。See
+    `references/web-production-flow.md`.
+
 ## Recommended Handbook Structure
 
 For web mode, treat this structure as the page map. First create the source

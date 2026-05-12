@@ -23,16 +23,17 @@ code block 有没有 mac chrome、pull-quote 用什么修辞、challenges 区怎
 ## 视觉论点（visual thesis）
 
 一句话：**这是一本印出来的书，不是一个 docs 站**。读者读 walkthrough 应该有
-读长文特稿的呼吸感——大开本、留白多、字号大、段落慢、视觉锚点是 stage 编号和
-pull quote 不是侧边导航。
+读长文特稿的呼吸感——大开本、留白多、字号大、段落慢。左侧 sidebar 负责全站
+导航；右侧正文的视觉锚点是 stage 编号和 pull quote。
 
 具体几条：
 
 - 字体先讲故事。Noto Serif SC 担正文和大标题，JetBrains Mono 只在代码 / 元信息
   里出现。Inter / Roboto / 系统 sans 不上场。
 - 配色克制到只有一个强调色（深红 #8a1c0f）。其它都是纸色 + 墨色梯度。
-- 视觉锚点只用 typography 不用阴影。stage 编号用 96-168px 的斜体大数字做锚——
-  比加边框、加阴影、加圆角的卡片化处理更安静也更有分量。
+- 右侧正文的视觉锚点只用 typography 不用阴影。stage 编号用 96-168px 的斜体大
+  数字做锚——比加边框、加阴影、加圆角的卡片化处理更安静也更有分量。左侧
+  sidebar 是全站导航 chrome，要保留，但它不是 walkthrough 正文的视觉主角。
 - 代码块是反差插入。整页是纸色，代码块是 #161210 暗底——这一对反差让代码不需
   要边框、不需要 label 就能被一眼定位。
 
@@ -82,9 +83,10 @@ mono。
 
 ## 组件形状
 
-### Masthead（顶栏）
+### Masthead（右侧正文顶栏）
 
-不是侧边栏，是顶端横条。
+它在右侧正文区域内，不替代全站左侧 sidebar。walkthrough 页面仍然保留和 index
+一致的左侧菜单栏；masthead 只是正文自己的章节横条。
 
 - 左边：`❖ 女娲 · 解剖手册` + `章 02 / Walkthrough`（kicker，sans uppercase 11px
   letter-spacing 0.22em）
@@ -208,8 +210,24 @@ var(--rule) 分隔。
 
 ## site.js 渲染层的约束
 
-walkthrough 页面渲染时**不要走默认 layout()**（layout 会强制套侧边栏）。直接
-渲染进 `#app` / `<main>`。其它页面继续走 layout()——sidebar 留给那些页。
+walkthrough 页面渲染时**必须走默认 `layout()`**，让左侧 sidebar 和其它页面保持
+一致。把编辑杂志体正文作为 `layout("Walkthrough", content)` 的 `content` 传入，
+并在 content 内包一层 `.page`：
+
+```html
+<main>
+  <div class="page">
+    <!-- masthead / hero / index / stages -->
+  </div>
+</main>
+```
+
+CSS 可以在 `body[data-page="walkthrough"] main` 上取消默认 padding，让 `.page` 自己
+控制右侧正文宽度；但**不要**把 `#app` 改成 `display: block`，也不要绕开
+`layout()` 直接渲染进 `#app`，否则 sidebar 会消失。walkthrough 的 serif 字体和
+纸张色只服务右侧正文；如果 body 级 token 会影响 sidebar，需要在
+`body[data-page="walkthrough"] .sidebar` 里把 sidebar 的 sans 字体和导航 token
+复原。
 
 stage 字段映射（不能少）：
 
@@ -228,6 +246,8 @@ stage 字段映射（不能少）：
 
 写完一个 walkthrough 页面之后：
 
+- 左侧 sidebar 还在吗？并且字体 / 间距是否仍像 index 页的导航 chrome？看不到或
+  变成正文 serif 风格 → 回去检查是否绕开了 `layout()`，或 CSS 是否覆盖了 sidebar。
 - 翻开浏览器，第一眼看到的是 stage 编号那个 96-168px 斜体大数字吗？看不到 → typography 不够分量，回去检查 clamp 值有没有被覆盖。
 - 整页只有一种强调色（深红）吗？出现了第二种 → 回去删掉。
 - 代码块周围是不是纸色 + 暗块的强反差？如果代码块也是浅色（边框 + 浅灰底）= 没装上 night tokens，回去修。

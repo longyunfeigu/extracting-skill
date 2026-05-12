@@ -12,7 +12,7 @@ window.handbook = {
     oneLiner: "这个 skill 看穿了 AI 的本能：拿到「把文章做成视频」，AI 会拆成几页大字 PPT 加几个淡入淡出动画，看着像视频，其实是 PPT 加动效。skill 的反击是把视频生产拆成 4 个不会互相污染的阶段（写内容 / 跟用户对齐 / 写网页 / 合音频录屏），每阶段只让 AI 做这一阶段该做的决定，下一阶段才能做的判断这一步不准提前做。运行时只信一份口播文本（narrations.ts），网页跑、音频合、录屏都从这一份读——三处各写一套就会悄悄对不上。",
     wowMoment: "它不让我从文章直接跳进 React 代码。先把文章改成能念出口的 script.md，再写一份只写章节切分和画面内容、不写动画的 outline.md；让用户在所有东西还都是文本的时候一次确认 5 件事——稿子改不改、计划改不改、选哪个主题、素材怎么准备、章节怎么并发。这一刻是改起来最不花时间的时候。5 件事确认完才起脚手架；第 1 章必须先做透，用户验完那个味才扩展到第 2-N 章。每章口播文本只在 narrations.ts 里有一份——这样 step 数、音频文件、自动播放录屏三件事不会悄悄对不上。",
     badResultPrevented: "防止 AI 把「做视频」做成「几页大字 PPT 加几个淡入淡出」；防止 outline 把动画写死、导致每个章节实现的 agent 只能照搬，没有视觉判断空间；防止网页里的 step 数、口播文本、音频文件三处各写一套，录屏的时候才发现对不上；防止没有先做透第 1 章就一口气并发 16 章，每个 agent 凭直觉走、风格全跑偏；防止「每章实现」这种重复动作因为会话太长 AI 累了、变成只剩骨架的纯文字 PPT。",
-    whyThisShape: "本份手册按 HANDBOOK-FORMAT.md 拆成 7 章：Overview 讲为什么值得看 + 一个具体例子；Walkthrough 用 14 个 stage 讲 AI 怎样被一步步拦截、改写、暂停、自检；Glossary 单独成章列 10 个核心术语，每条 5 个字段；File Map 讲 SKILL.md + 7 份 reference + 模板项目各管什么；Design Choices 讲 8 个关键设计选择各防什么坏 AI 行为；Patterns 列 9 张候选 pattern card；Apply It 给读者一份自己写类似 skill 的清单。"
+    whyThisShape: "本份手册按 handbook-spec.md 拆成 7 章：Overview 讲为什么值得看 + 一个具体例子；Walkthrough 用 14 个 stage 讲 AI 怎样被一步步拦截、改写、暂停、自检；Glossary 单独成章列 10 个核心术语，每条 5 个字段；File Map 讲 SKILL.md + 7 份 reference + 模板项目各管什么；Design Choices 讲 8 个关键设计选择各防什么坏 AI 行为；Patterns 列 9 张候选 pattern card；Apply It 给读者一份自己写类似 skill 的清单。"
   },
 
   example: {

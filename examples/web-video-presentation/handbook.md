@@ -2,7 +2,7 @@
 
 > 来源 skill：`/Users/guwanhua/git/garden-skills/skills/web-video-presentation`
 >
-> 这是一份完整样板手册，用来展示 `references/HANDBOOK-FORMAT.md` 的输出形态。
+> 这是一份完整样板手册，用来展示 `references/handbook-spec.md` 的输出形态。
 > 它不是原 skill 的替代说明书；它的目标是让读者看见：一个 AI 使用这个
 > skill 时，怎样被一步步约束、暂停、检查、推进，最后把文章做成可录屏的
 > 网页视频。

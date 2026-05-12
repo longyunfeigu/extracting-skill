@@ -1,0 +1,1202 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --surface-2: #f0eae0;
+  --text: #1f1b16;
+  --text-2: #5d544a;
+  --rule: #e0d6c5;
+  --accent: #a04018;
+  --accent-soft: #f5e3d6;
+  --accent-2: #2d4858;
+  --status-candidate: #8a6f3a;
+  --status-candidate-bg: #f7eecf;
+  --shadow: 0 18px 54px rgba(31, 27, 22, 0.08);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-feature-settings: "ss01", "cv11";
+}
+
+#app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 32px 24px;
+  border-right: 1px solid var(--rule);
+  background: rgba(255, 253, 249, 0.92);
+  backdrop-filter: blur(16px);
+  overflow-y: auto;
+}
+
+.brand {
+  display: block;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 720;
+  line-height: 1.3;
+  text-decoration: none;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  display: block;
+  color: var(--text-2);
+  font-size: 12px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+nav {
+  display: grid;
+  gap: 2px;
+}
+
+.nav-block {
+  display: grid;
+  gap: 0;
+}
+
+.nav-block .chapter-link {
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.nav-block .chapter-link .num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 720;
+  min-width: 18px;
+  padding-top: 3px;
+}
+
+.chapter-link-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.chapter-link-label {
+  font-weight: 600;
+  color: inherit;
+  line-height: 1.3;
+}
+
+.nav-block .chapter-link small {
+  color: var(--text-2);
+  font-size: 11px;
+  line-height: 1.45;
+  opacity: 0.85;
+  display: block;
+}
+
+.nav-block .chapter-link:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.nav-block.active .chapter-link {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.nav-block.active .chapter-link .chapter-link-label {
+  color: var(--accent);
+}
+
+.subsections {
+  list-style: none;
+  margin: 4px 0 8px;
+  padding: 6px 0 6px 38px;
+  display: grid;
+  gap: 1px;
+  border-left: 1px dashed var(--rule);
+  margin-left: 18px;
+}
+
+.subsections li {
+  margin: 0;
+}
+
+.subsections a {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.4;
+  transition: background-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subsections a:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.source {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  color: var(--text-2);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.source-label {
+  display: block;
+  color: var(--accent);
+  font-weight: 720;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+main {
+  width: min(1180px, 100%);
+  padding: 56px 48px 96px;
+}
+
+.hero,
+.section {
+  padding-bottom: 56px;
+}
+
+.section + .section {
+  border-top: 1px solid var(--rule);
+  padding-top: 56px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3, p, li {
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  margin: 0;
+  max-width: 920px;
+  font-size: 44px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 720;
+}
+
+h2 {
+  margin: 0 0 20px;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 720;
+}
+
+h3 {
+  margin: 0 0 16px;
+  font-size: 17px;
+  line-height: 1.32;
+  font-weight: 660;
+  letter-spacing: -0.005em;
+}
+
+.lede {
+  max-width: 820px;
+  margin: 20px 0 28px;
+  color: var(--text-2);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.intro-prose {
+  max-width: 820px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.75;
+  margin: 0 0 32px;
+}
+
+.intro-prose strong {
+  color: var(--text);
+  font-weight: 620;
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card-grid.single {
+  grid-template-columns: 1fr;
+}
+
+.chapter-card,
+.card,
+.diagram-card {
+  min-width: 0;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.chapter-card {
+  display: grid;
+  gap: 10px;
+  padding: 22px 24px;
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 140ms ease, border-color 140ms ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.chapter-card .step {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 720;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chapter-card span.title {
+  font-weight: 660;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.chapter-card small {
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.glossary-card h3 {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 16px;
+}
+
+.card {
+  padding: 24px;
+}
+
+.card h3 {
+  margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 660;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--status-candidate);
+  background: var(--status-candidate-bg);
+}
+
+.card-row {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.card-row:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.card-row span.label {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-row p,
+.card-row ul {
+  margin: 0;
+  color: var(--text-2);
+  line-height: 1.65;
+  font-size: 14.5px;
+}
+
+.card-row ul {
+  padding-left: 18px;
+}
+
+.timeline {
+  display: grid;
+  gap: 16px;
+}
+
+.timeline .card h3 {
+  color: var(--text);
+}
+
+.timeline .card h3 .step-num {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.04em;
+}
+
+.diagram-card {
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.diagram-card .diagram-meta {
+  display: grid;
+  gap: 8px;
+}
+
+.diagram-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 8px;
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.callout strong {
+  color: var(--accent);
+}
+
+.preview-link {
+  margin-top: 28px;
+  padding: 16px 20px;
+  border: 1px dashed var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.preview-link code {
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Domain primer — promoted to its own block */
+.primer-section .primer-block {
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+  max-width: 920px;
+}
+
+.primer-block p {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.78;
+}
+
+.primer-block p + p.primer-note {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--rule);
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* Stage card — summary lede + reusable move accent footer */
+.stage-card {
+  scroll-margin-top: 24px;
+}
+
+.stage-card .stage-summary {
+  margin: 0 0 18px;
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text);
+  font-size: 15.5px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.stage-card .card-row {
+  padding: 10px 0;
+}
+
+.stage-card .card-row p,
+.stage-card .card-row ul {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.stage-card .stage-footer {
+  margin-top: 18px;
+  padding: 14px 18px;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  display: grid;
+  gap: 6px;
+}
+
+.stage-footer-label {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stage-footer p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Pre-test hook — 读者和 AI 同坐一椅，读者先猜再读正文 */
+.stage-card .pre-test-block {
+  margin: 18px 0;
+  padding: 18px 22px;
+  border: 1px dashed var(--accent-2);
+  border-radius: 8px;
+  background: rgba(45, 72, 88, 0.04);
+  display: grid;
+  gap: 8px;
+}
+
+.pre-test-label {
+  color: var(--accent-2);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stage-card .pre-test-block p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* Narrative body — AI 第一人称叙事 + 真实材料代码块 */
+.stage-card .narrative-body {
+  margin: 22px 0 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.narrative-label {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.stage-card .narrative-body p {
+  margin: 0;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.78;
+}
+
+.narrative-list {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 6px;
+}
+
+.narrative-list li {
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.narrative-code {
+  margin: 4px 0;
+  padding: 16px 18px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
+  position: relative;
+}
+
+.narrative-code[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+}
+
+.narrative-code code {
+  white-space: pre;
+  font-family: inherit;
+}
+
+.narrative-quote {
+  margin: 0;
+  padding: 12px 18px;
+  border-left: 3px solid var(--accent-2);
+  background: rgba(45, 72, 88, 0.04);
+  color: var(--text);
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* Quick-ref details — 折叠的 7 字段速查（叙事是主，字段是次） */
+.stage-quickref {
+  margin: 18px 0 0;
+  padding: 14px 18px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.stage-quickref summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  list-style: none;
+  user-select: none;
+}
+
+.stage-quickref summary::-webkit-details-marker {
+  display: none;
+}
+
+.stage-quickref summary::before {
+  content: "▸ ";
+  display: inline-block;
+  margin-right: 4px;
+  transition: transform 120ms ease;
+}
+
+.stage-quickref[open] summary::before {
+  content: "▾ ";
+}
+
+.stage-quickref .card-row:first-of-type {
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+/* Challenges block — 视觉断开，明确是给读者的练习不是 AI 内心独白 */
+.stage-card .challenges-block {
+  margin: 24px -24px -24px;
+  padding: 22px 28px 26px;
+  background: linear-gradient(180deg, rgba(160, 64, 24, 0.04), rgba(160, 64, 24, 0.07));
+  border-top: 2px dashed var(--accent);
+  border-radius: 0 0 10px 10px;
+}
+
+.challenges-header {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--accent-soft);
+}
+
+.challenges-mark {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.challenges-title {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.challenges-sub {
+  color: var(--text-2);
+  font-size: 12px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.challenges-block ol {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.challenges-block ol li {
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.75;
+}
+
+.challenges-block ol li::marker {
+  color: var(--accent);
+  font-weight: 720;
+}
+
+@media (max-width: 960px) {
+  .stage-card .challenges-block {
+    margin: 24px -16px -16px;
+    padding: 18px 20px 22px;
+  }
+  .challenges-header {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+  }
+  .challenges-sub {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Design choice counter-scenarios — Kleppmann 多视角对比 */
+.design-choice-card .counter-scenarios {
+  margin: 22px -24px -24px;
+  padding: 22px 28px 24px;
+  background: linear-gradient(180deg, rgba(45, 72, 88, 0.04), rgba(45, 72, 88, 0.07));
+  border-top: 2px dashed var(--accent-2);
+  border-radius: 0 0 10px 10px;
+}
+
+.counter-scenarios-header {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.counter-scenarios-label {
+  color: var(--accent-2);
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.counter-scenarios-sub {
+  color: var(--text-2);
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.counter-scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.counter-scenario {
+  padding: 14px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.counter-scenario-effect {
+  display: inline-block;
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 720;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.counter-scenario[data-effect="救你"] .counter-scenario-effect {
+  color: #1f5d3f;
+  background: #d6efdc;
+}
+
+.counter-scenario[data-effect="绑你"] .counter-scenario-effect,
+.counter-scenario[data-effect="可能绑你"] .counter-scenario-effect {
+  color: #8a3320;
+  background: #f5d6cc;
+}
+
+.counter-scenario[data-effect="部分让位"] .counter-scenario-effect,
+.counter-scenario[data-effect="部分过度"] .counter-scenario-effect,
+.counter-scenario[data-effect="可以放宽"] .counter-scenario-effect,
+.counter-scenario[data-effect="应简化"] .counter-scenario-effect,
+.counter-scenario[data-effect="可以跳过"] .counter-scenario-effect {
+  color: #6f5320;
+  background: #f4e4c4;
+}
+
+.counter-scenario[data-effect="取决于"] .counter-scenario-effect,
+.counter-scenario[data-effect="天然落地但价值变低"] .counter-scenario-effect {
+  color: #4a4a4a;
+  background: #e3e0db;
+}
+
+.counter-scenario[data-effect="完全失效"] .counter-scenario-effect,
+.counter-scenario[data-effect="完全多余"] .counter-scenario-effect,
+.counter-scenario[data-effect="完全冗余"] .counter-scenario-effect {
+  color: #5a3a8a;
+  background: #e6dcf3;
+}
+
+.counter-scenario p {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.counter-scenario .counter-scenario-when {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.counter-scenario .counter-scenario-when strong {
+  color: var(--accent-2);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 720;
+}
+
+.counter-scenario .counter-scenario-why {
+  color: var(--text-2);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+@media (max-width: 960px) {
+  .counter-scenarios-grid {
+    grid-template-columns: 1fr;
+  }
+  .design-choice-card .counter-scenarios {
+    margin: 22px -16px -16px;
+    padding: 18px 20px 22px;
+  }
+}
+
+/* Pattern card — Therefore: 视觉断点（A Pattern Language 风格）*/
+.pattern-card .pattern-problem {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.pattern-card .pattern-therefore {
+  margin: 22px -8px;
+  padding: 18px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  display: grid;
+  gap: 10px;
+  text-align: center;
+}
+
+.pattern-therefore-divider {
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  opacity: 0.75;
+}
+
+.pattern-therefore-body {
+  display: grid;
+  gap: 8px;
+}
+
+.pattern-therefore-label {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pattern-card .pattern-therefore p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14.5px;
+  line-height: 1.7;
+  font-weight: 500;
+  text-align: left;
+  padding: 0 8px;
+}
+
+/* Pattern card — relatedPatterns（cross-link 网，反孤岛）*/
+.pattern-card .related-patterns {
+  margin: 22px -24px -24px;
+  padding: 18px 24px 22px;
+  background: var(--surface-2);
+  border-top: 1px solid var(--rule);
+  border-radius: 0 0 10px 10px;
+}
+
+.related-patterns-label {
+  display: block;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.related-patterns ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.related-patterns li a {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.related-patterns li a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.rp-num {
+  color: var(--accent);
+  font-weight: 720;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  font-size: 13.5px;
+  padding-top: 1px;
+}
+
+.rp-body {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.rp-name {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.rp-rel {
+  color: var(--text-2);
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+@media (max-width: 960px) {
+  .pattern-card .related-patterns {
+    margin: 22px -16px -16px;
+    padding: 16px 20px 20px;
+  }
+}
+
+/* Pattern index — clickable jump from decision-source diagram */
+.pattern-index {
+  margin: 28px 0 0;
+  padding: 24px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.pattern-index-label {
+  display: block;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 720;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+}
+
+.pattern-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pattern-index li a {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+  background: var(--surface-2);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.pattern-index li a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.pattern-index .px-num {
+  color: var(--accent);
+  font-weight: 720;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.pattern-index li a small {
+  color: var(--text-2);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pattern card anchor target — highlight on jump */
+.card[id^="p"] {
+  scroll-margin-top: 24px;
+  transition: box-shadow 240ms ease, border-color 240ms ease;
+}
+
+.card[id^="p"]:target {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow);
+}
+
+@media (max-width: 960px) {
+  .pattern-index ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stage index — page-level orientation table on walkthrough page */
+.stage-index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.stage-index-list li a {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+.stage-index-list li a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateX(2px);
+}
+
+.stage-index-num {
+  color: var(--accent);
+  font-weight: 720;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  padding-top: 2px;
+}
+
+.stage-index-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.stage-index-title {
+  font-weight: 620;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.stage-index-summary {
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Page-level orientation note (under top diagram on walkthrough) */
+.page-orientation-note {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.6;
+  border-radius: 4px;
+}
+
+/* Stage card anchor target — highlight on jump (mirrors pattern-card behavior) */
+.stage-card[id] {
+  scroll-margin-top: 24px;
+  transition: box-shadow 240ms ease, border-color 240ms ease;
+}
+
+.stage-card[id]:target {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow);
+}
+
+@media (max-width: 960px) {
+  #app {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 20px;
+    overflow-y: visible;
+  }
+
+  .subsections {
+    display: none; /* mobile hides expanded sub-nav to keep header tight */
+  }
+
+  .chapter-grid,
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding: 36px 20px 64px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+}

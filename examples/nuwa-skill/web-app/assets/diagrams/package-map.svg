@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">nuwa-skill 包结构图</title>
+  <desc id="desc">女娲自身的包结构（左）以及它生成的人物 perspective skill 自包含目录（右）。所有产物存进 skill 目录内部，不依赖外部文件。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a04018"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="12" fill="#f7f4ef"/>
+
+  <!-- Title row -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif">
+    <text x="40" y="44" font-size="12" font-weight="720" fill="#a04018" letter-spacing="2">女娲自身 (左) → 生成的人物 skill 目录 (右)</text>
+    <line x1="40" y1="56" x2="1160" y2="56" stroke="#e0d6c5" stroke-width="1"/>
+  </g>
+
+  <!-- LEFT: nuwa-skill package -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#1f1b16">
+    <g transform="translate(40 80)">
+      <rect width="500" height="600" rx="10" fill="#ffffff" stroke="#e0d6c5"/>
+      <text x="20" y="32" font-weight="720" font-size="14" fill="#a04018">nuwa-skill/</text>
+
+      <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+        <text x="40" y="64" fill="#1f1b16" font-weight="660">SKILL.md</text>
+        <text x="220" y="64" fill="#5d544a">入口和总开关，5 Phase 切分 + 硬规则</text>
+
+        <text x="40" y="100" fill="#1f1b16" font-weight="660">references/</text>
+        <text x="60" y="124" fill="#1f1b16">extraction-framework.md</text>
+        <text x="280" y="124" fill="#5d544a">三标准 + 矛盾分类 + DNA 量化</text>
+        <text x="60" y="148" fill="#1f1b16">skill-template.md</text>
+        <text x="280" y="148" fill="#5d544a">SKILL.md 输出模板（9 段）</text>
+
+        <text x="40" y="188" fill="#1f1b16" font-weight="660">scripts/</text>
+        <text x="60" y="212" fill="#1f1b16">merge_research.py</text>
+        <text x="280" y="212" fill="#5d544a">Phase 1.5 摘要表生成</text>
+        <text x="60" y="236" fill="#1f1b16">quality_check.py</text>
+        <text x="280" y="236" fill="#5d544a">Phase 4 自动 6 条检查</text>
+        <text x="60" y="260" fill="#1f1b16">download_subtitles.sh</text>
+        <text x="280" y="260" fill="#5d544a">字幕下载（人工 &gt; 中 &gt; 英 &gt; 自动）</text>
+        <text x="60" y="284" fill="#1f1b16">srt_to_transcript.py</text>
+        <text x="280" y="284" fill="#5d544a">SRT → 纯文本 transcript</text>
+
+        <text x="40" y="324" fill="#1f1b16" font-weight="660">examples/</text>
+        <text x="60" y="348" fill="#1f1b16">munger-perspective/</text>
+        <text x="280" y="348" fill="#5d544a">参考样板（已生成）</text>
+        <text x="60" y="372" fill="#1f1b16">feynman-perspective/</text>
+        <text x="280" y="372" fill="#5d544a">参考样板（已生成）</text>
+        <text x="60" y="396" fill="#1f1b16">mrbeast-perspective/</text>
+        <text x="280" y="396" fill="#5d544a">参考样板（已生成）</text>
+        <text x="60" y="420" fill="#5d544a">... 14 个已生成的人物 skill</text>
+      </g>
+
+      <text x="20" y="500" font-size="11" fill="#5d544a" font-style="italic">写完 nuwa-skill 之后就不动它本身。</text>
+      <text x="20" y="520" font-size="11" fill="#5d544a" font-style="italic">每次跑会在外部（如 .claude/skills/）</text>
+      <text x="20" y="540" font-size="11" fill="#5d544a" font-style="italic">生成一个新的人物 skill 目录 →</text>
+    </g>
+  </g>
+
+  <!-- Arrow from left to right -->
+  <g stroke="#a04018" stroke-width="2" fill="none" marker-end="url(#arrow)">
+    <line x1="555" y1="380" x2="635" y2="380"/>
+  </g>
+  <text x="595" y="370" text-anchor="middle" font-size="11" fill="#a04018" font-weight="660" font-family="ui-sans-serif, system-ui, sans-serif">生成</text>
+
+  <!-- RIGHT: generated perspective skill -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#1f1b16">
+    <g transform="translate(660 80)">
+      <rect width="500" height="600" rx="10" fill="#f5e3d6" stroke="#a04018"/>
+      <text x="20" y="32" font-weight="720" font-size="14" fill="#a04018">.claude/skills/munger-perspective/  ← 自包含</text>
+
+      <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+        <text x="40" y="64" fill="#1f1b16" font-weight="660">SKILL.md</text>
+        <text x="220" y="64" fill="#5d544a">含 Agentic Protocol + 3-7 模型 + DNA</text>
+
+        <text x="40" y="100" fill="#1f1b16" font-weight="660">references/</text>
+        <text x="60" y="124" fill="#1f1b16" font-weight="660">research/</text>
+        <text x="80" y="148" fill="#1f1b16">01-writings.md</text>
+        <text x="240" y="148" fill="#5d544a">著作（Agent 1 存）</text>
+        <text x="80" y="172" fill="#1f1b16">02-conversations.md</text>
+        <text x="240" y="172" fill="#5d544a">对话（Agent 2 存）</text>
+        <text x="80" y="196" fill="#1f1b16">03-expression-dna.md</text>
+        <text x="240" y="196" fill="#5d544a">表达（Agent 3 存）</text>
+        <text x="80" y="220" fill="#1f1b16">04-external-views.md</text>
+        <text x="240" y="220" fill="#5d544a">他者（Agent 4 存）</text>
+        <text x="80" y="244" fill="#1f1b16">05-decisions.md</text>
+        <text x="240" y="244" fill="#5d544a">决策（Agent 5 存）</text>
+        <text x="80" y="268" fill="#1f1b16">06-timeline.md</text>
+        <text x="240" y="268" fill="#5d544a">时间线（Agent 6 存）</text>
+
+        <text x="60" y="304" fill="#1f1b16" font-weight="660">sources/</text>
+        <text x="80" y="328" fill="#1f1b16">books/</text>
+        <text x="240" y="328" fill="#5d544a">原始 PDF（如 Poor Charlie's Almanack）</text>
+        <text x="80" y="352" fill="#1f1b16">transcripts/</text>
+        <text x="240" y="352" fill="#5d544a">访谈 transcript（清洗过的）</text>
+        <text x="80" y="376" fill="#1f1b16">articles/</text>
+        <text x="240" y="376" fill="#5d544a">长文 / newsletter 原文</text>
+
+        <text x="40" y="416" fill="#1f1b16" font-weight="660">scripts/</text>
+        <text x="240" y="416" fill="#5d544a">（女娲附带的脚本副本）</text>
+      </g>
+
+      <text x="20" y="480" font-size="11" fill="#1f1b16" font-weight="660">为什么这个目录必须自包含？</text>
+      <text x="20" y="500" font-size="11" fill="#5d544a">把所有产物（SKILL.md / 调研 md / 源 PDF / 脚本）</text>
+      <text x="20" y="520" font-size="11" fill="#5d544a">都放在这个目录里——这样：</text>
+      <text x="20" y="544" font-size="11" fill="#5d544a">▸ 整个目录可以 zip 给别人</text>
+      <text x="20" y="564" font-size="11" fill="#5d544a">▸ 对方 unzip 就能用，不依赖外部文件</text>
+      <text x="20" y="584" font-size="11" fill="#5d544a">▸ 为开源分发硬设计的核心原则</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#5d544a">
+    <line x1="40" y1="700" x2="1160" y2="700" stroke="#e0d6c5"/>
+  </g>
+</svg>

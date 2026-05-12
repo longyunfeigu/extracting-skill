@@ -317,24 +317,60 @@
     },
 
     walkthrough() {
+      const stages = handbook.walkthrough || [];
+      const oneLiner = handbook.overview?.oneLiner || "";
+      const flowDiagrams = (handbook.diagrams || []).filter((d) => d.type === "flow");
+      const stageIndexHtml = stages.length
+        ? `
+        <section class="section" id="stage-index">
+          <p class="eyebrow">全 ${stages.length} 个 stage 索引 · 点击跳转</p>
+          <h2>每个 stage 一行摘要</h2>
+          <ol class="stage-index-list">
+            ${stages.map((stage, index) => {
+              const num = String(index + 1).padStart(2, "0");
+              const anchor = escapeHtml(stage.id || `stage-${index + 1}`);
+              return `
+                <li>
+                  <a href="#${anchor}">
+                    <span class="stage-index-num">${num}</span>
+                    <span class="stage-index-body">
+                      <span class="stage-index-title">${escapeHtml(stage.title || "")}</span>
+                      <span class="stage-index-summary">${escapeHtml(stage.summary || "")}</span>
+                    </span>
+                  </a>
+                </li>
+              `;
+            }).join("")}
+          </ol>
+        </section>`
+        : "";
+      const flowSectionHtml = flowDiagrams.length
+        ? `
+        <section class="section" id="flow-overview">
+          <p class="eyebrow">先看大流水线 · 顶层流程图</p>
+          <h2>这条流水线上有几个大阶段</h2>
+          ${flowDiagrams.map(diagramBlock).join("")}
+          <p class="page-orientation-note">图说的是 4 个大 Phase 的拓扑关系——14 个 stage 是这些 Phase 内部的展开，不画在图里（14 个 node 带文字会糊一脸）。下面的索引表负责把 14 个 stage 的一行摘要列清楚。</p>
+        </section>`
+        : "";
       layout("Walkthrough", `
         <section class="hero">
           <p class="eyebrow">Walkthrough · 章 02</p>
           <h1>AI 运行轨迹</h1>
-          <p class="lede">这是本手册的脊柱。下面 ${(handbook.walkthrough || []).length} 个阶段展示我作为 AI，拿到用户输入后被这个 skill 一步步约束、暂停、检查、推进的完整工作路径。每一阶段都用同一个例子来落地。</p>
+          <p class="lede">${escapeHtml(oneLiner)}</p>
+          <p class="lede" style="margin-top: 12px;">这是本手册的脊柱。下面 ${stages.length} 个阶段展示我作为 AI，拿到用户输入后被这个 skill 一步步约束、暂停、检查、推进的完整工作路径。每一阶段都用同一个例子来落地。</p>
           <div class="callout">
             <strong>每个 stage 的卡都回答 7 件事：</strong>这一步收到什么 / skill 让我读什么 / 我不能直接做什么 / 我做什么 / 我产出什么 / 下一步谁用它 / 这里能偷的招。
           </div>
         </section>
+        ${flowSectionHtml}
+        ${stageIndexHtml}
         <section class="section">
+          <p class="eyebrow">下面是 14 个 stage 的详细卡</p>
+          <h2>每个 stage 展开讲</h2>
           <div class="timeline">
-            ${(handbook.walkthrough || []).map((stage, index) => stageCard(stage, index)).join("")}
+            ${stages.map((stage, index) => stageCard(stage, index)).join("")}
           </div>
-        </section>
-        <section class="section">
-          <p class="eyebrow">高层流程图</p>
-          <h2>把 ${(handbook.walkthrough || []).length} 个阶段画成一张图</h2>
-          ${(handbook.diagrams || []).filter((d) => d.type === "flow").map(diagramBlock).join("")}
         </section>
       `);
     },

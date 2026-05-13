@@ -14,6 +14,12 @@
   --accent: #8a1c0f;
   --accent-soft: rgba(138, 28, 15, 0.08);
   --accent-line: rgba(138, 28, 15, 0.35);
+  --green: #2d6e4e;
+  --green-soft: rgba(45, 110, 78, 0.05);
+  --amber: #94701f;
+  --amber-soft: rgba(148, 112, 31, 0.05);
+  --gray: #5a4a3e;
+  --gray-soft: rgba(90, 74, 62, 0.05);
   --highlight: rgba(232, 200, 90, 0.45);
   --night: #161210;
   --night-2: #221c18;
@@ -1137,57 +1143,324 @@ main {
   line-height: 1.5;
 }
 
-/* ===== Design choices · counter scenarios ===== */
-.counter-scenarios {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--rule);
+/* ===== Design Choices · 戏剧三幕（Three-Act Edition）=====
+   See references/web-app-visuals.md → 「Design Choices 页（戏剧三幕）」节。
+   每个 dc 是一出三幕戏：Act I 设定（红印 badScenario） →
+   Act II 转折（绿印 constraint） → Act III 余波（黑印 solvedProblem）。
+   curtain note = reusableMove 反色块；encore = counterScenarios 三色块。 */
+
+body[data-page="design-choices"] .dc-hero {
+  padding: 84px 0 56px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
 }
-.counter-label {
+body[data-page="design-choices"] .dc-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(36px, 4.6vw, 52px);
+  line-height: 1.18;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  margin: 14px 0 18px;
+  max-width: 24ch;
+}
+body[data-page="design-choices"] .dc-hero h1 em { font-style: italic; }
+body[data-page="design-choices"] .dc-hero h1 .ai-bad { color: var(--accent); }
+body[data-page="design-choices"] .dc-hero h1 .nuwa-good { color: var(--green); }
+body[data-page="design-choices"] .dc-hero .lede {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+body[data-page="design-choices"] .dc-hero .lede em {
+  font-style: italic;
+  color: var(--ink);
+}
+body[data-page="design-choices"] .dc-hero .hero-rule {
   display: block;
-  font-family: var(--sans);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
+  width: 96px;
+  height: 1.5px;
+  background: var(--ink);
+  margin-top: 28px;
+}
+
+body[data-page="design-choices"] .dc {
+  border-top: 2px solid var(--ink);
+  padding: 56px 0 48px;
+}
+body[data-page="design-choices"] .dc:first-of-type {
+  border-top: none;
+  padding-top: 16px;
+}
+
+body[data-page="design-choices"] .dc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  margin-bottom: 16px;
+}
+body[data-page="design-choices"] .dc-head .dc-num {
+  font-family: var(--mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
   text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 12px;
+  margin-right: 0;
 }
-.counter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
+body[data-page="design-choices"] .dc-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0;
+  flex: 1;
 }
-.counter-scenario {
-  background: var(--paper-2);
-  padding: 14px 16px;
-  border-radius: 4px;
+
+body[data-page="design-choices"] .dc-opening {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  max-width: 64ch;
+  margin: 0 0 36px;
+  padding-left: 22px;
   border-left: 3px solid var(--ink-mute);
 }
-.counter-scenario[data-effect*="救"] { border-left-color: var(--accent); }
-.counter-scenario[data-effect*="绑"] { border-left-color: #6b6258; }
-.counter-scenario[data-effect*="失效"], .counter-scenario[data-effect*="冗余"], .counter-scenario[data-effect*="多余"], .counter-scenario[data-effect*="跳过"] {
-  border-left-color: var(--ink-mute);
-  opacity: 0.92;
+
+body[data-page="design-choices"] .acts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 36px;
+  margin-bottom: 32px;
+  position: relative;
 }
-.counter-effect {
-  display: block;
-  font-family: var(--sans);
+@media (max-width: 880px) {
+  body[data-page="design-choices"] .acts {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  body[data-page="design-choices"] .act::after {
+    display: none !important;
+  }
+}
+body[data-page="design-choices"] .act {
+  position: relative;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+body[data-page="design-choices"] .act:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  top: 18px;
+  right: -28px;
+  font-size: 28px;
+  color: var(--ink-mute);
+  font-weight: 300;
+  line-height: 1;
+  z-index: 2;
+}
+
+body[data-page="design-choices"] .act-stamp {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 14px 7px;
+  border: 1.5px solid;
+  margin-bottom: 18px;
+  font-family: var(--mono);
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-weight: 700;
+  align-self: flex-start;
+  background: var(--paper);
+}
+body[data-page="design-choices"] .act-stamp .roman {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+body[data-page="design-choices"] .act.setup .act-stamp { color: var(--accent); border-color: var(--accent); }
+body[data-page="design-choices"] .act.turn .act-stamp { color: var(--green); border-color: var(--green); }
+body[data-page="design-choices"] .act.aftermath .act-stamp { color: var(--ink); border-color: var(--ink); }
+
+body[data-page="design-choices"] .act-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 14px;
   color: var(--ink);
+}
+
+body[data-page="design-choices"] .act-body {
+  flex: 1;
+  padding: 18px 20px 20px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.78;
+  color: var(--ink);
+  border-top: 1.5px solid;
+}
+body[data-page="design-choices"] .act.setup .act-body {
+  background: var(--accent-soft);
+  border-top-color: var(--accent);
+}
+body[data-page="design-choices"] .act.turn .act-body {
+  background: var(--green-soft);
+  border-top-color: var(--green);
+}
+body[data-page="design-choices"] .act.aftermath .act-body {
+  background: var(--paper-2);
+  border-top-color: var(--ink);
+}
+
+body[data-page="design-choices"] .curtain {
+  margin-top: 32px;
+  padding: 24px 28px;
+  background: var(--ink);
+  color: var(--paper);
+  max-width: 940px;
+}
+body[data-page="design-choices"] .curtain-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--paper-3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+body[data-page="design-choices"] .curtain-label::before {
+  content: "▼";
+  color: var(--accent);
+  font-size: 10px;
+}
+body[data-page="design-choices"] .curtain-label::after {
+  content: "落幕笔记 · CURTAIN NOTE";
+  flex: 1;
+  text-align: right;
+  color: var(--paper-3);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  font-weight: 400;
+}
+body[data-page="design-choices"] .curtain-body {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.78;
+}
+
+body[data-page="design-choices"] .encore {
+  margin-top: 36px;
+  padding-top: 26px;
+  border-top: 1px dashed var(--rule);
+}
+body[data-page="design-choices"] .encore-label {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+body[data-page="design-choices"] .encore-hint {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-mute);
+  margin-bottom: 18px;
+}
+body[data-page="design-choices"] .encore-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 880px) {
+  body[data-page="design-choices"] .encore-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+body[data-page="design-choices"] .scene {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-left-width: 5px;
+  border-left-style: solid;
+  padding: 14px 16px 16px;
+  position: relative;
+}
+body[data-page="design-choices"] .scene::before {
+  content: "Scene";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+body[data-page="design-choices"] .scene[data-effect*="救"] {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+body[data-page="design-choices"] .scene[data-effect*="部分让位"],
+body[data-page="design-choices"] .scene[data-effect*="部分过度"],
+body[data-page="design-choices"] .scene[data-effect*="应简化"],
+body[data-page="design-choices"] .scene[data-effect*="可以跳过"],
+body[data-page="design-choices"] .scene[data-effect*="可以放宽"],
+body[data-page="design-choices"] .scene[data-effect*="取决于"] {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+body[data-page="design-choices"] .scene[data-effect*="失效"],
+body[data-page="design-choices"] .scene[data-effect*="多余"],
+body[data-page="design-choices"] .scene[data-effect*="冗余"] {
+  border-left-color: var(--gray);
+  background: var(--gray-soft);
+}
+body[data-page="design-choices"] .scene-effect {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
   margin-bottom: 8px;
 }
-.counter-when, .counter-why {
-  font-family: var(--serif);
-  font-size: 13.5px;
+body[data-page="design-choices"] .scene[data-effect*="救"] .scene-effect { color: var(--green); }
+body[data-page="design-choices"] .scene[data-effect*="部分让位"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="部分过度"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="应简化"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="可以跳过"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="可以放宽"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="取决于"] .scene-effect { color: var(--amber); }
+body[data-page="design-choices"] .scene[data-effect*="失效"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="多余"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="冗余"] .scene-effect { color: var(--gray); }
+body[data-page="design-choices"] .scene-when {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
   line-height: 1.55;
-  margin: 0 0 4px;
-  color: var(--ink-2);
+  margin-bottom: 8px;
 }
-.counter-when strong { color: var(--ink); }
+body[data-page="design-choices"] .scene-why {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
 
 /* ===== Apply It ===== */
 .apply-card { background: var(--paper-2); }

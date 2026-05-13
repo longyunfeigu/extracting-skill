@@ -486,44 +486,65 @@
 
   function designChoicesPage() {
     const choices = handbook.designChoices || [];
-    const dep = findDiagram("dependencies");
     layout("Design Choices", `
-      <article class="page">
-        <header class="wt-hero">
-          <p class="eyebrow">Design Choices · 章 05</p>
-          <h1>${choices.length} 个关键设计选择</h1>
-          <p class="lede">这一章不列规则清单——列真正改变了 AI 默认行为的设计选择。每个选择回答 5 件事：看起来为什么多此一举 / 不这样会坏在哪 / nuwa 怎么约束我 / 解决了什么问题 / 能偷的招。每条还附带一张 3 场景力度对比表——同一招不可能在所有场景都对，多视角才不会被单视角误导。</p>
+      <article class="page dc-page">
+        <header class="dc-hero">
+          <p class="eyebrow">Design Choices · Three-Act Edition · 章 05</p>
+          <h1>每个 dc 是一出三幕戏 —— <em><span class="ai-bad">设定</span></em>、<em><span class="nuwa-good">转折</span></em>、<em>余波</em>。</h1>
+          <p class="lede">这一章不列规则清单——列 ${choices.length} 个真正改变了 AI 默认行为的设计选择。每个 dc 是一出三幕戏：第一幕 <em>AI 准备做什么</em>（红印章），第二幕 <em>nuwa 拦下来怎么改</em>（绿印章），第三幕 <em>结果如何</em>（黑印章）。底下三场是"换三个地形把这出戏重演一遍"——救你 / 让位 / 失效。</p>
           <span class="hero-rule"></span>
         </header>
-        ${dep ? `<section class="section">${diagramBlock(dep)}</section>` : ""}
         <section class="section">
-          <div class="card-grid">
-            ${choices.map((c, i) => {
-              const counterHtml = Array.isArray(c.counterScenarios) && c.counterScenarios.length ? `
-                <div class="counter-scenarios">
-                  <span class="counter-label">不同场景下这个选择的力度</span>
-                  <div class="counter-grid">
-                    ${c.counterScenarios.map((s) => `
-                      <div class="counter-scenario" data-effect="${escapeHtml(s.effect || "")}">
-                        <span class="counter-effect">${escapeHtml(s.effect || "")}</span>
-                        <p class="counter-when"><strong>场景：</strong>${escapeHtml(s.when || "")}</p>
-                        <p class="counter-why">${escapeHtml(s.why || "")}</p>
-                      </div>
-                    `).join("")}
+          ${choices.map((c, i) => {
+            const num = String(i + 1).padStart(2, "0");
+            const scenes = (c.counterScenarios || []).map((s) => `
+              <div class="scene" data-effect="${escapeHtml(s.effect || "")}">
+                <div class="scene-effect">${escapeHtml(s.effect || "")}</div>
+                <div class="scene-when">${escapeHtml(s.when || "")}</div>
+                <div class="scene-why">${escapeHtml(s.why || "")}</div>
+              </div>
+            `).join("");
+
+            return `
+              <section class="dc" id="dc${i + 1}">
+                <header class="dc-head">
+                  <span class="dc-num">DC ${num}</span>
+                  <h2 class="dc-title">${escapeHtml(c.title || "")}</h2>
+                </header>
+
+                <p class="dc-opening">${escapeHtml(c.looksUnnecessaryBecause || "")}</p>
+
+                <div class="acts">
+                  <div class="act setup">
+                    <div class="act-stamp"><span class="roman">I</span><span>设定 · SETUP</span></div>
+                    <div class="act-title">AI 准备做什么</div>
+                    <div class="act-body">${escapeHtml(c.badScenario || "")}</div>
                   </div>
-                </div>` : "";
-              return `
-                <article class="card design-card" id="dc${i + 1}">
-                  <h3><span class="dc-num">DC${String(i + 1).padStart(2, "0")}</span>${escapeHtml(c.title)}</h3>
-                  <div class="card-row"><span class="label">看起来多此一举的地方</span><p>${escapeHtml(c.looksUnnecessaryBecause || "")}</p></div>
-                  <div class="card-row"><span class="label">坏场景（不这样会怎样）</span><p>${escapeHtml(c.badScenario || "")}</p></div>
-                  <div class="card-row"><span class="label">nuwa 怎么约束我</span><p>${escapeHtml(c.constraint || "")}</p></div>
-                  <div class="card-row"><span class="label">解决的问题</span><p>${escapeHtml(c.solvedProblem || "")}</p></div>
-                  <div class="card-row"><span class="label">可偷的招</span><p>${escapeHtml(c.reusableMove || "")}</p></div>
-                  ${counterHtml}
-                </article>`;
-            }).join("")}
-          </div>
+                  <div class="act turn">
+                    <div class="act-stamp"><span class="roman">II</span><span>转折 · TURN</span></div>
+                    <div class="act-title">nuwa 拦下来怎么改</div>
+                    <div class="act-body">${escapeHtml(c.constraint || "")}</div>
+                  </div>
+                  <div class="act aftermath">
+                    <div class="act-stamp"><span class="roman">III</span><span>余波 · AFTERMATH</span></div>
+                    <div class="act-title">结果如何</div>
+                    <div class="act-body">${escapeHtml(c.solvedProblem || "")}</div>
+                  </div>
+                </div>
+
+                <div class="curtain">
+                  <div class="curtain-label">换个 skill 也用得上</div>
+                  <div class="curtain-body">${escapeHtml(c.reusableMove || "")}</div>
+                </div>
+
+                <div class="encore">
+                  <div class="encore-label">换三个地形把这出戏重演</div>
+                  <div class="encore-hint">同一出戏在不同舞台演出来效果不一样——救你的舞台、让位的舞台、彻底失效的舞台。</div>
+                  <div class="encore-grid">${scenes}</div>
+                </div>
+              </section>
+            `;
+          }).join("")}
         </section>
       </article>
     `);

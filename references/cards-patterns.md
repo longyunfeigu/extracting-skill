@@ -32,7 +32,7 @@ Template:
 ## 7. Design choice cards must include 3-scenario counter-comparison
 
 Single-perspective design advice is misleading. Each design choice must include
-three concrete scenarios where the choice 救 / 绑 / 取决于 / 失效.
+three concrete scenarios where the choice 管用 / 反而碍事 / 看情况 / 用不上.
 
 ```markdown
 ### <design choice>
@@ -47,13 +47,18 @@ three concrete scenarios where the choice 救 / 绑 / 取决于 / 失效.
 
 | 场景 | 效果 | 为什么 |
 |---|---|---|
-| <典型场景> | 救你 | <为什么这是它的甜区> |
-| <边缘场景> | 绑你 / 部分让位 / 应简化 | <为什么这个场景下它反而是负担> |
-| <反例场景> | 完全失效 / 取决于 | <为什么这个场景下规则空转或要看具体> |
+| <典型场景> | 管用 | <为什么这是它的甜区> |
+| <边缘场景> | 反而碍事 / 得让一步 / 可以简化 | <为什么这个场景下它反而是负担> |
+| <反例场景> | 用不上 / 看情况 | <为什么这个场景下规则空转或要看具体> |
 ```
 
-Allowed `effect` values: 救你 / 绑你 / 部分让位 / 部分过度 / 应简化 / 可以跳过 /
-取决于 / 完全失效 / 完全多余 / 完全冗余 / 可能绑你 / 可以放宽。
+Allowed `effect` values（**用大白话的短语，读者一眼能懂；不要发明术语**）：
+
+- **绿色档（这一招在这场景下管用）：** 管用
+- **琥珀档（部分起作用、要让步、看情况）：** 可以松点 / 得让一步 / 用力过了 / 可以简化 / 不用做 / 看情况 / 也许碍事
+- **灰色档（这一招在这场景下完全用不上）：** 用不上 / 没必要 / 反而碍事
+
+旧词对照（如果你看到旧 example 还在用，往新词迁移）：救你 → 管用；绑你 → 反而碍事；部分让位 → 得让一步；部分过度 → 用力过了；应简化 → 可以简化；可以跳过 → 不用做；取决于 → 看情况；完全失效 → 用不上；完全多余/完全冗余 → 没必要；可能绑你 → 也许碍事；可以放宽 → 可以松点。
 
 ## 8. Pattern cards must have a Therefore break and cross-links
 

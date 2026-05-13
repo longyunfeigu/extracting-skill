@@ -1,5 +1,5 @@
 /* =========================================================
-   女娲 · Skill 造人术 解剖手册 — 编辑杂志体
+   Skill 解剖手册 — 编辑杂志体
    纸色 + 墨色梯度 + 单深红 accent + 暗色代码反差插入
    ========================================================= */
 
@@ -1165,7 +1165,7 @@ body[data-page="design-choices"] .dc-hero h1 {
 }
 body[data-page="design-choices"] .dc-hero h1 em { font-style: italic; }
 body[data-page="design-choices"] .dc-hero h1 .ai-bad { color: var(--accent); }
-body[data-page="design-choices"] .dc-hero h1 .nuwa-good { color: var(--green); }
+body[data-page="design-choices"] .dc-hero h1 .skill-good { color: var(--green); }
 body[data-page="design-choices"] .dc-hero .lede {
   font-family: var(--serif);
   font-size: 16px;
@@ -1331,11 +1331,10 @@ body[data-page="design-choices"] .curtain {
   max-width: 940px;
 }
 body[data-page="design-choices"] .curtain-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
   color: var(--paper-3);
-  text-transform: uppercase;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -1345,15 +1344,6 @@ body[data-page="design-choices"] .curtain-label::before {
   content: "▼";
   color: var(--accent);
   font-size: 10px;
-}
-body[data-page="design-choices"] .curtain-label::after {
-  content: "落幕笔记 · CURTAIN NOTE";
-  flex: 1;
-  text-align: right;
-  color: var(--paper-3);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  font-weight: 400;
 }
 body[data-page="design-choices"] .curtain-body {
   font-family: var(--serif);
@@ -1410,22 +1400,23 @@ body[data-page="design-choices"] .scene::before {
   color: var(--ink-mute);
   text-transform: uppercase;
 }
-body[data-page="design-choices"] .scene[data-effect*="救"] {
+body[data-page="design-choices"] .scene[data-effect*="管用"] {
   border-left-color: var(--green);
   background: var(--green-soft);
 }
-body[data-page="design-choices"] .scene[data-effect*="部分让位"],
-body[data-page="design-choices"] .scene[data-effect*="部分过度"],
-body[data-page="design-choices"] .scene[data-effect*="应简化"],
-body[data-page="design-choices"] .scene[data-effect*="可以跳过"],
-body[data-page="design-choices"] .scene[data-effect*="可以放宽"],
-body[data-page="design-choices"] .scene[data-effect*="取决于"] {
+body[data-page="design-choices"] .scene[data-effect*="可以松"],
+body[data-page="design-choices"] .scene[data-effect*="让一步"],
+body[data-page="design-choices"] .scene[data-effect*="可以简化"],
+body[data-page="design-choices"] .scene[data-effect*="不用做"],
+body[data-page="design-choices"] .scene[data-effect*="看情况"],
+body[data-page="design-choices"] .scene[data-effect*="也许碍事"],
+body[data-page="design-choices"] .scene[data-effect*="用力过"] {
   border-left-color: var(--amber);
   background: var(--amber-soft);
 }
-body[data-page="design-choices"] .scene[data-effect*="失效"],
-body[data-page="design-choices"] .scene[data-effect*="多余"],
-body[data-page="design-choices"] .scene[data-effect*="冗余"] {
+body[data-page="design-choices"] .scene[data-effect*="用不上"],
+body[data-page="design-choices"] .scene[data-effect*="没必要"],
+body[data-page="design-choices"] .scene[data-effect*="反而碍事"] {
   border-left-color: var(--gray);
   background: var(--gray-soft);
 }
@@ -1437,16 +1428,17 @@ body[data-page="design-choices"] .scene-effect {
   font-weight: 700;
   margin-bottom: 8px;
 }
-body[data-page="design-choices"] .scene[data-effect*="救"] .scene-effect { color: var(--green); }
-body[data-page="design-choices"] .scene[data-effect*="部分让位"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="部分过度"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="应简化"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="可以跳过"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="可以放宽"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="取决于"] .scene-effect { color: var(--amber); }
-body[data-page="design-choices"] .scene[data-effect*="失效"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="多余"] .scene-effect,
-body[data-page="design-choices"] .scene[data-effect*="冗余"] .scene-effect { color: var(--gray); }
+body[data-page="design-choices"] .scene[data-effect*="管用"] .scene-effect { color: var(--green); }
+body[data-page="design-choices"] .scene[data-effect*="可以松"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="让一步"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="可以简化"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="不用做"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="看情况"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="也许碍事"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="用力过"] .scene-effect { color: var(--amber); }
+body[data-page="design-choices"] .scene[data-effect*="用不上"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="没必要"] .scene-effect,
+body[data-page="design-choices"] .scene[data-effect*="反而碍事"] .scene-effect { color: var(--gray); }
 body[data-page="design-choices"] .scene-when {
   font-family: var(--sans);
   font-size: 13px;

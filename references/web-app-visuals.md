@@ -8,23 +8,16 @@ Other references describe **content shape**（什么字段、几个 section、or
 是什么）。This file describes **页面长什么样**——字体、配色、stage 编号多大、
 code block 有没有 mac chrome、pull-quote 用什么修辞、challenges 区怎么编号。
 
-## Scope (2026-05)
+## 适用范围
 
-校准目标是 `examples/nuwa-skill/web-app/`。当前迁移状态：
+本文件描述以下两套视觉规范——CSS tokens、字体、字号、组件形状、字段映射都在下面具体节里：
 
-- **walkthrough.html — 编辑杂志体（已校准）**。Noto Serif SC 大标题 + 巨号斜体
-  stage 编号 + 暗色代码块 mac chrome + italic pull-quote + Q01/Q02 编号练习。
-  这是这一节描述的目标形状。
-- **design-choices.html — 戏剧三幕体（已校准 2026-05）**。每个 dc 一出三幕——
-  红印 Act I 设定 (badScenario) → 绿印 Act II 转折 (constraint) → 黑印 Act III
-  余波 (solvedProblem)。中间 → 箭头串联，落幕笔记（curtain note）= reusableMove
-  反色块，下方"换三个地形重演" encore grid = counterScenarios。详见下方
-  「Design Choices 页（戏剧三幕）」节。
-- overview / glossary / file-map / patterns / apply-it — 米色现代编辑体（旧版）。
-  会逐页迁移；在迁移完成之前，校准目标是混合状态。
+- **编辑杂志体（用于 walkthrough）**：Noto Serif SC 大标题 + 巨号斜体 stage 编号 + 暗色代码块 mac chrome + italic pull-quote + Q01/Q02 编号练习。详见下方「Tokens」+「组件形状」节。
+- **戏剧三幕体（用于 design-choices）**：每个 dc 一出三幕——红印 Act I 设定 (badScenario) → 绿印 Act II 转折 (constraint) → 黑印 Act III 余波 (solvedProblem)。详见下方「Design Choices 页（戏剧三幕）」节。
 
-新写一个 skill 的 web app 时，如果只能跟一页对齐视觉，跟 walkthrough.html。
-新写一个 skill 的 design-choices 页面时，跟 design-choices.html（戏剧三幕）。
+其它页面（overview / glossary / file-map / patterns / apply-it）目前使用旧的米色现代编辑体。新写 skill 时如果有动力，可以也迁移到上述两套之一；若保留旧风格，本文件不强约束。
+
+`examples/` 下有渲染好的样本可以扫一眼感受最终效果——但**规则以本文件为准**。example 跟本文件冲突时以本文件为准；example 是产出，不是规范源。
 
 ## 视觉论点（visual thesis）
 
@@ -94,7 +87,7 @@ mono。
 它在右侧正文区域内，不替代全站左侧 sidebar。walkthrough 页面仍然保留和 index
 一致的左侧菜单栏；masthead 只是正文自己的章节横条。
 
-- 左边：`❖ 女娲 · 解剖手册` + `章 02 / Walkthrough`（kicker，sans uppercase 11px
+- 左边：`❖ <Skill Name> · 解剖手册` + `章 02 / Walkthrough`（kicker，sans uppercase 11px
   letter-spacing 0.22em）
 - 右边：`UI Mock · v1` 之类的版本信息
 - 下方一条 1px 分隔线（var(--rule)）
@@ -152,7 +145,7 @@ var(--rule) 分隔。
 - serif 17.5px line-height 1.85。
 - `<strong>` 默认 ink 色 700；但**段首第一个 strong 是 accent 色**——
   `.narrative p strong:first-child { color: var(--accent); }`。这是用来强调
-  「问题 / 默认 AI 本能 / 女娲的反推」这种关键开头词的。
+  「问题 / 默认 AI 本能 / 这个 skill 的反推」这种关键开头词的。
 - 列表：`list-style: none` + `padding-left: 0`，每个 `<li>` 用 `position: relative;
   padding-left: 28px;` + `::before { content: "—"; color: var(--accent); }`
   做 em-dash 项目符号。
@@ -218,7 +211,7 @@ var(--rule) 分隔。
 
 design-choices 页的视觉立意一句话：**每个设计选择是 AI 一次本能动作被改写的瞬间，写成一出三幕戏**。
 
-读者读完一个 dc 应该有看完一段短剧的感觉——红幕拉开（AI 默认会走的路）→ 绿幕转折（nuwa 拦下来改）→ 黑幕余波（账省在了哪里）。这套形状反掉了"card grid + 字段标签"那种 spec doc 风，因为 spec doc 风让 10 张卡读着像一坨；三幕戏让每个 dc 自带叙事节奏。
+读者读完一个 dc 应该有看完一段短剧的感觉——红幕拉开（AI 默认会走的路）→ 绿幕转折（skill 拦下来改）→ 黑幕余波（账省在了哪里）。这套形状反掉了"card grid + 字段标签"那种 spec doc 风，因为 spec doc 风让 10 张卡读着像一坨；三幕戏让每个 dc 自带叙事节奏。
 
 ### 新增 tokens
 
@@ -226,10 +219,10 @@ design-choices 页的视觉立意一句话：**每个设计选择是 AI 一次�
 
 ```css
 /* 三幕 + counter 三色 */
---green: #2d6e4e;            /* Act II 转折 + counter 救你 */
+--green: #2d6e4e;            /* Act II 转折 + counter 管用 */
 --green-soft: rgba(45, 110, 78, 0.05);
---amber: #94701f;            /* counter 部分让位 / 部分过度 / 应简化 */
---gray: #5a4a3e;             /* counter 完全失效 — 用灰避免和 accent 红混淆 */
+--amber: #94701f;            /* counter 得让一步 / 用力过了 / 可以简化 */
+--gray: #5a4a3e;             /* counter 用不上 — 用灰避免和 accent 红混淆 */
 ```
 
 **为什么 counter 失效色是灰不是红**：accent 红 (#8a1c0f) 已经承担"AI 默认会做"的语义。如果 counter 失效再用红，读者会把"这一招在某场景失效"误读成"这一招本身坏"——但这两件事不一样。失效是"在某地形上空转"，是中性的关闭信号，用灰更准确。
@@ -240,10 +233,10 @@ design-choices 页的视觉立意一句话：**每个设计选择是 AI 一次�
 - `h1`：serif 600，clamp(36px, 4.6vw, 52px)，letter-spacing -0.012em，max-width 24ch。
   关键词三色染：
   - `<span class="ai-bad">设定</span>` → accent 红
-  - `<span class="nuwa-good">转折</span>` → green
+  - `<span class="skill-good">转折</span>` → green
   - 普通 `余波` → ink 默认
 - `lede`：serif 16px line-height 1.75 ink-2，最多 4 行。用 italic em 高亮三幕的关键词
-  （AI 准备做什么 / nuwa 拦下来怎么改 / 结果如何）。
+  （AI 准备做什么 / skill 拦下来怎么改 / 结果如何）。
 
 ### dc-head（每个 dc 的章号 + 标题）
 
@@ -256,7 +249,7 @@ design-choices 页的视觉立意一句话：**每个设计选择是 AI 一次�
 把 looksUnnecessaryBecause 渲染成 italic 引子段，左侧 3px var(--ink-mute) 实线，
 padding-left 22px，max-width 64ch。serif 16.5px italic line-height 1.75。
 
-这是读者读完 dc-title 之后的第一段反对意见——它要让读者先在心里说"对，nuwa 这一刀好像多余啊"，
+这是读者读完 dc-title 之后的第一段反对意见——它要让读者先在心里说"对，这个 skill 这一停好像多余啊"，
 然后三幕戏开演才能把这个怀疑翻过来。
 
 ### acts 三幕 timeline（核心组件）
@@ -272,7 +265,7 @@ fallback 单列堆叠，箭头隐藏。
    印章只有 border + 文字，没有 fill——保持轻盈。
 2. **act-title**：serif 18px 600 line-height 1.4 ink。统一的三句话标题：
    - Act I：「AI 准备做什么」
-   - Act II：「nuwa 拦下来怎么改」
+   - Act II：「skill 拦下来怎么改」
    - Act III：「结果如何」
 3. **act-body**：padding 18 20 20，border-top 1.5px 实色（红/绿/黑），背景对应淡 5% 染色。
    sans 14px line-height 1.78 ink。这里渲染对应字段全文（badScenario / constraint / solvedProblem）。
@@ -288,15 +281,14 @@ fallback 单列堆叠，箭头隐藏。
 **禁止**：让三幕中任意一幕变成 card 化处理（圆角 + 阴影 + 多边框）——会丢掉报章感。
 border-top + 背景染色 + stamp 已经够区分三幕，多了反而稀。
 
-### curtain（落幕笔记 · reusableMove）
+### curtain（这一招换个地方一样能用 · reusableMove）
 
-三幕之后的 ink 反色块，相当于剧场的"落幕评论"。
+三幕之后的 ink 反色块——同样的招换个 skill 也能用，单独写一句话存下来。
 
 - ink 实色背景，paper 字色。padding 24 28，max-width 940px。
-- label：mono 11px letter-spacing 0.16em paper-3 uppercase：`换个 skill 也用得上`。
-  前置一个 accent 红 ❖ 字符（不是 emoji）。
-  后置一段 paper-3 色的 mono 10px 副标 `落幕笔记 · CURTAIN NOTE`（`text-align: right`
-  flex: 1）。
+- label：sans 12px paper-3 色：`这一招换个地方一样能用`。
+  前置一个 accent 红 ▼ 字符（不是 emoji）。
+  不要用 mono / uppercase / 戏剧术语副标（旧版的「落幕笔记 · CURTAIN NOTE」已删——它是装样的中英重复 + 戏剧化术语，新版去掉了）。
 - body：serif 16px italic 500 line-height 1.78。reusableMove 字段直接渲染——这一段
   应该读起来像一句格言，不是总结。
 
@@ -305,7 +297,7 @@ border-top + 背景染色 + stamp 已经够区分三幕，多了反而稀。
 curtain 下面隔一条 1px dashed rule，标题：
 
 - label：mono 11.5px letter-spacing 0.14em ink-mute uppercase：`换三个地形把这出戏重演`
-- hint：serif 13px italic ink-mute：`同一出戏在不同舞台演出来效果不一样——救你的舞台、让位的舞台、彻底失效的舞台。`
+- hint：serif 13px italic ink-mute：`同一出戏在不同舞台演出来效果不一样——管用的舞台、得让一步的舞台、彻底用不上的舞台。`
 
 scenes grid：`grid-template-columns: repeat(3, 1fr)` gap 12px（窄屏 1 列）。每个 scene
 是一张轻 card：
@@ -320,19 +312,20 @@ scenes grid：`grid-template-columns: repeat(3, 1fr)` gap 12px（窄屏 1 列）
 **CSS class 用 `[data-effect*="..."]` 选择器**：
 
 ```css
-.scene[data-effect*="救"] { border-left-color: var(--green); background: var(--green-soft); }
-.scene[data-effect*="部分让位"], .scene[data-effect*="部分过度"], .scene[data-effect*="应简化"],
-.scene[data-effect*="可以跳过"], .scene[data-effect*="可以放宽"], .scene[data-effect*="取决于"] {
+.scene[data-effect*="管用"] { border-left-color: var(--green); background: var(--green-soft); }
+.scene[data-effect*="得让一步"], .scene[data-effect*="用力过"], .scene[data-effect*="可以简化"],
+.scene[data-effect*="不用做"], .scene[data-effect*="可以松"], .scene[data-effect*="看情况"],
+.scene[data-effect*="也许碍事"] {
   border-left-color: var(--amber); background: rgba(148,112,31,0.05);
 }
-.scene[data-effect*="失效"], .scene[data-effect*="多余"], .scene[data-effect*="冗余"] {
+.scene[data-effect*="用不上"], .scene[data-effect*="没必要"], .scene[data-effect*="反而碍事"] {
   border-left-color: var(--gray); background: rgba(90,74,62,0.05);
 }
 ```
 
-这一组 `*=` 通配符匹配是从原 designChoicesPage 继承的——它允许 effect 字段写
-「绑你 / 应简化」这种 OR 组合也能正确染色。新写 effect 值时**只用 cards-patterns.md 第 55 行
-allowed 列表里的词**，不要发明新词。
+这一组 `*=` 通配符匹配让 effect 字段写「反而碍事 / 可以简化」这种 OR 组合也能正确染色。
+新写 effect 值时**只用 cards-patterns.md 第 55 行附近 allowed 列表里的词**，不要发明新词。
+旧 example 里的 `救你 / 完全失效 / 部分让位` 等老术语在历史 example 里仍能渲染（旧 CSS 还在自己的副本里），但新生成的 skill 一律走这里的新词。
 
 ### 字段映射（不能少）
 
@@ -365,18 +358,18 @@ design-choices 页写完后：
   会自动撑齐。其中一幕特别长导致另两幕跟着拉很多空白？这是预期——dc10 等组合卡
   的 constraint 字段比 badScenario 长很多时，会出现两幕较空。在阅读上仍 OK，但
   视觉上要接受这个不平衡（不是 bug）。
-- 落幕笔记的反色块（ink 背底 paper 字）能不能从纸色背景上一眼跳出来？跳不出 →
+- curtain 的反色块（ink 背底 paper 字）能不能从纸色背景上一眼跳出来？跳不出 →
   ink token 错了或背景错了。
-- scene 三种颜色（绿 / 琥珀 / 灰）能从 paper 背景上区分吗？特别是灰色"完全失效"——
+- scene 三种颜色（绿 / 琥珀 / 灰）能从 paper 背景上区分吗？特别是灰色"用不上"——
   和 ink-mute 是不是太近混淆了？混淆 → 调整 gray 到 #4a3a2e 加深一档。
 - 整页朗读 hero h1 + lede + 一个 dc-opening + 三幕 act-body——能不能读得通？
   读到三幕之间 act-body 衔接处突然变密 → 字段写得太密，回去看是不是该拆。
 
-### 校准样板
+### 渲染样本
 
-`examples/nuwa-skill/web-app/pages/design-choices.html` 渲染后 + `assets/styles.css`
-里 design-card / acts / curtain / encore 作用域内的 CSS + `assets/site.js` 里
-`designChoicesPage()` 渲染器。三处任何一处对不上，就以校准目标为准。
+如果想看戏剧三幕体在 HTML/CSS/JS 三层落地后长啥样，可看 `examples/nuwa-skill/web-app/pages/design-choices.html` 渲染结果 + `assets/styles.css` 里 design-card / acts / curtain / encore 作用域内的 CSS + `assets/site.js` 里 `designChoicesPage()` 渲染器。
+
+**规则以本文件「Design Choices 页（戏剧三幕）」节为准**。如果样本三处（HTML / CSS / JS）内部不一致，那是 example 自身的 bug，要修 example；不是 spec 模糊。
 
 ## site.js 渲染层的约束
 
@@ -425,9 +418,8 @@ stage 字段映射（不能少）：
 - challenges 区是不是和正文有视觉断开（背景色 + 顶部 accent 横线）？没断开 → 读者会以为这是 AI 内心独白，回去补 challenges-rule。
 - 朗读 hero 的 h1 + subtitle + lede——能不能一口气念完不停顿？念到中间要停 = 字号 / 行距 / max-width 没调好，节奏跟不上。
 
-## 校准样板
+## 渲染样本
 
-`examples/nuwa-skill/web-app/pages/walkthrough.html` 渲染后的页面 +
-`examples/nuwa-skill/web-app/assets/styles.css` 里 `body[data-page="walkthrough"]`
-作用域内的 CSS + `examples/nuwa-skill/web-app/assets/site.js` 里 `walkthrough()`
-渲染器。三处任何一处对不上，就以校准目标为准。
+如果想看编辑杂志体在 HTML/CSS/JS 三层落地后长啥样，可看 `examples/nuwa-skill/web-app/pages/walkthrough.html` 渲染结果 + `assets/styles.css` 里 `body[data-page="walkthrough"]` 作用域内的 CSS + `assets/site.js` 里 `walkthrough()` 渲染器。
+
+**规则以本文件「Tokens」+「组件形状」节 + 上面字段映射表为准**。如果样本三处内部不一致，那是 example 自身的 bug，要修 example；不是 spec 模糊。

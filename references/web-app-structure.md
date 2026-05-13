@@ -8,10 +8,23 @@ Before writing page prose, read `references/web-production-flow.md`. Web mode
 uses `handbook-brief.md` plus page packets as source material. A single
 `handbook.md` is a later export, not the page-writing source.
 
+Before writing page prose, create the fixed shell with:
+
+```bash
+bash scripts/scaffold-web-app.sh web-app \
+  --title="<Skill Name> 解剖手册" \
+  --skill-name="<Skill Name>" \
+  --source-path="<source skill path>"
+```
+
+The generated `index.html`, `pages/*.html`, `assets/site.js`, and
+`assets/styles.css` are stable infrastructure. For a normal seven-page handbook,
+do not rewrite them for each chapter; put page content in `assets/data.js` and
+diagram files in `assets/diagrams/`.
+
 **视觉规范在另一份文件里。** 这一份只讲页面**结构**（orientation block / index
 table / 卡片字段 / 跨页 voice）。**字体 / 配色 / stage 编号长啥样 / code block
-长啥样 / pull-quote 怎么排** 见 `references/web-app-visuals.md`——校准目标是
-`examples/nuwa-skill/web-app/pages/walkthrough.html` 的编辑杂志体。
+长啥样 / pull-quote 怎么排** 见 `references/web-app-visuals.md`。
 
 ## Start high, then go lower
 

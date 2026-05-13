@@ -22,7 +22,7 @@ For the core handbook contract, read `references/handbook-spec.md` first. That f
 - 在 primer 开始之前给一个 predict 钩子，让读者先写下自己的猜测再读下文；
 - whyThisShape 用结构化列表逐章说排序逻辑，不能写成一段把 7 章串成一句的 TOC 散文。
 
-详见 `references/handbook-spec.md` 的 Overview 形状规范，校准样板见 `examples/nuwa-skill/web-app/`（教科书标准，2025-05 重写）。
+详见 `references/handbook-spec.md` 的 Overview 形状规范。如果想看长啥样，可以扫一眼 `examples/` 下任一份样本——schema 和规则以 references 为准，example 是产出不是规范源。
 
 **No academic name-dropping, no decorative metaphors, no fake-jargon, no English-Chinese mash-ups.** See **反装样自检** at the end — non-negotiable.
 
@@ -80,7 +80,18 @@ Open `references/handbook-spec.md` and follow it. For web app output, also read 
 
 **Do not write one full `handbook.md` and then translate it into web pages.** In web mode, `handbook.md` is an export, not the source of truth.
 
-Create the source artifacts first:
+Create the fixed web shell before writing page prose:
+
+```bash
+bash scripts/scaffold-web-app.sh web-app \
+  --title="<Skill Name> 解剖手册" \
+  --skill-name="<Skill Name>" \
+  --source-path="<source skill path>"
+```
+
+The generated `web-app/index.html`, `web-app/pages/*.html`, `web-app/assets/site.js`, and `web-app/assets/styles.css` are the stable rendering layer. Do not rewrite them per chapter. For a normal 7-page handbook, only fill `web-app/assets/data.js` and add real SVGs under `web-app/assets/diagrams/`. Touch `site.js` only if the page schema or page set actually changes.
+
+Create the source artifacts next:
 
 - `handbook-brief.md` — global facts, one running example, page map, shared IDs, diagrams, links.
 - `page-packets/` — one packet per page, each with its own page job, writing voice, inputs, required material, and self-check.
@@ -97,16 +108,16 @@ Key shape to remember while writing:
 - **One example throughout.** The example from step 3 shows up at every stage with real material (text excerpt / prompt / command / code).
 - **Code-native diagrams for accuracy, imagegen only for mood.** Never use imagegen for diagrams with precise labels. For visual rules and final self-checks, read `references/visuals-and-quality.md`.
 - **Narrative hooks between stages.** 每个 stage 开头一句 **接上一步：** 回收上一步存的钱，结尾一句 **下一步靠这个：** 埋下一步要花的钱。没有这两个钩子，stage 之间是物料流不是故事，读者合上书只记得文件名。详见 `references/stage-writing.md` Rule 10。
-- **Page voice gate before moving on.** 每页 / 每章写完后先过反装样自检、去 AI 味自检、朗读可行性检查，并按检查结果修一轮；不要把这些局部文风问题都留给最终 editor pass。
+- **Page voice gate before moving on.** 每页 / 每章写完后先过反装样自检、去 AI 味自检、朗读可行性检查，并按检查结果修一轮；去 AI 味要额外扫 garden video 借来的五类指纹（假共情 / 假深刻 / 自我标榜 / 万能模板 / 排比堆砌）；不要把这些局部文风问题都留给最终 editor pass。
 
-For the multi-page web app structure, read `references/web-app-structure.md`, then use `examples/web-video-presentation/web-app/` as a rendered sample.
+For the multi-page web app structure, read `references/web-app-structure.md`. `examples/web-video-presentation/web-app/` 是一个渲染好的样本可以扫一眼感受形状——结构规则以 references 为准，不要从 example 反推规则。
 
 ### 5. Run page voice gates, then the editor pass
 
 Before moving from one completed page/chapter to the next, run the page voice gate from `references/web-production-flow.md`:
 
 - 反装样自检：有没有学者名、英文包装、文学修辞、发明术语、中英夹杂、行话解释行话；
-- 去 AI 味自检：有没有密集汇报腔、数字名词堆叠、破折号锁链、规则先行、没有转向读者；
+- 去 AI 味自检：有没有密集汇报腔、数字名词堆叠、破折号锁链、规则先行、没有转向读者；有没有假共情、假深刻、自我标榜、万能模板、排比堆砌；
 - 朗读可行性检查：有没有长句、长段、喘不过气的句子、缺少自然停顿。
 
 The voice gate is not a report-only step. Findings must be fixed in that page before it is considered done.
@@ -133,7 +144,7 @@ After every page has passed its local gate, run the final editor pass from `refe
 所以硬规则：
 
 - `diagrams[]` 每个条目必须有 `image: "assets/diagrams/<name>.svg"` 字段，指向**真实存在的 SVG 文件**。
-- SVG 文件必须真画出来——参考 `examples/web-video-presentation/web-app/assets/diagrams/` 的样式约定（viewBox、配色、marker 箭头、字号）。
+- SVG 文件必须真画出来——`examples/web-video-presentation/web-app/assets/diagrams/` 下有现成 SVG 可以扫一眼感受样式（viewBox、配色、marker 箭头、字号）。如果 `references/visuals-and-quality.md` 写了硬规则跟 example 冲突，以 references 为准。
 - 落盘前必须做两件事：
   1. `ls web-app/assets/diagrams/` 看每个 image 引用都有对应文件。
   2. `python3 -m http.server` 起服务后**逐个 curl 每个 SVG**——HTTP 200 + 非零字节 = 渲染会出图。只测页面 200 不够，因为页面 200 时图可能是空的。
@@ -285,6 +296,30 @@ LLM 写完一段感觉"密度高、信息量大"——这正是 AI 味的源头�
    - AI 味会把「也就是说 / 换句话说 / 这样一来 / 你看 / 这就解释了 / 接下来 / 不过 / 但是」省掉，让句子干练。教学语气恰恰要靠这些词撑出节奏。
    - 检查方法：相邻两句之间没有连接词 = 读者得自己脑补关系，认知负担升高。回去补一个最自然的连词。
 
+#### 从 garden video 借来的 5 类 AI 指纹
+
+这些检查来自 `web-video-presentation` 的口播稿规则，但这里不是要把手册写成 B 站口播。只借它的判断方式：**这句话像不像一个真人在带你看东西**。不像就改。
+
+1. **假共情。**
+   - 命中样子：「我知道你一定很困惑」「你肯定也踩过这个坑」「给所有想偷招的人」。
+   - 手册里可以转向读者，但必须有具体场景。写「你现在手里只有 article.md，下一步会不会想直接写 React？」比宣布「我懂你」更真。
+
+2. **假深刻。**
+   - 命中样子：「恰恰」「反而」「真正可怕的是」「本质上」「底层逻辑」包装一个普通观察。
+   - 检查方法：删掉这些词，意思有没有变？没变就删；删完观点太平，就补具体例子，不要补修辞。
+
+3. **自我标榜。**
+   - 命中样子：「这一点极其关键」「我必须认真说」「接下来彻底讲清」「这是最重要的一刀」。
+   - 改法：不要给自己的话加权，直接展示后果。「跳过这一步，第 5 章会回到默认卡片堆叠」比「这一步极其关键」更有用。
+
+4. **万能模板。**
+   - 命中样子：「一句话总结」「说白了」「归根结底」「形成闭环」「赋能」「抓手」「底座」。
+   - 改法：模板词通常是在替作者省解释。把它换成这一页里真实发生的动作、文件、检查、失败后果。
+
+5. **排比堆砌。**
+   - 命中样子：连续三句结构一样，或一串四字词让段落显得很整齐。
+   - 改法：保留最有信息量的一两句，其余换成一个具体场景、表格或 before/after 对照。手册要让读者看懂，不需要像宣传语。
+
 #### 朗读测试（最后一道）
 
 写完一段，**真念出声**。判定标准很简单：**念到段末不用换气**。中间憋不住要停下来喘 = AI 味没去干净，回去拆句。
@@ -295,10 +330,18 @@ LLM 写完一段感觉"密度高、信息量大"——这正是 AI 味的源头�
 - `references/stage-writing.md` — stage walkthrough writing rules: local term explanations, pre-test hooks, real materials, narrative handoffs, story voice, and AI freedom.
 - `references/cards-patterns.md` — design choice cards and pattern cards: bad scenarios, counter scenarios, therefore breaks, and related pattern links.
 - `references/web-production-flow.md` — web handbook production flow: `handbook-brief.md`, page packets, page agents, per-page voice gates, editor pass, and Markdown export rules.
+- `references/voice-gate-examples.md` — voice gate reviewer 用的对照反例库（7 类高频违反 + 改后例）+ 高曝光字段必扫清单 + reviewer sub-agent 调用形状。**page voice gate 必须起独立 reviewer sub-agent**——writer 自审拦不住 garden video 5 类指纹。
 - `references/web-app-structure.md` — multi-page web app structure and page-level orientation blocks for detail pages.
-- `references/web-app-visuals.md` — 页面视觉规范（typography / 配色 / 组件形状）。校准目标是 `examples/nuwa-skill/web-app/pages/walkthrough.html` 的编辑杂志体（2026-05）。
+- `references/web-app-visuals.md` — 页面视觉规范（typography / 配色 / 组件形状）。`examples/` 下渲染好的页面可以扫一眼感受形状，但规范以本文件为准，不从 example 反推规则。
 - `references/visuals-and-quality.md` — diagram/image rules and final quality bar.
-- `examples/` — handbooks already produced for specific skills. **They are calibration targets, not templates.** Read one to feel the format in action; do not copy its content or structure into a new handbook. Future analyses can add more entries under `examples/<skill-name>/`.
-  - `examples/nuwa-skill/web-app/` — **教科书标准的 Overview 校准目标**（2025-05 重写）。看 `pages/overview.html` 渲染效果 + `assets/data.js` 的 schema 实例（openingScene / predictPrompt / primerBeats + 嵌入图 / wowSetup + compare 表格 + wowMoment / badResults before-after / shapeReason + chapterLogic）。**新写 Overview 优先参考这一份**。
-  - `examples/web-video-presentation/handbook.md` — 早期工作笔记标准的完整 markdown 样本。voice 偏密、信息为主、视觉较少。当用户明确要 "creator's notes" 节奏时可参考；做教科书 Overview 不要照这个抄。
-  - `examples/web-video-presentation/web-app/` — 早期工作笔记标准的渲染 web app。可以参考其 site.js 渲染引擎和 walkthrough / patterns / design-choices / file-map 几页的形状，但 Overview 不要照这个抄。
+- `scripts/scaffold-web-app.sh` — creates the fixed static `web-app/` skeleton from `assets/web-app-template/`.
+- `assets/web-app-template/` — stable page shells, renderer, CSS, starter `data.js`, and empty `assets/diagrams/` directory.
+- `examples/` — handbooks already produced for specific skills.
+  - **冲突仲裁（硬规则）**：如果 example 里的具体写法跟 references 里的规则冲突，**以 references 为准**。example 是产出（可能含未清理的失败片段），不是规范源。一个真实案例：早期 example 留下过 `page-data/` 死代码目录，下次跑就被当成合法 step 复制——这就是把 example 当模板的代价。
+  - **怎么用 example**：读它们是为了**看长啥样、感受形状**。schema 字段、写作规则、voice gate 全部从 references 学，不要从 example 反推。
+  - **不要 copy**：不要把 example 的内容或结构直接搬进新 handbook。
+  - 当前可用的 example：
+    - `examples/nuwa-skill/web-app/` — 教科书 voice 的多页样本。Overview schema 字段定义见 `references/handbook-spec.md` 第 1.1-1.8 节。
+    - `examples/web-video-presentation/handbook.md` — 工作笔记 voice 的完整 markdown 样本。voice 偏密、信息为主、视觉较少。当用户明确要 "creator's notes" 节奏时可参考。
+    - `examples/web-video-presentation/web-app/` — 工作笔记 voice 的渲染 web app。可参考 site.js 渲染引擎和分页形状。
+  - Future analyses can add more entries under `examples/<skill-name>/`.

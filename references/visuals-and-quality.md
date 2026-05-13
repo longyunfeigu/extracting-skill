@@ -80,7 +80,7 @@ Structure diagrams explain. Generated images invite and reinforce.
 
 **判定违规**：你的 wow moment 里出现了 ≥ 3 个并列项（"A 是 X / Y / Z；B 是 P / Q / R；C 是 M / N / O"）但没配图——这就是散文做对照，回去画 SVG。
 
-校准样板见 `examples/nuwa-skill/web-app/assets/diagrams/protocol-compare.svg`——3 列 × 2 行（核心心智模型 / 反推研究维度）的塔勒布 / 费曼 / MrBeast 对照。
+样本可扫一眼 `examples/nuwa-skill/web-app/assets/diagrams/protocol-compare.svg` 长啥样——3 列 × 2 行（核心心智模型 / 反推研究维度）的塔勒布 / 费曼 / MrBeast 对照。具体规则（cols / rows 写法、字号、配色）以本节为准。
 
 ## 占位 metadata ≠ 完成（写了 diagrams[] 不等于画了图）
 
@@ -129,7 +129,7 @@ Before finishing a handbook, check:
 - 1.4 primer 是 5-9 拍 narrative blocks 还是一坨 >300 字段落？后者必须拆。
 - 1.4 primer 第 1 拍之后嵌了一张 orientation SVG 图吗？没有 = 读者没地图 = 重写。
 - 1.5 wow moment 涉及 2+ 个东西对照时，用了 SVG 表格还是散文叙述？散文 = 工作笔记 voice = 重写为 SVG。
-- 1.6 bad results 是 3-5 张 before/after 双行卡（aiDefault + nuwaIntercept），还是扁平 bullet 列表？扁平 = 落不到地 = 重写。
+- 1.6 bad results 是 3-5 张 before/after 双行卡（aiDefault + skillIntervention），还是扁平 bullet 列表？扁平 = 落不到地 = 重写。
 - 1.8 whyThisShape 是 `shapeReason`（一句逻辑）+ `chapterLogic`（结构化列表），还是一段把 7 章串起来的 TOC 散文？后者重写。
 - 把 Overview 单独拿给一个**完全没读过源 skill 的朋友**看，他读完能用 3-5 句话给另一个朋友讲清楚源 skill 在干嘛吗？讲不清 = opening scene 或 primer 不够具体 = 重写。
 
@@ -151,7 +151,7 @@ Before finishing a handbook, check:
 ## Design choice self-check
 
 - 每个 design choice 有 3 个 counter scenarios 吗？
-- 三个场景的 effect 不全是「救你」吗？
+- 三个场景的 effect 不全是「管用」吗？
 - 每个 counter 的「为什么」是具体的、可以被反驳的，还是泛泛「视情况」？
 
 ## Pattern network self-check

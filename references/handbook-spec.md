@@ -13,9 +13,9 @@ source is `handbook-brief.md` plus page packets. `handbook.md` may be generated
 afterwards as a linear export. Read `references/web-production-flow.md` before
 writing web pages.
 
-For a complete sample handbook, read `examples/web-video-presentation/handbook.md`
-for voice calibration. For the rendered web app shape, see
-`examples/web-video-presentation/web-app/`.
+`examples/` 下放着已经跑出来的样本。读它们是为了**看长啥样、感受形状**——不是为了学规则。**字段 schema、写作规则、voice gate 以本文件和其它 references 为准**；example 跟 references 冲突时，以 references 为准。example 是产出（可能含未清理的失败片段），不是规范源。
+
+可看的样本：`examples/web-video-presentation/handbook.md`（完整 markdown 样本，工作笔记 voice）、`examples/web-video-presentation/web-app/`（渲染好的多页 web app）、`examples/nuwa-skill/web-app/`（教科书 voice 的多页 web app）。
 
 ## Core Idea
 
@@ -133,7 +133,8 @@ instructions and examples.
 
 14. **Every page passes a local voice gate before the final editor pass.**
     反装样自检、去 AI 味自检、朗读可行性检查是每页 / 每章写完后的出门门槛，
-    不是全书写完后的清理工作。先修局部文风问题，再做全书级一致性检查。See
+    不是全书写完后的清理工作。去 AI 味要额外扫假共情、假深刻、自我标榜、
+    万能模板、排比堆砌这五类指纹。先修局部文风问题，再做全书级一致性检查。See
     `references/web-production-flow.md`.
 
 ## Recommended Handbook Structure
@@ -149,7 +150,7 @@ Overview 是承重墙。一个完全没看过源 skill 的读者，应该能在�
 
 **这一节不是 creator 风格的总结。**"用一段密集段落把整个 skill 总结一遍"是工作笔记 voice，会让读者关掉。教科书 voice 必须刻意安排读者的前 10 分钟。
 
-**校准样板**：`examples/nuwa-skill/web-app/pages/overview.html` 渲染后的页面 + `examples/nuwa-skill/web-app/assets/data.js` 里 `overview` 对象的字段。下面 8 个子节是写 Overview 时必填的字段和形状。
+下面 8 个子节是写 Overview 时必填的字段和形状。**字段定义以下面为准**——如果想看长啥样可以扫一眼 `examples/` 下任一份 `pages/overview.html` 的渲染效果，但形状感受归形状感受，字段 schema 不从 example 反推。
 
 #### 1.1 Hero — 一句话框架
 
@@ -189,9 +190,9 @@ Overview 是承重墙。一个完全没看过源 skill 的读者，应该能在�
 
 #### 1.6 Bad results prevented — before/after 卡，不是 bullet 列表
 
-- 3-5 张卡。每张卡两行：`aiDefault`（不用这个 skill 会发生什么）+ `nuwaIntercept`（这个 skill 怎么具体拦）。
+- 3-5 张卡。每张卡两行：`aiDefault`（不用这个 skill 会发生什么）+ `skillIntervention`（这个 skill 怎么具体拦）。
 - **不要写成一个 "防 X / 防 Y / 防 Z" 的扁平 list。** before/after 配对才让规则落地。
-- 字段：`overview.badResults` (array of `{title, aiDefault, nuwaIntercept}`)。
+- 字段：`overview.badResults` (array of `{title, aiDefault, skillIntervention}`)。
 
 #### 1.7 Running example — 引入贯穿全本的例子
 

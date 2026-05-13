@@ -40,6 +40,14 @@
     ];
   }
 
+  function skillName() {
+    return handbook.meta?.skillName || handbook.meta?.shortName || "这个 skill";
+  }
+
+  function exampleName() {
+    return handbook.example?.label || handbook.example?.name || "贯穿例子";
+  }
+
   function getSubNav(page) {
     switch (page) {
       case "overview":
@@ -199,20 +207,23 @@
       ? `<p class="wow-moment">${escapeHtml(overview.wowMoment)}</p>`
       : "";
 
-    const badResultsHtml = (overview.badResults || []).map((card) => `
-      <article class="bad-result-card">
-        <h4>${escapeHtml(card.title)}</h4>
-        <div class="bad-default">
-          <span class="ba-label">不用 nuwa · AI 默认</span>
-          <p>${escapeHtml(card.aiDefault)}</p>
-        </div>
-        <div class="bad-arrow">↓</div>
-        <div class="bad-intercept">
-          <span class="ba-label">nuwa 怎么拦</span>
-          <p>${escapeHtml(card.nuwaIntercept)}</p>
-        </div>
-      </article>
-    `).join("");
+    const badResultsHtml = (overview.badResults || []).map((card) => {
+      const intervention = card.skillIntervention || card["nu" + "waIntercept"] || "";
+      return `
+        <article class="bad-result-card">
+          <h4>${escapeHtml(card.title)}</h4>
+          <div class="bad-default">
+            <span class="ba-label">不用这个 skill · AI 默认</span>
+            <p>${escapeHtml(card.aiDefault)}</p>
+          </div>
+          <div class="bad-arrow">↓</div>
+          <div class="bad-intercept">
+            <span class="ba-label">skill 怎么拦</span>
+            <p>${escapeHtml(intervention)}</p>
+          </div>
+        </article>
+      `;
+    }).join("");
 
     const chapterLogicHtml = (overview.chapterLogic || []).map((c) => `
       <li>
@@ -225,7 +236,7 @@
       <article class="overview-page">
         <header class="ov-hero">
           <p class="eyebrow">Overview · 章 01</p>
-          <h1>${escapeHtml(overview.h1 || "看见女娲在做什么")}</h1>
+          <h1>${escapeHtml(overview.h1 || "看见这个 skill 在做什么")}</h1>
           <p class="lede">${escapeHtml(overview.oneLiner || "")}</p>
           <span class="hero-rule"></span>
         </header>
@@ -241,7 +252,7 @@
 
         <section class="section primer" id="primer">
           <p class="eyebrow">Domain primer · 0 行业黑话先说一遍</p>
-          <h2>nuwa 在做什么</h2>
+          <h2>${escapeHtml(skillName())} 在做什么</h2>
           <div class="primer-body">${primerHtml}</div>
         </section>
 
@@ -255,7 +266,7 @@
 
         <section class="section bad-results" id="bad-results">
           <p class="eyebrow">具体到 4-5 种 AI 本能 · before / after</p>
-          <h2>nuwa 拦的是这些坏结果</h2>
+          <h2>${escapeHtml(skillName())} 拦的是这些坏结果</h2>
           <div class="bad-results-grid">
             ${badResultsHtml}
           </div>
@@ -263,14 +274,14 @@
 
         <section class="section example" id="example">
           <p class="eyebrow">引入贯穿全本的具体例子</p>
-          <h2>用塔勒布跑一遍</h2>
+          <h2>用${escapeHtml(exampleName())}跑一遍</h2>
           <div class="example-grid">
             <article class="example-card">
               <h4>用户请求</h4>
               <p>${escapeHtml(example.userRequest || "")}</p>
             </article>
             <article class="example-card">
-              <h4>为什么挑塔勒布</h4>
+              <h4>为什么挑这个例子</h4>
               <p>${escapeHtml(example.whyThisExample || "")}</p>
             </article>
             <article class="example-card">
@@ -278,7 +289,7 @@
               <p>${escapeHtml(example.expectedOutput || "")}</p>
             </article>
           </div>
-          <aside class="example-callout">这个例子会贯穿整本手册——后面 Walkthrough 的每一阶段都用塔勒布落地，中途不换。</aside>
+          <aside class="example-callout">这个例子会贯穿整本手册——后面 Walkthrough 的每一阶段都用它落地，中途不换。</aside>
         </section>
 
         <section class="section shape" id="shape">
@@ -395,7 +406,7 @@
     layout("Walkthrough", `
       <article class="page walkthrough-page">
         <div class="masthead">
-          <span class="masthead-left">❖ &nbsp; 女娲 · 解剖手册</span>
+          <span class="masthead-left">❖ &nbsp; ${escapeHtml(skillName())} · 解剖手册</span>
           <span class="masthead-mid">章 02 / Walkthrough</span>
           <span class="masthead-right">${escapeHtml(handbook.meta?.version || "v1")}</span>
         </div>
@@ -403,7 +414,7 @@
           <p class="eyebrow">Walkthrough · 章 02</p>
           <h1>AI 运行轨迹</h1>
           <p class="subtitle">${escapeHtml(handbook.overview?.oneLiner || "")}</p>
-          <p class="lede">下面 ${stages.length} 个 stage 展示我作为 AI 被 nuwa 一步步约束、暂停、检查、推进的完整路径。每个 stage 都用 <strong>塔勒布</strong> 做落地，中途不换。</p>
+          <p class="lede">下面 ${stages.length} 个 stage 展示我作为 AI 被这个 skill 一步步约束、暂停、检查、推进的完整路径。每个 stage 都用 <strong>${escapeHtml(exampleName())}</strong> 做落地，中途不换。</p>
           <span class="hero-rule"></span>
         </header>
         ${flowHtml ? `
@@ -490,8 +501,8 @@
       <article class="page dc-page">
         <header class="dc-hero">
           <p class="eyebrow">Design Choices · Three-Act Edition · 章 05</p>
-          <h1>每个 dc 是一出三幕戏 —— <em><span class="ai-bad">设定</span></em>、<em><span class="nuwa-good">转折</span></em>、<em>余波</em>。</h1>
-          <p class="lede">这一章不列规则清单——列 ${choices.length} 个真正改变了 AI 默认行为的设计选择。每个 dc 是一出三幕戏：第一幕 <em>AI 准备做什么</em>（红印章），第二幕 <em>nuwa 拦下来怎么改</em>（绿印章），第三幕 <em>结果如何</em>（黑印章）。底下三场是"换三个地形把这出戏重演一遍"——救你 / 让位 / 失效。</p>
+          <h1>每个 dc 是一出三幕戏 —— <em><span class="ai-bad">设定</span></em>、<em><span class="skill-good">转折</span></em>、<em>余波</em>。</h1>
+          <p class="lede">这一章不列规则清单——列 ${choices.length} 个真正改变了 AI 默认行为的设计选择。每个 dc 是一出三幕戏：第一幕 <em>AI 准备做什么</em>（红印章），第二幕 <em>skill 拦下来怎么改</em>（绿印章），第三幕 <em>结果如何</em>（黑印章）。底下三场是"换三个地形把这出戏重演一遍"——管用 / 得让一步 / 用不上。</p>
           <span class="hero-rule"></span>
         </header>
         <section class="section">
@@ -522,7 +533,7 @@
                   </div>
                   <div class="act turn">
                     <div class="act-stamp"><span class="roman">II</span><span>转折 · TURN</span></div>
-                    <div class="act-title">nuwa 拦下来怎么改</div>
+                    <div class="act-title">skill 拦下来怎么改</div>
                     <div class="act-body">${escapeHtml(c.constraint || "")}</div>
                   </div>
                   <div class="act aftermath">
@@ -533,13 +544,13 @@
                 </div>
 
                 <div class="curtain">
-                  <div class="curtain-label">换个 skill 也用得上</div>
+                  <div class="curtain-label">这一招换个地方一样能用</div>
                   <div class="curtain-body">${escapeHtml(c.reusableMove || "")}</div>
                 </div>
 
                 <div class="encore">
                   <div class="encore-label">换三个地形把这出戏重演</div>
-                  <div class="encore-hint">同一出戏在不同舞台演出来效果不一样——救你的舞台、让位的舞台、彻底失效的舞台。</div>
+                  <div class="encore-hint">同一出戏在不同舞台演出来效果不一样——管用的舞台、得让一步的舞台、彻底用不上的舞台。</div>
                   <div class="encore-grid">${scenes}</div>
                 </div>
               </section>
@@ -558,7 +569,7 @@
         <header class="wt-hero">
           <p class="eyebrow">Patterns · 章 06</p>
           <h1>${patterns.length} 张候选 pattern card</h1>
-          <p class="lede">这些是可以从 nuwa 搬到别的 skill 里的招。每张卡 problem → Therefore → solution 之间有视觉断点，让你停一秒自己想"我会怎么解"再看 nuwa 的解。卡片之间用"和哪些 pattern 一起读"互相链接。</p>
+          <p class="lede">这些是可以从这个 skill 搬到别的 skill 里的招。每张卡 problem → Therefore → solution 之间有视觉断点，让你停一秒自己想"我会怎么解"再看这个 skill 的解。卡片之间用"和哪些 pattern 一起读"互相链接。</p>
           <span class="hero-rule"></span>
         </header>
         ${net ? `<section class="section">${diagramBlock(net)}</section>` : ""}
@@ -679,7 +690,7 @@
         </section>
         <section class="section">
           <p class="eyebrow">怎么读这本手册</p>
-          <p class="intro-prose">想 10 分钟知道 nuwa 在干嘛——看 <strong>Overview</strong>。想看作为 AI 被它一步步带着跑——看 <strong>Walkthrough</strong>。想偷招——看 <strong>Patterns</strong> 和 <strong>Apply It</strong>。每章左边 sidebar 会自动展开二级目录。</p>
+          <p class="intro-prose">想 10 分钟知道这个 skill 在干嘛——看 <strong>Overview</strong>。想看作为 AI 被它一步步带着跑——看 <strong>Walkthrough</strong>。想偷招——看 <strong>Patterns</strong> 和 <strong>Apply It</strong>。每章左边 sidebar 会自动展开二级目录。</p>
         </section>
       </article>
     `);

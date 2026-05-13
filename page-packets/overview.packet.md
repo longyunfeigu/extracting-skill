@@ -1,19 +1,28 @@
 # overview.packet
 
-**Page job:** 展示普通 AI 怎样把“造一个人物 Skill”做坏，再解释女娲把任务拆成证据、提炼、构建、验证四段。
+**Page job**：让没看过女娲的读者读完能 3-5 句话给朋友讲清楚它在干嘛——从默认 AI 失败模式开场，到 Phase 5 的精炼为止。
 
-**Reader state:** 读者可能知道什么是 Claude/Codex skill，但不知道女娲为什么不直接写角色扮演 prompt。
+**Voice**：教科书教学 voice（第一人称"我作为使用女娲的 AI..."是 walkthrough 的；overview 用第三人称冷静叙述）。不复刻塔勒布表达 DNA（不写 IYI / FRAUD / 火鸡 / Hammurabi / 全大写）。
 
-**Voice:** 教科书章节。先让读者看坏场景，再命名女娲的做法。少用术语，术语第一次出现必须解释。
+**Inputs**：
+- `handbook-brief.md`（X-Ray summary / Intervention Map rows）
+- `xray.md` § 7 Intervention Map + § 6 Baseline diff
+- `web-app/assets/data.js` overview anchor slice（第 1 张 badResults）
 
-**Inputs:** `handbook-brief.md` total task, running example, diagrams `orientation-map` and `persona-compare`.
+**Must include**：5 张 badResults 卡，每张 `title` + `aiDefault` + `skillIntervention`。覆盖方向：
+1. 角色 prompt 化（anchor 已有）
+2. 金句当心智模型 → E4 三重验证
+3. 矛盾调和 → E5 保留 7 对张力
+4. 凭训练记忆生成 → O9 + Phase 5 第四类伪问题
+5. Caricature 指纹堆叠 → Phase 4.3 实测 + Phase 5 双精炼
 
-**Must include:** opening scene, predict prompt, primer beats with diagram, compare table/diagram, bad-results before/after cards, running example, chapter logic.
+**Must avoid**：复刻塔勒布表达 DNA；抽象口号；只点 Phase 而不说机制；自造 handbook 术语。
 
-**Must avoid:** 目录式介绍；把女娲写成“自动生成 prompt”；没有具体失败场景的赞美。
+**Packet output**：见 message 末尾 JS literal（patch `overview.badResults` key）。
 
-**Packet output:** `handbook.overview`, `handbook.example`, related entries in `handbook.diagrams`.
-
-**Self-check:** overview 读完后，读者能用 3-5 句话讲清女娲先找证据、再提炼模型、再构建 skill、最后验证。
-
-**Voice gate:** 扫 `openingScene` 收尾、`wowMoment`、每张 `badResults` 卡。
+**Self-check（page voice gate）**：
+- [x] 5 张卡，每张 aiDefault + skillIntervention 合计 ≤ 200 字
+- [x] 无塔勒布 DNA 渗入（无 IYI / FRAUD / 等级 >> / 全大写）
+- [x] 每张 aiDefault 落到行为细节（不是判断）
+- [x] 每张 skillIntervention 指出具体 Phase + 机制
+- [x] 4 个新方向各 1 张，且与 § 7 Intervention Map 对应行 evidence 一致

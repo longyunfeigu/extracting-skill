@@ -1,7 +1,10 @@
 # Web production flow
 
-Use this reference when the requested output is a multi-page web handbook or
-documentation app. Its purpose is to prevent a common bad result: writing one
+Use this reference only when the user requests the full web handbook upgrade.
+The default output is the Recommended Trace X-Ray from
+`references/xray-flow.md`.
+
+This reference prevents a common bad result in full handbook mode: writing one
 long `handbook.md`, then mechanically translating it into pages with the same
 voice everywhere.
 
@@ -13,7 +16,8 @@ The source of truth is:
 
 ```text
 handbook-brief.md
-  global facts, one running example, page map, shared IDs, diagrams, links
+  X-Ray findings, one running example, recommended path, Intervention Map,
+  Auto Decision Log, page map, shared IDs, diagrams, links
 
 page-packets/
   overview.packet.md
@@ -26,7 +30,8 @@ page-packets/
 ```
 
 The web app is assembled from the brief and page packets. A single-file
-`handbook.md` may be generated after that as a readable export.
+`handbook.md` may be generated after that as a readable export. The X-Ray is
+the input to this process, not something to discard.
 
 The `web-app/` directory itself should start from the fixed scaffold:
 
@@ -85,8 +90,12 @@ The HTML shells and renderer are infrastructure, not per-page writing output.
 
 Write a compact source plan before any long prose:
 
+- X-Ray summary and behavior-change claim;
 - source skill path and package map;
 - one running example;
+- recommended path and Auto Decision Log;
+- Intervention Map rows;
+- evidence table and friction verdict;
 - total task in one sentence;
 - stage IDs and one-line summaries;
 - term IDs and short local explanations;

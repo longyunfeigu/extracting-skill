@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+  <title id="title">三重验证关卡</title>
+  <desc id="desc">24 个候选论点经三道关卡筛选，升 6 心智模型 / 降 2 决策启发式 / 合并 4 / 丢 12。</desc>
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7a8794"/>
+    </marker>
+    <marker id="arrow-fail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b3a99a"/>
+    </marker>
+    <style>
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .gate-fill { fill: #fff1e6; stroke: #d97a4a; stroke-width: 2; }
+      .input-fill { fill: #e8eef5; stroke: #4a78a8; stroke-width: 1.6; }
+      .out-up { fill: #dde9d8; stroke: #4f7a3f; stroke-width: 1.6; }
+      .out-down { fill: #f0e8d6; stroke: #a08658; stroke-width: 1.6; }
+      .out-merge { fill: #e6e3ec; stroke: #685c8a; stroke-width: 1.6; }
+      .out-drop { fill: #ececec; stroke: #8a8a8a; stroke-width: 1.4; stroke-dasharray: 4 3; }
+      .gate-label { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c3744; text-anchor: middle; }
+      .gate-num { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b35c2e; text-anchor: middle; }
+      .node-label { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; text-anchor: middle; }
+      .node-sub { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; text-anchor: middle; }
+      .count { font: 800 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; text-anchor: middle; }
+      .pass-text { font: 700 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #4f7a3f; }
+      .fail-text { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #8a8a8a; }
+      .line { stroke: #7a8794; stroke-width: 1.6; fill: none; marker-end: url(#arrow3); }
+      .line-fail { stroke: #b3a99a; stroke-width: 1.2; stroke-dasharray: 4 3; fill: none; marker-end: url(#arrow-fail); }
+    </style>
+  </defs>
+  <rect class="bg" width="800" height="560"/>
+
+  <text class="band-label" x="32" y="34">PHASE 2 · THREE-FOLD GATE</text>
+  <text class="title" x="32" y="58">候选论点 → 三道串联关卡 → 四个出口</text>
+
+  <!-- Input: 24 candidates -->
+  <g transform="translate(32 230)">
+    <rect class="input-fill" width="100" height="80" rx="10"/>
+    <text class="count" x="50" y="34">24</text>
+    <text class="node-sub" x="50" y="52">候选论点</text>
+    <text class="node-sub" x="50" y="66">（金句 + 高频）</text>
+  </g>
+
+  <!-- Gate 1: cross-domain -->
+  <g transform="translate(170 220)">
+    <polygon class="gate-fill" points="60,0 120,50 60,100 0,50"/>
+    <text class="gate-num" x="60" y="32">关 1</text>
+    <text class="gate-label" x="60" y="52">跨域复现</text>
+    <text class="gate-label" x="60" y="68" font-size="11">≥ 2 域</text>
+  </g>
+
+  <!-- Gate 2: generativity -->
+  <g transform="translate(330 220)">
+    <polygon class="gate-fill" points="60,0 120,50 60,100 0,50"/>
+    <text class="gate-num" x="60" y="32">关 2</text>
+    <text class="gate-label" x="60" y="52">生成力</text>
+    <text class="gate-label" x="60" y="68" font-size="11">能推新问题</text>
+  </g>
+
+  <!-- Gate 3: exclusivity -->
+  <g transform="translate(490 220)">
+    <polygon class="gate-fill" points="60,0 120,50 60,100 0,50"/>
+    <text class="gate-num" x="60" y="32">关 3</text>
+    <text class="gate-label" x="60" y="52">排他性</text>
+    <text class="gate-label" x="60" y="68" font-size="11">不是聪明人都会</text>
+  </g>
+
+  <!-- Path through gates -->
+  <path class="line" d="M132 270 H168"/>
+  <path class="line" d="M290 270 H328"/>
+  <path class="line" d="M450 270 H488"/>
+
+  <!-- pass labels above arrows -->
+  <text class="pass-text" x="148" y="262" text-anchor="middle">通过</text>
+  <text class="pass-text" x="307" y="262" text-anchor="middle">通过</text>
+  <text class="pass-text" x="467" y="262" text-anchor="middle">通过</text>
+
+  <!-- Final output: promote to 6 mental models -->
+  <g transform="translate(656 230)">
+    <rect class="out-up" width="120" height="80" rx="10"/>
+    <text class="count" x="60" y="34">6</text>
+    <text class="node-sub" x="60" y="52">心智模型</text>
+    <text class="node-sub" x="60" y="66">（升级 promote）</text>
+  </g>
+  <path class="line" d="M612 270 H652"/>
+  <text class="pass-text" x="630" y="262" text-anchor="middle">全通过</text>
+
+  <!-- Fail exit from gate 1: drop -->
+  <g transform="translate(170 410)">
+    <rect class="out-drop" width="120" height="56" rx="4"/>
+    <text class="count" x="60" y="28" font-size="18">12</text>
+    <text class="node-sub" x="60" y="46">丢（金句但不跨域）</text>
+  </g>
+  <path class="line-fail" d="M230 322 V408"/>
+  <text class="fail-text" x="238" y="370">不跨域</text>
+
+  <!-- Fail exit from gate 2: demote to heuristic -->
+  <g transform="translate(330 410)">
+    <rect class="out-down" width="120" height="56" rx="4"/>
+    <text class="count" x="60" y="28" font-size="18">2</text>
+    <text class="node-sub" x="60" y="46">降为决策启发式</text>
+  </g>
+  <path class="line-fail" d="M390 322 V408"/>
+  <text class="fail-text" x="398" y="370">能推但太具象</text>
+
+  <!-- Fail exit from gate 3: merge -->
+  <g transform="translate(490 410)">
+    <rect class="out-merge" width="120" height="56" rx="4"/>
+    <text class="count" x="60" y="28" font-size="18">4</text>
+    <text class="node-sub" x="60" y="46">合并到已有模型</text>
+  </g>
+  <path class="line-fail" d="M550 322 V408"/>
+  <text class="fail-text" x="558" y="370">和别人重叠</text>
+
+  <!-- Legend bar bottom -->
+  <g transform="translate(32 500)">
+    <text class="band-label" x="0" y="0">出口图例</text>
+    <rect class="out-up" x="0" y="10" width="14" height="14" rx="2"/>
+    <text class="node-sub" x="22" y="22" text-anchor="start">升 6</text>
+    <rect class="out-down" x="60" y="10" width="14" height="14" rx="2"/>
+    <text class="node-sub" x="82" y="22" text-anchor="start">降 2</text>
+    <rect class="out-merge" x="120" y="10" width="14" height="14" rx="2"/>
+    <text class="node-sub" x="142" y="22" text-anchor="start">合并 4</text>
+    <rect class="out-drop" x="190" y="10" width="14" height="14" rx="2"/>
+    <text class="node-sub" x="212" y="22" text-anchor="start">丢 12</text>
+    <text class="node-sub" x="280" y="22" text-anchor="start">　·　24 个候选 = 6 升 + 2 降 + 4 合并 + 12 丢</text>
+  </g>
+</svg>

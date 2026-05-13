@@ -1,67 +1,150 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
-  <title id="title">从一句请求到可运行人物 Skill</title>
-  <desc id="desc">女娲把用户请求拆成分流、存证、收集、提炼、验证五段。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+  <title id="title">9-Phase 流水线 orientation map</title>
+  <desc id="desc">女娲 9 个 Phase 分成确认 / 存证 / 提炼 / 构建 / 验证 五段，区分 Hard Checkpoint 与 Auto Decision Phase。</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#8a1c0f"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#7a8794"/>
     </marker>
     <style>
-      .bg { fill: #f6f1e6; }
-      .panel { fill: #fffaf0; stroke: #d8cdb6; stroke-width: 1.5; }
-      .title { font: 800 26px "Songti SC", serif; fill: #1a1410; }
-      .small { font: 500 15px "PingFang SC", sans-serif; fill: #4a3f33; }
-      .kicker { font: 700 12px "PingFang SC", sans-serif; letter-spacing: 2px; fill: #8a1c0f; }
-      .num { font: italic 900 48px Georgia, serif; fill: #8a1c0f; opacity: .9; }
-      .line { stroke: #8a1c0f; stroke-width: 2.5; marker-end: url(#arrow); fill: none; }
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .legend-text { font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3a4654; }
+      .phase-title { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .phase-sub { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; }
+      .seg-title { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c3744; }
+      .seg-note { font: 400 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #6b7886; }
+      .auto-fill { fill: #e8eef5; stroke: #b6c3d1; stroke-width: 1.4; }
+      .check-fill { fill: #fff1e6; stroke: #d97a4a; stroke-width: 2; }
+      .line { stroke: #7a8794; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+      .seg-rect { fill: none; stroke: #c8d1da; stroke-width: 1; stroke-dasharray: 4 3; }
     </style>
   </defs>
-  <rect class="bg" width="1120" height="520"/>
-  <text class="kicker" x="54" y="58">ORIENTATION MAP</text>
-  <text class="title" x="54" y="95">女娲不是写一个角色扮演 prompt，而是跑一条证据生产线</text>
+  <rect class="bg" width="800" height="560"/>
 
-  <g transform="translate(54 150)">
-    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
-    <text class="num" x="20" y="62">01</text>
-    <text class="title" x="20" y="100" font-size="22">入口分流</text>
-    <text class="small" x="20" y="134">明确人名</text>
-    <text class="small" x="20" y="160">或模糊需求</text>
-    <text class="small" x="20" y="186">先走不同路</text>
-  </g>
-  <path class="line" d="M245 255 H315"/>
+  <text class="band-label" x="32" y="34">ORIENTATION</text>
+  <text class="title" x="32" y="58">9 Phase 流水线 · 5 段 · 3 道 Hard Checkpoint</text>
 
-  <g transform="translate(334 150)">
-    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
-    <text class="num" x="20" y="62">02</text>
-    <text class="title" x="20" y="100" font-size="22">先建目录</text>
-    <text class="small" x="20" y="134">research</text>
-    <text class="small" x="20" y="160">sources</text>
-    <text class="small" x="20" y="186">SKILL.md 同住</text>
-  </g>
-  <path class="line" d="M525 255 H595"/>
+  <!-- Segment frames -->
+  <g>
+    <rect class="seg-rect" x="32" y="100" width="100" height="220" rx="6"/>
+    <text class="seg-title" x="44" y="120">确认</text>
+    <text class="seg-note" x="44" y="136">入口分流</text>
 
-  <g transform="translate(614 150)">
-    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
-    <text class="num" x="20" y="62">03</text>
-    <text class="title" x="20" y="100" font-size="22">六路取证</text>
-    <text class="small" x="20" y="134">著作 / 对话</text>
-    <text class="small" x="20" y="160">表达 / 他者</text>
-    <text class="small" x="20" y="186">决策 / 时间线</text>
-  </g>
-  <path class="line" d="M805 255 H875"/>
+    <rect class="seg-rect" x="148" y="100" width="220" height="220" rx="6"/>
+    <text class="seg-title" x="160" y="120">存证</text>
+    <text class="seg-note" x="160" y="136">建目录 + 6 路并行 + 调研 review</text>
 
-  <g transform="translate(894 150)">
-    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
-    <text class="num" x="20" y="62">04</text>
-    <text class="title" x="20" y="100" font-size="22">三道筛选</text>
-    <text class="small" x="20" y="134">跨域复现</text>
-    <text class="small" x="20" y="160">能推新问题</text>
-    <text class="small" x="20" y="186">有排他性</text>
+    <rect class="seg-rect" x="384" y="100" width="148" height="220" rx="6"/>
+    <text class="seg-title" x="396" y="120">提炼</text>
+    <text class="seg-note" x="396" y="136">三重验证 + 摘要确认</text>
+
+    <rect class="seg-rect" x="548" y="100" width="100" height="220" rx="6"/>
+    <text class="seg-title" x="560" y="120">构建</text>
+    <text class="seg-note" x="560" y="136">SKILL.md + Protocol</text>
+
+    <rect class="seg-rect" x="664" y="100" width="100" height="220" rx="6"/>
+    <text class="seg-title" x="676" y="120">验证</text>
+    <text class="seg-note" x="676" y="136">三测 + 双精炼</text>
   </g>
 
-  <path class="line" d="M982 374 C982 450 138 450 138 374"/>
-  <g transform="translate(332 400)">
-    <rect class="panel" x="0" y="0" width="456" height="72" rx="8"/>
-    <text class="title" x="24" y="32" font-size="22">05 写成 Skill，再验证能不能工作</text>
-    <text class="small" x="24" y="56">已知题、边缘题、风格题、脚本检查；fail 先修，不只汇报。</text>
+  <!-- Phase 0A (auto) -->
+  <g transform="translate(48 184)">
+    <rect class="auto-fill" width="72" height="80" rx="14"/>
+    <text class="phase-title" x="36" y="32" text-anchor="middle">Phase 0A</text>
+    <text class="phase-sub" x="36" y="50" text-anchor="middle">入口分流</text>
+    <text class="phase-sub" x="36" y="64" text-anchor="middle">明确人名</text>
+  </g>
+
+  <!-- Phase 0.5 (auto) -->
+  <g transform="translate(164 184)">
+    <rect class="auto-fill" width="60" height="80" rx="14"/>
+    <text class="phase-title" x="30" y="32" text-anchor="middle">0.5</text>
+    <text class="phase-sub" x="30" y="50" text-anchor="middle">建目录</text>
+    <text class="phase-sub" x="30" y="64" text-anchor="middle">scaffold</text>
+  </g>
+
+  <!-- Phase 1 (auto) -->
+  <g transform="translate(236 184)">
+    <rect class="auto-fill" width="60" height="80" rx="14"/>
+    <text class="phase-title" x="30" y="32" text-anchor="middle">1</text>
+    <text class="phase-sub" x="30" y="50" text-anchor="middle">6 路</text>
+    <text class="phase-sub" x="30" y="64" text-anchor="middle">fan-out</text>
+  </g>
+
+  <!-- Phase 1.5 (HARD CHECKPOINT) - diamond -->
+  <g transform="translate(308 184)">
+    <polygon class="check-fill" points="40,0 80,40 40,80 0,40"/>
+    <text class="phase-title" x="40" y="38" text-anchor="middle">1.5</text>
+    <text class="phase-sub" x="40" y="52" text-anchor="middle">调研</text>
+    <text class="phase-sub" x="40" y="65" text-anchor="middle">review</text>
+  </g>
+
+  <!-- Phase 2 (auto) -->
+  <g transform="translate(400 184)">
+    <rect class="auto-fill" width="60" height="80" rx="14"/>
+    <text class="phase-title" x="30" y="32" text-anchor="middle">2</text>
+    <text class="phase-sub" x="30" y="50" text-anchor="middle">三重</text>
+    <text class="phase-sub" x="30" y="64" text-anchor="middle">验证</text>
+  </g>
+
+  <!-- Phase 2.5 (HARD CHECKPOINT) -->
+  <g transform="translate(472 184)">
+    <polygon class="check-fill" points="40,0 80,40 40,80 0,40"/>
+    <text class="phase-title" x="40" y="38" text-anchor="middle">2.5</text>
+    <text class="phase-sub" x="40" y="52" text-anchor="middle">摘要</text>
+    <text class="phase-sub" x="40" y="65" text-anchor="middle">确认</text>
+  </g>
+
+  <!-- Phase 3 (auto) -->
+  <g transform="translate(564 184)">
+    <rect class="auto-fill" width="72" height="80" rx="14"/>
+    <text class="phase-title" x="36" y="32" text-anchor="middle">Phase 3</text>
+    <text class="phase-sub" x="36" y="50" text-anchor="middle">SKILL.md</text>
+    <text class="phase-sub" x="36" y="64" text-anchor="middle">+ Protocol</text>
+  </g>
+
+  <!-- Phase 4 (HARD CHECKPOINT) -->
+  <g transform="translate(672 184)">
+    <polygon class="check-fill" points="40,0 80,40 40,80 0,40"/>
+    <text class="phase-title" x="40" y="38" text-anchor="middle">Phase 4</text>
+    <text class="phase-sub" x="40" y="52" text-anchor="middle">三测</text>
+    <text class="phase-sub" x="40" y="65" text-anchor="middle">验证</text>
+  </g>
+
+  <!-- Phase 5 (auto) -->
+  <g transform="translate(688 290)">
+    <rect class="auto-fill" width="60" height="46" rx="10"/>
+    <text class="phase-title" x="30" y="22" text-anchor="middle">Phase 5</text>
+    <text class="phase-sub" x="30" y="38" text-anchor="middle">双精炼</text>
+  </g>
+
+  <!-- Arrows between phases -->
+  <path class="line" d="M122 224 H162"/>
+  <path class="line" d="M226 224 H234"/>
+  <path class="line" d="M298 224 H306"/>
+  <path class="line" d="M390 224 H398"/>
+  <path class="line" d="M462 224 H470"/>
+  <path class="line" d="M554 224 H562"/>
+  <path class="line" d="M638 224 H670"/>
+  <path class="line" d="M712 266 V288"/>
+
+  <!-- Legend -->
+  <g transform="translate(32 380)">
+    <text class="band-label" x="0" y="0">LEGEND</text>
+
+    <rect class="auto-fill" x="0" y="14" width="28" height="20" rx="6"/>
+    <text class="legend-text" x="38" y="29">Auto Decision Phase · 有 default，按规则自动推进，记进 AD Log</text>
+
+    <polygon class="check-fill" points="14,52 28,66 14,80 0,66"/>
+    <text class="legend-text" x="38" y="71">Hard Checkpoint · 无 default，必须停下来等用户确认</text>
+
+    <text class="legend-text" x="0" y="108">本次 trace（塔勒布 case）3 道 Hard Checkpoint 全部由 analyst proxy 推进，所有 proxy 决定写进 Auto Decision Log。</text>
+  </g>
+
+  <!-- Footer count -->
+  <g transform="translate(32 502)">
+    <text class="seg-note" x="0" y="0">6 个 Auto Phase（0A / 0.5 / 1 / 2 / 3 / 5）　+　3 个 Hard Checkpoint（1.5 / 2.5 / 4）　=　9 Phase</text>
+    <text class="seg-note" x="0" y="18">从「写一个角色 prompt」（默认 AI 路径）变成「跑一条证据生产线」——产物是自包含目录，不是单文件。</text>
   </g>
 </svg>

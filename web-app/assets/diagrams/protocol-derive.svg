@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic Protocol 研究维度从心智模型反推</title>
+  <desc id="desc">塔勒布的 6 个心智模型一一映射到 Agentic Protocol 的 6 个研究维度。</desc>
+  <defs>
+    <marker id="ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a78a8"/>
+    </marker>
+    <marker id="ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4f7a3f"/>
+    </marker>
+    <marker id="ar-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97a4a"/>
+    </marker>
+    <marker id="ar-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a08658"/>
+    </marker>
+    <marker id="ar-e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#685c8a"/>
+    </marker>
+    <marker id="ar-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a04565"/>
+    </marker>
+    <style>
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .col-header { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c3744; }
+      .col-sub { font: 500 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; }
+      .node { fill: #ffffff; stroke: #c8d1da; stroke-width: 1.4; }
+      .node-title { font: 700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .node-sub { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; }
+      .l-a { stroke: #4a78a8; stroke-width: 2; fill: none; marker-end: url(#ar-a); }
+      .l-b { stroke: #4f7a3f; stroke-width: 2; fill: none; marker-end: url(#ar-b); }
+      .l-c { stroke: #d97a4a; stroke-width: 2; fill: none; marker-end: url(#ar-c); }
+      .l-d { stroke: #a08658; stroke-width: 2; fill: none; marker-end: url(#ar-d); }
+      .l-e { stroke: #685c8a; stroke-width: 2; fill: none; marker-end: url(#ar-e); }
+      .l-f { stroke: #a04565; stroke-width: 2; fill: none; marker-end: url(#ar-f); }
+      .footnote { font: 500 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3a4654; font-style: italic; }
+    </style>
+  </defs>
+  <rect class="bg" width="800" height="560"/>
+
+  <text class="band-label" x="32" y="34">PHASE 3 · PROTOCOL DERIVE</text>
+  <text class="title" x="32" y="58">研究维度不套通用模板 — 从心智模型反推</text>
+
+  <!-- column headers -->
+  <text class="col-header" x="148" y="106" text-anchor="middle">塔勒布 · 6 心智模型</text>
+  <text class="col-sub" x="148" y="124" text-anchor="middle">看世界的 6 个镜片</text>
+
+  <text class="col-header" x="652" y="106" text-anchor="middle">Agentic Protocol · 6 研究维度</text>
+  <text class="col-sub" x="652" y="124" text-anchor="middle">遇到事实题先看 6 件事</text>
+
+  <!-- Left nodes: mental models -->
+  <g transform="translate(40 156)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">A. Antifragility 反脆弱</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">挫折让系统更强 vs 更脆</text>
+  </g>
+
+  <g transform="translate(40 218)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">B. Skin in the Game</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">承担后果才有发言权</text>
+  </g>
+
+  <g transform="translate(40 280)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">C. Mediocristan / Extremistan</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">变量分布形态二分</text>
+  </g>
+
+  <g transform="translate(40 342)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">D. Ergodicity 遍历性</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">时间平均 ≠ 整体平均</text>
+  </g>
+
+  <g transform="translate(40 404)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">E. Via Negativa</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">减少糟糕选项胜于增加好选项</text>
+  </g>
+
+  <g transform="translate(40 466)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">F. Lindy Effect</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">东西活越久剩余寿命越长</text>
+  </g>
+
+  <!-- Right nodes: research dimensions -->
+  <g transform="translate(544 156)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">分布形态 看 A</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">这件事尾巴粗不粗？</text>
+  </g>
+
+  <g transform="translate(544 218)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">凸性暴露 看 B</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">收益是凸的还是凹的？</text>
+  </g>
+
+  <g transform="translate(544 280)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">SITG 关系 看 C</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">发言的人承担后果吗？</text>
+  </g>
+
+  <g transform="translate(544 342)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">路径依赖 看 D</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">个体能否被时间平均救？</text>
+  </g>
+
+  <g transform="translate(544 404)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">可删减项 看 F</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">能减掉什么先于加什么？</text>
+  </g>
+
+  <g transform="translate(544 466)">
+    <rect class="node" width="216" height="46" rx="6"/>
+    <text class="node-title" x="108" y="22" text-anchor="middle">寿命证据 看 E</text>
+    <text class="node-sub" x="108" y="38" text-anchor="middle">已经活了多久？</text>
+  </g>
+
+  <!-- Color-coded paired arrows. Left-to-right mappings:
+       A → 分布形态 (top right)
+       B → 凸性暴露 (2nd right)
+       C → SITG 关系 (3rd right)
+       D → 路径依赖 (4th right)
+       F → 可删减项 (5th right)
+       E → 寿命证据 (6th right)
+  -->
+  <path class="l-a" d="M256 179 C400 179 400 179 542 179"/>
+  <path class="l-b" d="M256 241 C400 241 400 241 542 241"/>
+  <path class="l-c" d="M256 303 C400 303 400 303 542 303"/>
+  <path class="l-d" d="M256 365 C400 365 400 365 542 365"/>
+  <path class="l-f" d="M256 427 C420 427 420 489 542 489"/>
+  <path class="l-e" d="M256 489 C420 489 420 427 542 427"/>
+
+  <!-- footer -->
+  <text class="footnote" x="32" y="538">换一个人物，6 维度变成完全不同的 6 件事 — 这就是为什么不能套通用 who/what/when/where 模板。</text>
+</svg>

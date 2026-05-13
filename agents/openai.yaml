@@ -1,4 +1,4 @@
 interface:
-  display_name: "Skill Handbook Generator"
-  short_description: "Turn an AI skill package into a multi-page web handbook."
-  default_prompt: "Study this skill package and produce a multi-page web handbook explaining how it makes the AI behave differently."
+  display_name: "Skill X-Ray"
+  short_description: "Trace a skill's recommended path, checkpoints, and behavior changes."
+  default_prompt: "Study this skill package and produce a Skill X-Ray with trace type, auto decisions, checkpoint map, Intervention Map, evidence table, friction score, and upgrade options."

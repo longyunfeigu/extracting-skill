@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
+  <title id="title">从一句请求到可运行人物 Skill</title>
+  <desc id="desc">女娲把用户请求拆成分流、存证、收集、提炼、验证五段。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a1c0f"/>
+    </marker>
+    <style>
+      .bg { fill: #f6f1e6; }
+      .panel { fill: #fffaf0; stroke: #d8cdb6; stroke-width: 1.5; }
+      .title { font: 800 26px "Songti SC", serif; fill: #1a1410; }
+      .small { font: 500 15px "PingFang SC", sans-serif; fill: #4a3f33; }
+      .kicker { font: 700 12px "PingFang SC", sans-serif; letter-spacing: 2px; fill: #8a1c0f; }
+      .num { font: italic 900 48px Georgia, serif; fill: #8a1c0f; opacity: .9; }
+      .line { stroke: #8a1c0f; stroke-width: 2.5; marker-end: url(#arrow); fill: none; }
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="520"/>
+  <text class="kicker" x="54" y="58">ORIENTATION MAP</text>
+  <text class="title" x="54" y="95">女娲不是写一个角色扮演 prompt，而是跑一条证据生产线</text>
+
+  <g transform="translate(54 150)">
+    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
+    <text class="num" x="20" y="62">01</text>
+    <text class="title" x="20" y="100" font-size="22">入口分流</text>
+    <text class="small" x="20" y="134">明确人名</text>
+    <text class="small" x="20" y="160">或模糊需求</text>
+    <text class="small" x="20" y="186">先走不同路</text>
+  </g>
+  <path class="line" d="M245 255 H315"/>
+
+  <g transform="translate(334 150)">
+    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
+    <text class="num" x="20" y="62">02</text>
+    <text class="title" x="20" y="100" font-size="22">先建目录</text>
+    <text class="small" x="20" y="134">research</text>
+    <text class="small" x="20" y="160">sources</text>
+    <text class="small" x="20" y="186">SKILL.md 同住</text>
+  </g>
+  <path class="line" d="M525 255 H595"/>
+
+  <g transform="translate(614 150)">
+    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
+    <text class="num" x="20" y="62">03</text>
+    <text class="title" x="20" y="100" font-size="22">六路取证</text>
+    <text class="small" x="20" y="134">著作 / 对话</text>
+    <text class="small" x="20" y="160">表达 / 他者</text>
+    <text class="small" x="20" y="186">决策 / 时间线</text>
+  </g>
+  <path class="line" d="M805 255 H875"/>
+
+  <g transform="translate(894 150)">
+    <rect class="panel" x="0" y="0" width="176" height="210" rx="8"/>
+    <text class="num" x="20" y="62">04</text>
+    <text class="title" x="20" y="100" font-size="22">三道筛选</text>
+    <text class="small" x="20" y="134">跨域复现</text>
+    <text class="small" x="20" y="160">能推新问题</text>
+    <text class="small" x="20" y="186">有排他性</text>
+  </g>
+
+  <path class="line" d="M982 374 C982 450 138 450 138 374"/>
+  <g transform="translate(332 400)">
+    <rect class="panel" x="0" y="0" width="456" height="72" rx="8"/>
+    <text class="title" x="24" y="32" font-size="22">05 写成 Skill，再验证能不能工作</text>
+    <text class="small" x="24" y="56">已知题、边缘题、风格题、脚本检查；fail 先修，不只汇报。</text>
+  </g>
+</svg>

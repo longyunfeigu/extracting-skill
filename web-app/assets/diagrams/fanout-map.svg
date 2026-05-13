@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" role="img" aria-labelledby="title desc">
+  <title id="title">Phase 1 fan-out 六路并行</title>
+  <desc id="desc">主 thread 把调研工作分给 6 个 subagent 并行，每个产出独立调研文件，共 174 URL / 76% 一手。</desc>
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7a8794"/>
+    </marker>
+    <style>
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .main-fill { fill: #d6e4f2; stroke: #4a78a8; stroke-width: 1.8; }
+      .agent-fill { fill: #ffffff; stroke: #4a78a8; stroke-width: 1.6; }
+      .file-fill { fill: #f3eee5; stroke: #b0a288; stroke-width: 1.4; }
+      .label { font: 700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; text-anchor: middle; }
+      .sub { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; text-anchor: middle; }
+      .file-label { font: 500 10px ui-monospace, "SF Mono", Menlo, monospace; fill: #3a4654; text-anchor: middle; }
+      .stat { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c3744; }
+      .stat-num { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #d97a4a; }
+      .parallel-band { fill: #f0ebe0; stroke: none; }
+      .parallel-text { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 4px; fill: #8a7654; text-anchor: middle; }
+      .warn { fill: #fff1e6; stroke: #d97a4a; stroke-width: 1.5; }
+      .warn-text { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b35c2e; }
+      .line { stroke: #7a8794; stroke-width: 1.4; fill: none; marker-end: url(#arrow2); }
+    </style>
+  </defs>
+  <rect class="bg" width="800" height="560"/>
+
+  <text class="band-label" x="32" y="34">PHASE 1 · FAN-OUT</text>
+  <text class="title" x="32" y="58">主 thread 不自己搜 → 分给 6 个 subagent 并行</text>
+
+  <!-- parallel band behind agents -->
+  <rect class="parallel-band" x="48" y="200" width="704" height="100" rx="8"/>
+  <text class="parallel-text" x="400" y="184">— 6 路并行 PARALLEL —</text>
+
+  <!-- Main thread node (top center) -->
+  <g transform="translate(330 92)">
+    <rect class="main-fill" width="140" height="56" rx="10"/>
+    <text class="label" x="70" y="26">主 thread</text>
+    <text class="sub" x="70" y="44">分发任务 + 黑名单</text>
+  </g>
+
+  <!-- 6 agent circles -->
+  <g transform="translate(80 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="32">Agent 1</text>
+    <text class="sub" x="36" y="48">著作</text>
+    <!-- Warning marker for prompt injection -->
+    <circle class="warn" cx="62" cy="12" r="11"/>
+    <text class="warn-text" x="62" y="16" text-anchor="middle">!</text>
+  </g>
+
+  <g transform="translate(192 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="32">Agent 2</text>
+    <text class="sub" x="36" y="48">长对话</text>
+  </g>
+
+  <g transform="translate(304 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="28">Agent 3</text>
+    <text class="sub" x="36" y="44">表达</text>
+    <text class="sub" x="36" y="56">DNA</text>
+  </g>
+
+  <g transform="translate(416 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="28">Agent 4</text>
+    <text class="sub" x="36" y="44">他者</text>
+    <text class="sub" x="36" y="56">视角</text>
+  </g>
+
+  <g transform="translate(528 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="32">Agent 5</text>
+    <text class="sub" x="36" y="48">决策</text>
+  </g>
+
+  <g transform="translate(640 220)">
+    <circle class="agent-fill" cx="36" cy="36" r="34"/>
+    <text class="label" x="36" y="32">Agent 6</text>
+    <text class="sub" x="36" y="48">时间线</text>
+  </g>
+
+  <!-- Arrows main -> agents -->
+  <path class="line" d="M380 150 C260 180 180 200 140 215"/>
+  <path class="line" d="M390 150 C320 180 260 200 230 215"/>
+  <path class="line" d="M395 150 C385 180 350 200 340 215"/>
+  <path class="line" d="M405 150 C415 180 450 200 460 215"/>
+  <path class="line" d="M410 150 C480 180 540 200 565 215"/>
+  <path class="line" d="M420 150 C560 180 640 200 670 215"/>
+
+  <!-- 6 output file rects -->
+  <g transform="translate(80 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">01.md</text>
+  </g>
+
+  <g transform="translate(192 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">02.md</text>
+  </g>
+
+  <g transform="translate(304 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">03.md</text>
+  </g>
+
+  <g transform="translate(416 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">04.md</text>
+  </g>
+
+  <g transform="translate(528 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">05.md</text>
+  </g>
+
+  <g transform="translate(640 360)">
+    <rect class="file-fill" width="72" height="44" rx="3"/>
+    <text class="file-label" x="36" y="20">research/</text>
+    <text class="file-label" x="36" y="34">06.md</text>
+  </g>
+
+  <!-- Arrows agents -> files -->
+  <path class="line" d="M116 290 V358"/>
+  <path class="line" d="M228 290 V358"/>
+  <path class="line" d="M340 290 V358"/>
+  <path class="line" d="M452 290 V358"/>
+  <path class="line" d="M564 290 V358"/>
+  <path class="line" d="M676 290 V358"/>
+
+  <!-- Stats footer -->
+  <g transform="translate(32 446)">
+    <text class="stat-num" x="0" y="0">174</text>
+    <text class="stat" x="50" y="-4">URL 引用</text>
+    <text class="sub" x="50" y="14" text-anchor="start">（一手 + 二手合计）</text>
+
+    <text class="stat-num" x="200" y="0">76%</text>
+    <text class="stat" x="260" y="-4">一手来源</text>
+    <text class="sub" x="260" y="14" text-anchor="start">（原文 / 原视频 / 原推文）</text>
+
+    <text class="stat-num" x="420" y="0">6</text>
+    <text class="stat" x="442" y="-4">独立 subagent</text>
+    <text class="sub" x="442" y="14" text-anchor="start">（每个 prompt 自带黑名单约束）</text>
+  </g>
+
+  <g transform="translate(32 500)">
+    <circle class="warn" cx="8" cy="-4" r="10"/>
+    <text class="warn-text" x="8" y="0" text-anchor="middle">!</text>
+    <text class="sub" x="28" y="0" text-anchor="start" style="text-anchor:start">Agent 1 在调研中识别到 1 次 prompt injection 攻击（资料中嵌入的指令），被拒绝并记录进 TRACE.md</text>
+  </g>
+</svg>

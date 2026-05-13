@@ -1,75 +1,191 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
-  <title id="title">7 个可复用设计招之间的关系</title>
-  <desc id="desc">展示分流、证据库、多维证据、检查点、筛选、研究流程和修复闭环之间的依赖。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 760" role="img" aria-labelledby="title desc">
+  <title id="title">12 Pattern cross-link 网络</title>
+  <desc id="desc">12 个迁移性 pattern 按 intake / execution / validation / output 四簇排布，节点之间通过 relatedPatterns 字段形成多对多连接。</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="#8a7a66"/>
-    </marker>
     <style>
-      .bg { fill: #f6f1e6; }
-      .node { fill: #fffaf0; stroke: #d8cdb6; stroke-width: 1.5; }
-      .nodeCore { fill: #8a1c0f; stroke: #8a1c0f; stroke-width: 1.5; }
-      .link { stroke: #8a7a66; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
-      .linkStrong { stroke: #8a1c0f; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
-      .kicker { font: 700 12px "PingFang SC", sans-serif; letter-spacing: 2px; fill: #8a1c0f; }
-      .title { font: 800 24px "Songti SC", serif; fill: #1a1410; }
-      .p { font: 800 13px "PingFang SC", sans-serif; fill: #8a1c0f; }
-      .pWhite { font: 800 13px "PingFang SC", sans-serif; fill: #f6f1e6; }
-      .label { font: 800 17px "Songti SC", serif; fill: #1a1410; }
-      .labelWhite { font: 800 17px "Songti SC", serif; fill: #f6f1e6; }
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .cluster { fill: none; stroke: #c8d1da; stroke-width: 1; stroke-dasharray: 5 4; }
+      .cluster-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #6b7886; }
+      .node-intake { fill: #e8eef5; stroke: #4a78a8; stroke-width: 1.6; }
+      .node-exec { fill: #ecf1e4; stroke: #4f7a3f; stroke-width: 1.6; }
+      .node-valid { fill: #fff1e6; stroke: #d97a4a; stroke-width: 1.6; }
+      .node-output { fill: #f0e8d6; stroke: #a08658; stroke-width: 1.6; }
+      .node-id { font: 700 12px ui-monospace, "SF Mono", Menlo, monospace; fill: #1a2330; text-anchor: middle; }
+      .node-name { font: 600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c3744; text-anchor: middle; }
+      .edge { stroke: #9aa4ae; stroke-width: 1.2; fill: none; opacity: 0.85; }
+      .edge-strong { stroke: #6b7886; stroke-width: 1.6; fill: none; }
+      .legend { font: 500 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #3a4654; }
+      .legend-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
     </style>
   </defs>
-  <rect class="bg" width="1120" height="560"/>
-  <text class="kicker" x="54" y="56">PATTERN NETWORK</text>
-  <text class="title" x="54" y="92">这些招不是平铺清单：证据、筛选和修复互相接力</text>
+  <rect class="bg" width="800" height="760"/>
 
-  <path class="linkStrong" d="M236 190 C330 146 420 146 510 190"/>
-  <path class="linkStrong" d="M614 190 C704 146 795 146 884 190"/>
-  <path class="link" d="M560 234 V306"/>
-  <path class="linkStrong" d="M472 372 C376 420 286 420 194 372"/>
-  <path class="link" d="M648 372 C746 420 838 420 926 372"/>
-  <path class="link" d="M236 226 C275 292 332 326 410 338"/>
-  <path class="link" d="M884 226 C842 292 780 326 710 338"/>
+  <text class="band-label" x="32" y="34">PATTERNS · CROSS-LINK NETWORK</text>
+  <text class="title" x="32" y="58">12 个迁移性招数 — network 不是 star</text>
 
-  <g transform="translate(100 150)">
-    <rect class="node" width="190" height="76" rx="10"/>
-    <text class="p" x="20" y="28">P1</text>
-    <text class="label" x="20" y="55">先分流，再执行</text>
+  <!-- Cluster frames -->
+  <rect class="cluster" x="48" y="100" width="340" height="240" rx="12"/>
+  <text class="cluster-label" x="64" y="124">INTAKE · 接到任务怎么开局</text>
+
+  <rect class="cluster" x="412" y="100" width="340" height="240" rx="12"/>
+  <text class="cluster-label" x="428" y="124">EXECUTION · 调研 / 提炼怎么跑</text>
+
+  <rect class="cluster" x="48" y="376" width="340" height="280" rx="12"/>
+  <text class="cluster-label" x="64" y="400">VALIDATION · 怎么不自己骗自己</text>
+
+  <rect class="cluster" x="412" y="376" width="340" height="280" rx="12"/>
+  <text class="cluster-label" x="428" y="400">OUTPUT · 交付时怎么不变形</text>
+
+  <!-- INTAKE: p1, p4 -->
+  <!-- p1 自包含目录 -->
+  <g transform="translate(110 175)">
+    <rect class="node-intake" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p1</text>
+    <text class="node-name" x="60" y="42">自包含</text>
+    <text class="node-name" x="60" y="56">目录</text>
+  </g>
+  <!-- p4 真相源 -->
+  <g transform="translate(250 245)">
+    <rect class="node-intake" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p4</text>
+    <text class="node-name" x="60" y="42">真相源</text>
+    <text class="node-name" x="60" y="56">非渲染产物</text>
   </g>
 
-  <g transform="translate(465 150)">
-    <rect class="nodeCore" width="190" height="76" rx="10"/>
-    <text class="pWhite" x="20" y="28">P2</text>
-    <text class="labelWhite" x="20" y="55">自包含证据库</text>
+  <!-- EXECUTION: p2, p3, p6, p7 -->
+  <!-- p2 fan-out -->
+  <g transform="translate(450 145)">
+    <rect class="node-exec" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p2</text>
+    <text class="node-name" x="60" y="42">subagent</text>
+    <text class="node-name" x="60" y="56">fan-out</text>
+  </g>
+  <!-- p3 黑名单 -->
+  <g transform="translate(602 165)">
+    <rect class="node-exec" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p3</text>
+    <text class="node-name" x="60" y="42">prompt 内</text>
+    <text class="node-name" x="60" y="56">黑名单</text>
+  </g>
+  <!-- p6 保留矛盾 -->
+  <g transform="translate(450 250)">
+    <rect class="node-exec" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p6</text>
+    <text class="node-name" x="60" y="42">保留矛盾</text>
+    <text class="node-name" x="60" y="56">不调和</text>
+  </g>
+  <!-- p7 协议反推 -->
+  <g transform="translate(602 250)">
+    <rect class="node-exec" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p7</text>
+    <text class="node-name" x="60" y="42">研究维度</text>
+    <text class="node-name" x="60" y="56">从模型反推</text>
   </g>
 
-  <g transform="translate(830 150)">
-    <rect class="node" width="190" height="76" rx="10"/>
-    <text class="p" x="20" y="28">P3</text>
-    <text class="label" x="20" y="55">多维证据收集</text>
+  <!-- VALIDATION: p5, p8, p9, p10 -->
+  <!-- p5 三重验证 -->
+  <g transform="translate(80 425)">
+    <rect class="node-valid" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p5</text>
+    <text class="node-name" x="60" y="42">三重验证</text>
+    <text class="node-name" x="60" y="56">升级关卡</text>
+  </g>
+  <!-- p8 checkpoint vs auto -->
+  <g transform="translate(240 425)">
+    <rect class="node-valid" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p8</text>
+    <text class="node-name" x="60" y="42">checkpoint</text>
+    <text class="node-name" x="60" y="56">vs auto</text>
+  </g>
+  <!-- p9 proxy checkpoint -->
+  <g transform="translate(80 545)">
+    <rect class="node-valid" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p9</text>
+    <text class="node-name" x="60" y="42">proxy</text>
+    <text class="node-name" x="60" y="56">checkpoint</text>
+  </g>
+  <!-- p10 独立验证 -->
+  <g transform="translate(240 545)">
+    <rect class="node-valid" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p10</text>
+    <text class="node-name" x="60" y="42">独立 subagent</text>
+    <text class="node-name" x="60" y="56">验证</text>
   </g>
 
-  <g transform="translate(100 330)">
-    <rect class="node" width="190" height="76" rx="10"/>
-    <text class="p" x="20" y="28">P4</text>
-    <text class="label" x="20" y="55">便宜处停一下</text>
+  <!-- OUTPUT: p11, p12 -->
+  <!-- p11 双 reviewer -->
+  <g transform="translate(480 440)">
+    <rect class="node-output" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p11</text>
+    <text class="node-name" x="60" y="42">双 reviewer</text>
+    <text class="node-name" x="60" y="56">精炼</text>
+  </g>
+  <!-- p12 不复刻 -->
+  <g transform="translate(610 540)">
+    <rect class="node-output" width="120" height="64" rx="8"/>
+    <text class="node-id" x="60" y="24">p12</text>
+    <text class="node-name" x="60" y="42">三条</text>
+    <text class="node-name" x="60" y="56">不复刻</text>
   </g>
 
-  <g transform="translate(465 330)">
-    <rect class="nodeCore" width="190" height="76" rx="10"/>
-    <text class="pWhite" x="20" y="28">P5</text>
-    <text class="labelWhite" x="20" y="55">三道筛再命名</text>
+  <!-- Cross-cluster edges based on relatedPatterns:
+       p1 ↔ p4
+       p2 ↔ p3
+       p5 ↔ p6
+       p7 ↔ p5
+       p8 ↔ p9
+       p10 ↔ p11
+       Plus a few thematic links to make it a true network rather than star:
+       p2 ↔ p10 (subagent fan-out informs independent validator)
+       p1 ↔ p9 (self-contained dir holds AD log including proxy)
+       p11 ↔ p12 (do-not-replicate caught in refine)
+       p6 ↔ p12 (contradictions preserved guards against caricature replication)
+       p4 ↔ p3 (truth source defines what counts as blacklisted)
+       p7 ↔ p2 (protocol-derive informs subagent prompt design)
+  -->
+
+  <!-- intra-cluster -->
+  <path class="edge-strong" d="M230 220 C260 230 270 240 280 244"/> <!-- p1 - p4 -->
+  <path class="edge-strong" d="M570 195 C586 195 590 195 602 195"/> <!-- p2 - p3 -->
+  <path class="edge-strong" d="M570 285 C586 285 590 285 602 285"/> <!-- p6 - p7 -->
+  <path class="edge-strong" d="M200 460 C220 460 230 460 240 460"/> <!-- p5 - p8 -->
+  <path class="edge-strong" d="M200 580 C220 580 230 580 240 580"/> <!-- p9 - p10 -->
+  <path class="edge-strong" d="M140 490 V544"/> <!-- p5 - p9 -->
+  <path class="edge-strong" d="M300 490 V544"/> <!-- p8 - p10 -->
+
+  <!-- cross-cluster -->
+  <path class="edge" d="M170 240 C160 320 130 380 130 424"/> <!-- p1 - p5 (validation depends on dir) -->
+  <path class="edge" d="M310 245 C380 285 420 350 310 424"/> <!-- p4 - p8 -->
+  <path class="edge" d="M310 245 C440 240 580 220 660 228"/> <!-- p4 - p3 -->
+  <path class="edge" d="M510 209 C440 280 380 350 300 424"/> <!-- p2 - p8 (loose) -->
+  <path class="edge" d="M510 209 C420 320 360 460 360 545"/> <!-- p2 - p10 -->
+  <path class="edge" d="M662 229 C700 320 640 400 600 440"/> <!-- p3 - p11 -->
+  <path class="edge" d="M660 314 C660 360 600 410 540 440"/> <!-- p7 - p11 -->
+  <path class="edge" d="M510 314 C420 360 380 400 360 425"/> <!-- p6 - p8 -->
+  <path class="edge" d="M510 314 C540 400 580 480 610 545"/> <!-- p6 - p12 -->
+  <path class="edge" d="M360 580 C420 540 480 510 540 504"/> <!-- p10 - p11 -->
+  <path class="edge" d="M600 504 C620 520 630 530 640 540"/> <!-- p11 - p12 -->
+  <path class="edge" d="M200 580 C140 600 100 580 110 240"/> <!-- p9 - p1 wraps around -->
+
+  <!-- Legend bottom -->
+  <g transform="translate(48 680)">
+    <text class="legend-label" x="0" y="0">簇配色 · 主题分组</text>
+    <rect class="node-intake" x="0" y="12" width="16" height="16" rx="3"/>
+    <text class="legend" x="22" y="24">intake 接</text>
+    <rect class="node-exec" x="100" y="12" width="16" height="16" rx="3"/>
+    <text class="legend" x="122" y="24">execution 跑</text>
+    <rect class="node-valid" x="220" y="12" width="16" height="16" rx="3"/>
+    <text class="legend" x="242" y="24">validation 验</text>
+    <rect class="node-output" x="350" y="12" width="16" height="16" rx="3"/>
+    <text class="legend" x="372" y="24">output 交</text>
   </g>
 
-  <g transform="translate(830 330)">
-    <rect class="node" width="190" height="76" rx="10"/>
-    <text class="p" x="20" y="28">P6</text>
-    <text class="label" x="20" y="55">模型推研究流程</text>
-  </g>
-
-  <g transform="translate(465 455)">
-    <rect class="node" width="190" height="76" rx="10"/>
-    <text class="p" x="20" y="28">P7</text>
-    <text class="label" x="20" y="55">检查接修复</text>
+  <g transform="translate(48 724)">
+    <line class="edge-strong" x1="0" y1="0" x2="40" y2="0"/>
+    <text class="legend" x="50" y="4">brief 显式 relatedPatterns</text>
+    <line class="edge" x1="220" y1="0" x2="260" y2="0"/>
+    <text class="legend" x="270" y="4">主题 cross-link · 网状不是星状</text>
   </g>
 </svg>

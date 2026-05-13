@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 580" role="img" aria-labelledby="title desc">
+  <title id="title">Hard Checkpoint vs Auto Decision 对比</title>
+  <desc id="desc">左栏 Auto Decision 有 default 自动推进，右栏 Hard Checkpoint 无 default 必须停下等用户。</desc>
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .band-label { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 2px; fill: #5b6770; }
+      .title { font: 700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .col-auto { fill: #eef3f9; stroke: #6b8aa8; stroke-width: 1.5; }
+      .col-check { fill: #fff1e6; stroke: #d97a4a; stroke-width: 2; }
+      .col-header-auto { font: 800 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2c4458; }
+      .col-header-check { font: 800 16px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #a04920; }
+      .col-tag-auto { font: 700 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 1.5px; fill: #4a6378; }
+      .col-tag-check { font: 700 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 1.5px; fill: #b35c2e; }
+      .pill-auto { fill: #ffffff; stroke: #6b8aa8; stroke-width: 1.3; }
+      .pill-check { fill: #ffffff; stroke: #d97a4a; stroke-width: 1.8; stroke-dasharray: 0; }
+      .item-id { font: 700 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #2c4458; }
+      .item-id-check { font: 700 11px ui-monospace, "SF Mono", Menlo, monospace; fill: #a04920; }
+      .item-title { font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+      .item-sub { font: 400 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; }
+      .item-proxy { font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #b35c2e; font-style: italic; }
+      .meta { font: 500 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5b6770; }
+      .meta-strong { font: 700 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1a2330; }
+    </style>
+  </defs>
+  <rect class="bg" width="800" height="580"/>
+
+  <text class="band-label" x="32" y="34">DESIGN CHOICE · DC6</text>
+  <text class="title" x="32" y="58">Hard Checkpoint vs Auto Decision — 两类决策点的处理方式</text>
+
+  <!-- Left column: Auto Decision -->
+  <g>
+    <rect class="col-auto" x="32" y="90" width="356" height="460" rx="10"/>
+    <text class="col-tag-auto" x="50" y="116">AUTO DECISION · 有 DEFAULT</text>
+    <text class="col-header-auto" x="50" y="140">自动推进，记进 AD Log</text>
+    <text class="meta" x="50" y="160">本次 trace 有 5 条 AD 记录，主 thread 全部按 default 推进。</text>
+
+    <!-- AD-01 -->
+    <g transform="translate(50 184)">
+      <rect class="pill-auto" width="320" height="56" rx="6"/>
+      <text class="item-id" x="14" y="22">AD-01</text>
+      <text class="item-title" x="68" y="22">入口分流</text>
+      <text class="item-sub" x="68" y="40">default: 明确人名 → Phase 0A；模糊 → 0B</text>
+    </g>
+
+    <!-- AD-02 -->
+    <g transform="translate(50 250)">
+      <rect class="pill-auto" width="320" height="56" rx="6"/>
+      <text class="item-id" x="14" y="22">AD-02</text>
+      <text class="item-title" x="68" y="22">聚焦范围</text>
+      <text class="item-sub" x="68" y="40">default: 人物 Skill 主路径不切主题模式</text>
+    </g>
+
+    <!-- AD-03 -->
+    <g transform="translate(50 316)">
+      <rect class="pill-auto" width="320" height="56" rx="6"/>
+      <text class="item-id" x="14" y="22">AD-03</text>
+      <text class="item-title" x="68" y="22">用途</text>
+      <text class="item-sub" x="68" y="40">default: 给用户私人决策用 + 公开可分享</text>
+    </g>
+
+    <!-- AD-04 -->
+    <g transform="translate(50 382)">
+      <rect class="pill-auto" width="320" height="56" rx="6"/>
+      <text class="item-id" x="14" y="22">AD-04</text>
+      <text class="item-title" x="68" y="22">新建 vs 更新</text>
+      <text class="item-sub" x="68" y="40">default: 不存在 → 新建；存在 → 更新分支</text>
+    </g>
+
+    <!-- AD-05 -->
+    <g transform="translate(50 448)">
+      <rect class="pill-auto" width="320" height="56" rx="6"/>
+      <text class="item-id" x="14" y="22">AD-05</text>
+      <text class="item-title" x="68" y="22">本地语料</text>
+      <text class="item-sub" x="68" y="40">default: 无本地素材 → 走 6 路网搜路径</text>
+    </g>
+  </g>
+
+  <!-- Right column: Hard Checkpoint -->
+  <g>
+    <rect class="col-check" x="412" y="90" width="356" height="460" rx="10"/>
+    <text class="col-tag-check" x="430" y="116">HARD CHECKPOINT · 无 DEFAULT</text>
+    <text class="col-header-check" x="430" y="140">必须停下来等用户确认</text>
+    <text class="meta" x="430" y="160">3 个停顿点。本次 trace 全部由 analyst proxy 推进。</text>
+
+    <!-- Phase 1.5 -->
+    <g transform="translate(430 184)">
+      <rect class="pill-check" width="320" height="74" rx="6"/>
+      <text class="item-id-check" x="14" y="22">Phase 1.5</text>
+      <text class="item-title" x="100" y="22">调研质量 review</text>
+      <text class="item-sub" x="14" y="42">证据齐不齐 / 一手率够不够 / 缺口标了没</text>
+      <text class="item-proxy" x="14" y="60">⚐ 本次 trace · analyst proxy 推进 → AD-07</text>
+    </g>
+
+    <!-- Phase 2.5 -->
+    <g transform="translate(430 274)">
+      <rect class="pill-check" width="320" height="74" rx="6"/>
+      <text class="item-id-check" x="14" y="22">Phase 2.5</text>
+      <text class="item-title" x="100" y="22">提炼摘要确认</text>
+      <text class="item-sub" x="14" y="42">6 模型 + 2 启发式 + 7 张力 + 边界，用户认可？</text>
+      <text class="item-proxy" x="14" y="60">⚐ 本次 trace · analyst proxy 推进 → AD-08</text>
+    </g>
+
+    <!-- Phase 4 -->
+    <g transform="translate(430 364)">
+      <rect class="pill-check" width="320" height="74" rx="6"/>
+      <text class="item-id-check" x="14" y="22">Phase 4</text>
+      <text class="item-title" x="100" y="22">三测验证</text>
+      <text class="item-sub" x="14" y="42">独立 subagent 已知 / 边缘 / 风格 三测通过？</text>
+      <text class="item-proxy" x="14" y="60">⚐ 本次 trace · analyst proxy 推进 → AD-09</text>
+    </g>
+
+    <g transform="translate(430 454)">
+      <rect class="pill-check" width="320" height="56" rx="6"/>
+      <text class="meta-strong" x="14" y="22">为什么不给 default？</text>
+      <text class="item-sub" x="14" y="40">给了就被自动跳过 — 垃圾进垃圾出在 Phase 2 才发现，返工成本太高。</text>
+    </g>
+  </g>
+
+  <!-- Bottom note -->
+  <text class="meta" x="32" y="568">两栏视觉对比关键：左栏蓝色圆角实线 = 滚动通过；右栏橙色粗描边 = 必须停顿。</text>
+</svg>

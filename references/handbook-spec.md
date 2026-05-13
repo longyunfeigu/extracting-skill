@@ -1,12 +1,23 @@
-# Skill handbook spec
+# Full handbook spec
 
-Read this file first for every run of this skill. It defines the core contract
-for the handbook output and tells the agent which companion reference to load
-for each kind of detail.
+Use this file only when the user asks to upgrade a Skill X-Ray into a full
+handbook or web documentation app. The default workflow starts in
+`references/xray-flow.md`, not here.
 
-The output is a multi-page handbook, suitable for a web documentation app, that
-walks through how a skill changes an AI's behavior from the perspective of the
-AI using it.
+This file defines the core contract for the full handbook output and tells the
+agent which companion reference to load for each kind of detail.
+
+The full handbook expands the X-Ray. It should carry forward:
+
+- the representative task;
+- the recommended path;
+- the Auto Decision Log;
+- the Intervention Map;
+- the evidence table;
+- the friction verdict.
+
+Do not start a full handbook from a blank page map. Start from the behavior
+changes already captured in the X-Ray.
 
 For web app output, the source of truth is not one long `handbook.md`. The
 source is `handbook-brief.md` plus page packets. `handbook.md` may be generated
@@ -40,7 +51,7 @@ auditable path:
 
 ## What this format produces
 
-The output is always:
+The full handbook output is:
 
 - a guide richer than a single Markdown report;
 - multi-page content suitable for a manual or web documentation app;
@@ -56,6 +67,8 @@ Load only the detail file needed for the current part of the work:
 
 | Need | Read |
 | --- | --- |
+| Default X-Ray workflow, Auto Decision Log, evidence tags | `references/xray-flow.md` |
+| Intervention Map row shape and evidence rules | `references/intervention-map.md` |
 | Overall contract, structure, and routing | `references/handbook-spec.md` |
 | Stage walkthrough, terminology explanations, narrative hooks, AI freedom | `references/stage-writing.md` |
 | Design choice cards, pattern cards, scenario comparison, pattern links | `references/cards-patterns.md` |
@@ -66,8 +79,9 @@ Load only the detail file needed for the current part of the work:
 | Voice gate, anti-jargon, teaching voice, read-aloud checks | `references/voice-style-gate.md` |
 | Voice gate reviewer examples | `references/voice-gate-examples.md` |
 
-Do not load every reference by default. Read this file first, then pull in the
-companion file that matches the section being written or reviewed.
+Do not load every reference by default. In full handbook mode, read this file
+first, then pull in the companion file that matches the section being written or
+reviewed.
 
 ## Non-Negotiable Rules Summary
 
@@ -138,12 +152,17 @@ instructions and examples.
     不是全书写完后的清理工作。先修局部文风问题，再做全书级一致性检查。See
     `references/voice-style-gate.md` and `references/web-production-flow.md`.
 
+15. **The Intervention Map remains visible.**
+    Overview uses it for before/after cards, Walkthrough shows where each
+    intervention appears in the trace, Design choices explain why interventions
+    exist, and Patterns extract only interventions that transfer.
+
 ## Recommended Handbook Structure
 
-For web mode, treat this structure as the page map. First create the source
-plan and page packets described in `references/web-production-flow.md`; then
-render the pages below. For Markdown-only output, this structure can be written
-directly as one file.
+For full handbook mode, treat this structure as the page map. First carry
+forward the X-Ray artifacts, then create the source plan and page packets
+described in `references/web-production-flow.md`; then render the pages below.
+For Markdown-only output, this structure can be written directly as one file.
 
 ### 1. Overview — 教科书章节标准
 

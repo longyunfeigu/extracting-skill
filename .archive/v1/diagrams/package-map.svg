@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">女娲文件协作图</title>
+  <desc id="desc">展示 SKILL.md、references、scripts、examples 和生成目录之间的关系。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a1c0f"/>
+    </marker>
+    <style>
+      .bg { fill: #f6f1e6; }
+      .box { fill: #fffaf0; stroke: #d8cdb6; stroke-width: 1.5; }
+      .core { fill: #1a1410; }
+      .line { stroke: #8a1c0f; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .line2 { stroke: #8a7a66; stroke-width: 1.4; stroke-dasharray: 5 5; marker-end: url(#arrow); fill: none; }
+      .kicker { font: 700 12px "PingFang SC", sans-serif; letter-spacing: 2px; fill: #8a1c0f; }
+      .title { font: 800 24px "Songti SC", serif; fill: #1a1410; }
+      .white { font: 800 22px "Songti SC", serif; fill: #f6f1e6; }
+      .label { font: 800 18px "Songti SC", serif; fill: #1a1410; }
+      .small { font: 500 13px "PingFang SC", sans-serif; fill: #4a3f33; }
+      .smallWhite { font: 500 13px "PingFang SC", sans-serif; fill: #ede6d4; }
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="560"/>
+  <text class="kicker" x="54" y="56">PACKAGE MAP</text>
+  <text class="title" x="54" y="92">入口管流程，references 管方法，scripts 管脆弱机械活</text>
+
+  <g transform="translate(430 130)">
+    <rect class="core" width="260" height="104" rx="12"/>
+    <text class="white" x="28" y="45">SKILL.md</text>
+    <text class="smallWhite" x="28" y="74">入口、路由、检查点、特殊场景</text>
+  </g>
+
+  <g transform="translate(78 300)">
+    <rect class="box" width="245" height="138" rx="10"/>
+    <text class="label" x="22" y="38">references/</text>
+    <text class="small" x="22" y="70">extraction-framework.md</text>
+    <text class="small" x="22" y="95">skill-template.md</text>
+    <text class="small" x="22" y="120">提炼方法和成品骨架</text>
+  </g>
+
+  <g transform="translate(438 300)">
+    <rect class="box" width="245" height="138" rx="10"/>
+    <text class="label" x="22" y="38">scripts/</text>
+    <text class="small" x="22" y="70">字幕下载 / 清洗</text>
+    <text class="small" x="22" y="95">调研摘要 / 质量检查</text>
+    <text class="small" x="22" y="120">让机械任务少出错</text>
+  </g>
+
+  <g transform="translate(798 300)">
+    <rect class="box" width="245" height="138" rx="10"/>
+    <text class="label" x="22" y="38">examples/</text>
+    <text class="small" x="22" y="70">15 个已蒸馏 Skill</text>
+    <text class="small" x="22" y="95">校准成品长什么样</text>
+    <text class="small" x="22" y="120">不是规范源</text>
+  </g>
+
+  <g transform="translate(390 472)">
+    <rect class="box" width="340" height="58" rx="10"/>
+    <text class="label" x="24" y="36">生成目录：.claude/skills/taleb-perspective/</text>
+  </g>
+
+  <path class="line" d="M505 238 C420 270 306 286 214 298"/>
+  <path class="line" d="M560 238 V296"/>
+  <path class="line2" d="M615 238 C720 270 840 286 920 298"/>
+  <path class="line" d="M560 442 V468"/>
+  <path class="line" d="M200 442 C250 484 312 501 386 502"/>
+  <path class="line2" d="M920 442 C870 484 805 501 734 502"/>
+</svg>

@@ -13,9 +13,9 @@ source is `handbook-brief.md` plus page packets. `handbook.md` may be generated
 afterwards as a linear export. Read `references/web-production-flow.md` before
 writing web pages.
 
-`examples/` 下放着已经跑出来的样本。读它们是为了**看长啥样、感受形状**——不是为了学规则。**字段 schema、写作规则、voice gate 以本文件和其它 references 为准**；example 跟 references 冲突时，以 references 为准。example 是产出（可能含未清理的失败片段），不是规范源。
-
-可看的样本：`examples/web-video-presentation/handbook.md`（完整 markdown 样本，工作笔记 voice）、`examples/web-video-presentation/web-app/`（渲染好的多页 web app）、`examples/nuwa-skill/web-app/`（教科书 voice 的多页 web app）。
+If example outputs are present in the skill folder, use them only for optional
+calibration. Do not treat examples as schema, writing rules, or source of truth.
+If an example conflicts with this file or another reference, the reference wins.
 
 ## Core Idea
 
@@ -63,6 +63,8 @@ Load only the detail file needed for the current part of the work:
 | Multi-page web app structure and page-level orientation | `references/web-app-structure.md` |
 | 页面视觉规范（字体 / 配色 / 组件长什么样） | `references/web-app-visuals.md` |
 | Diagrams, generated illustrations, final self-checks | `references/visuals-and-quality.md` |
+| Voice gate, anti-jargon, teaching voice, read-aloud checks | `references/voice-style-gate.md` |
+| Voice gate reviewer examples | `references/voice-gate-examples.md` |
 
 Do not load every reference by default. Read this file first, then pull in the
 companion file that matches the section being written or reviewed.
@@ -133,9 +135,8 @@ instructions and examples.
 
 14. **Every page passes a local voice gate before the final editor pass.**
     反装样自检、去 AI 味自检、朗读可行性检查是每页 / 每章写完后的出门门槛，
-    不是全书写完后的清理工作。去 AI 味要额外扫假共情、假深刻、自我标榜、
-    万能模板、排比堆砌这五类指纹。先修局部文风问题，再做全书级一致性检查。See
-    `references/web-production-flow.md`.
+    不是全书写完后的清理工作。先修局部文风问题，再做全书级一致性检查。See
+    `references/voice-style-gate.md` and `references/web-production-flow.md`.
 
 ## Recommended Handbook Structure
 
@@ -150,7 +151,7 @@ Overview 是承重墙。一个完全没看过源 skill 的读者，应该能在�
 
 **这一节不是 creator 风格的总结。**"用一段密集段落把整个 skill 总结一遍"是工作笔记 voice，会让读者关掉。教科书 voice 必须刻意安排读者的前 10 分钟。
 
-下面 8 个子节是写 Overview 时必填的字段和形状。**字段定义以下面为准**——如果想看长啥样可以扫一眼 `examples/` 下任一份 `pages/overview.html` 的渲染效果，但形状感受归形状感受，字段 schema 不从 example 反推。
+下面 8 个子节是写 Overview 时必填的字段和形状。**字段定义以下面为准**。不要从 example 反推 schema。
 
 #### 1.1 Hero — 一句话框架
 

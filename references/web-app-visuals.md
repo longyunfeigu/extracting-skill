@@ -17,7 +17,7 @@ code block 有没有 mac chrome、pull-quote 用什么修辞、challenges 区怎
 
 其它页面（overview / glossary / file-map / patterns / apply-it）目前使用旧的米色现代编辑体。新写 skill 时如果有动力，可以也迁移到上述两套之一；若保留旧风格，本文件不强约束。
 
-`examples/` 下有渲染好的样本可以扫一眼感受最终效果——但**规则以本文件为准**。example 跟本文件冲突时以本文件为准；example 是产出，不是规范源。
+如果 skill 包里有渲染好的样本，只能用来感受最终效果。规则以本文件为准；样本产出不是规范源。
 
 ## 视觉论点（visual thesis）
 
@@ -325,7 +325,7 @@ scenes grid：`grid-template-columns: repeat(3, 1fr)` gap 12px（窄屏 1 列）
 
 这一组 `*=` 通配符匹配让 effect 字段写「反而碍事 / 可以简化」这种 OR 组合也能正确染色。
 新写 effect 值时**只用 cards-patterns.md 第 55 行附近 allowed 列表里的词**，不要发明新词。
-旧 example 里的 `救你 / 完全失效 / 部分让位` 等老术语在历史 example 里仍能渲染（旧 CSS 还在自己的副本里），但新生成的 skill 一律走这里的新词。
+旧产出里的 `救你 / 完全失效 / 部分让位` 等老术语可能仍能渲染（旧 CSS 还在自己的副本里），但新生成的 skill 一律走这里的新词。
 
 ### 字段映射（不能少）
 
@@ -364,12 +364,6 @@ design-choices 页写完后：
   和 ink-mute 是不是太近混淆了？混淆 → 调整 gray 到 #4a3a2e 加深一档。
 - 整页朗读 hero h1 + lede + 一个 dc-opening + 三幕 act-body——能不能读得通？
   读到三幕之间 act-body 衔接处突然变密 → 字段写得太密，回去看是不是该拆。
-
-### 渲染样本
-
-如果想看戏剧三幕体在 HTML/CSS/JS 三层落地后长啥样，可看 `examples/nuwa-skill/web-app/pages/design-choices.html` 渲染结果 + `assets/styles.css` 里 design-card / acts / curtain / encore 作用域内的 CSS + `assets/site.js` 里 `designChoicesPage()` 渲染器。
-
-**规则以本文件「Design Choices 页（戏剧三幕）」节为准**。如果样本三处（HTML / CSS / JS）内部不一致，那是 example 自身的 bug，要修 example；不是 spec 模糊。
 
 ## site.js 渲染层的约束
 
@@ -417,9 +411,3 @@ stage 字段映射（不能少）：
 - pull-quote 那段读起来像一句格言吗？还是像一句总结？是总结 → 重写 reusableMove 字段直到它能独立成句。
 - challenges 区是不是和正文有视觉断开（背景色 + 顶部 accent 横线）？没断开 → 读者会以为这是 AI 内心独白，回去补 challenges-rule。
 - 朗读 hero 的 h1 + subtitle + lede——能不能一口气念完不停顿？念到中间要停 = 字号 / 行距 / max-width 没调好，节奏跟不上。
-
-## 渲染样本
-
-如果想看编辑杂志体在 HTML/CSS/JS 三层落地后长啥样，可看 `examples/nuwa-skill/web-app/pages/walkthrough.html` 渲染结果 + `assets/styles.css` 里 `body[data-page="walkthrough"]` 作用域内的 CSS + `assets/site.js` 里 `walkthrough()` 渲染器。
-
-**规则以本文件「Tokens」+「组件形状」节 + 上面字段映射表为准**。如果样本三处内部不一致，那是 example 自身的 bug，要修 example；不是 spec 模糊。

@@ -105,9 +105,12 @@ json_string() {
 replace_token() {
   local token="$1"
   local value
+  local tmp
   value="$(sed_safe "$2")"
   while IFS= read -r -d '' file; do
-    sed -i "s|$token|$value|g" "$file"
+    tmp="$(mktemp "${TMPDIR:-/tmp}/scaffold-web-app.XXXXXX")"
+    sed "s|$token|$value|g" "$file" > "$tmp"
+    mv "$tmp" "$file"
   done < <(find "$TARGET" -type f \( -name '*.html' -o -name '*.js' \) -print0)
 }
 

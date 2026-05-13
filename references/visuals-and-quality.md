@@ -80,7 +80,7 @@ Structure diagrams explain. Generated images invite and reinforce.
 
 **判定违规**：你的 wow moment 里出现了 ≥ 3 个并列项（"A 是 X / Y / Z；B 是 P / Q / R；C 是 M / N / O"）但没配图——这就是散文做对照，回去画 SVG。
 
-样本可扫一眼 `examples/nuwa-skill/web-app/assets/diagrams/protocol-compare.svg` 长啥样——3 列 × 2 行（核心心智模型 / 反推研究维度）的塔勒布 / 费曼 / MrBeast 对照。具体规则（cols / rows 写法、字号、配色）以本节为准。
+具体规则（cols / rows 写法、字号、配色）以本节为准。不要依赖旧样本里的 compare 图反推 schema。
 
 ## 占位 metadata ≠ 完成（写了 diagrams[] 不等于画了图）
 

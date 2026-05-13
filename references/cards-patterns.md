@@ -58,7 +58,7 @@ Allowed `effect` values（**用大白话的短语，读者一眼能懂；不要�
 - **琥珀档（部分起作用、要让步、看情况）：** 可以松点 / 得让一步 / 用力过了 / 可以简化 / 不用做 / 看情况 / 也许碍事
 - **灰色档（这一招在这场景下完全用不上）：** 用不上 / 没必要 / 反而碍事
 
-旧词对照（如果你看到旧 example 还在用，往新词迁移）：救你 → 管用；绑你 → 反而碍事；部分让位 → 得让一步；部分过度 → 用力过了；应简化 → 可以简化；可以跳过 → 不用做；取决于 → 看情况；完全失效 → 用不上；完全多余/完全冗余 → 没必要；可能绑你 → 也许碍事；可以放宽 → 可以松点。
+旧词对照（如果你看到旧产出还在用，往新词迁移）：救你 → 管用；绑你 → 反而碍事；部分让位 → 得让一步；部分过度 → 用力过了；应简化 → 可以简化；可以跳过 → 不用做；取决于 → 看情况；完全失效 → 用不上；完全多余/完全冗余 → 没必要；可能绑你 → 也许碍事；可以放宽 → 可以松点。
 
 ## 8. Pattern cards must have a Therefore break and cross-links
 
@@ -155,4 +155,3 @@ instead of `relatedPatterns`.
 - Does every pattern card have a `therefore` field?
 - Does every pattern link to at least one related pattern?
 - Does each relation say what kind of relationship it is, not just "related"?
-

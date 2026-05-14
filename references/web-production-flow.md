@@ -9,29 +9,36 @@ voice everywhere.
 
 For web mode, `handbook.md` is an export, not the source of truth.
 
-The source of truth is:
+Every run lives under `generation/<skill-slug>/`, where `<skill-slug>` is a
+kebab-case identifier of the source skill (ASCII letters, digits, hyphens). All
+source files and the rendered web app sit together:
 
 ```text
-handbook-brief.md
-  global facts, one running example, page map, shared IDs, diagrams, links
-
-page-packets/
-  overview.packet.md
-  walkthrough.packet.md
-  glossary.packet.md
-  file-map.packet.md
-  design-choices.packet.md
-  patterns.packet.md
-  apply-it.packet.md
+generation/
+└─ <skill-slug>/
+   ├─ handbook-brief.md
+   │   global facts, one running example, page map, shared IDs, diagrams, links
+   ├─ page-packets/
+   │   overview.packet.md
+   │   walkthrough.packet.md
+   │   glossary.packet.md
+   │   file-map.packet.md
+   │   design-choices.packet.md
+   │   patterns.packet.md
+   │   apply-it.packet.md
+   ├─ index.html
+   ├─ pages/
+   └─ assets/
 ```
 
 The web app is assembled from the brief and page packets. A single-file
-`handbook.md` may be generated after that as a readable export.
+`handbook.md` may be generated after that as a readable export (also under
+`generation/<skill-slug>/`).
 
-The `web-app/` directory itself should start from the fixed scaffold:
+Scaffold the shell first:
 
 ```bash
-bash scripts/scaffold-web-app.sh web-app \
+bash scripts/scaffold-web-app.sh generation/<skill-slug> \
   --title="<Skill Name> 解剖手册" \
   --skill-name="<Skill Name>" \
   --source-path="<source skill path>"
@@ -39,8 +46,9 @@ bash scripts/scaffold-web-app.sh web-app \
 
 The scaffold creates the stable page shells, renderer, CSS, starter `data.js`,
 and empty `assets/diagrams/` directory. For the standard seven-page handbook,
-do not regenerate these files by hand. Fill `web-app/assets/data.js` and add
-real SVGs; edit `assets/site.js` only when the schema or page set changes.
+do not regenerate these files by hand. Fill
+`generation/<skill-slug>/assets/data.js` and add real SVGs; edit
+`assets/site.js` only when the schema or page set changes.
 
 ## Why this exists
 
@@ -65,10 +73,10 @@ Run `scripts/scaffold-web-app.sh` before writing any full page prose. This
 prevents the agent from spending context on boilerplate HTML, repeated page
 shells, and renderer wiring.
 
-Expected fixed files:
+Expected fixed files (under `generation/<skill-slug>/`):
 
 ```text
-web-app/
+generation/<skill-slug>/
   index.html
   pages/{overview,walkthrough,glossary,file-map,design-choices,patterns,apply-it}.html
   assets/
@@ -128,7 +136,7 @@ anchor slice 一旦完成，**主 thread 不要继续写任何完整页面**。�
   - `handbook-brief.md` 的完整内容（共享 IDs / running example / 术语 / 图表清单）
   - **anchor slice 里对应该页的那个组件作为风格锚点**：overview 页拿 overview opening；walkthrough 页拿那一个 walkthrough stage 样本；patterns 页拿那张 pattern card；file-map 页拿那张 file-role card；所有页都拿 page shell 做导航和视觉密度参照
   - 指向 `references/stage-writing.md`、`references/cards-patterns.md`、`references/visuals-and-quality.md`、`references/voice-style-gate.md` 的硬规则
-  - **该页的产出位置**：page agent 直接 patch `web-app/assets/data.js` 里对应那一 key（walkthrough 页 patch `handbook.walkthrough`，patterns 页 patch `handbook.patterns`，file-map 页 patch `handbook.fileMap`，依此类推）。**不要新建任何独立 JS 文件**（如 `page-data/walkthrough.js`、`web-app/assets/walkthrough-rest.js`）等主线程后续合并——HTML 只 `<script src="../assets/data.js">`，独立 JS 文件不会被加载，最后变成 1000+ 行死代码污染下一次校准。如果担心多个 page agent 同时 patch `data.js` 互相覆盖，就由主线程在 fan-out 之前先把 `data.js` 准备好骨架（每个 key 留空数组 / 空对象），page agent 按 key 精确替换；不要绕开这个文件
+  - **该页的产出位置**：page agent 直接 patch `generation/<skill-slug>/assets/data.js` 里对应那一 key（walkthrough 页 patch `handbook.walkthrough`，patterns 页 patch `handbook.patterns`，file-map 页 patch `handbook.fileMap`，依此类推）。**不要新建任何独立 JS 文件**（如 `page-data/walkthrough.js`、`generation/<skill-slug>/assets/walkthrough-rest.js`）等主线程后续合并——HTML 只 `<script src="../assets/data.js">`，独立 JS 文件不会被加载，最后变成 1000+ 行死代码污染下一次校准。如果担心多个 page agent 同时 patch `data.js` 互相覆盖，就由主线程在 fan-out 之前先把 `data.js` 准备好骨架（每个 key 留空数组 / 空对象），page agent 按 key 精确替换；不要绕开这个文件
   - 要求该页完成前先过 page voice gate：列出发现的问题，修掉 blocking issues，再返回最终页面内容
 
 **不要用 team 模式。** 本任务是单向交付——每个 page agent 拿到 brief + 对应锚点 + packet → 产出该页 → 结束。没有需要双向对话的协调。Team 模式的消息往返开销解决不了任何 brief 已经解决的协调问题，只会拖慢。
@@ -195,7 +203,7 @@ reviewer **不需要把这三项都从头扫一遍**——按 `references/voice-
 并行模式下，如果当前环境支持，主线程为每个 writer 配一个 reviewer（7 页并行 = 7 writer + 7 reviewer）：
 
 - `prompt` 必含：
-  - 要扫的页内容（从 `web-app/assets/data.js` 的对应 key 读取）
+  - 要扫的页内容（从 `generation/<skill-slug>/assets/data.js` 的对应 key 读取）
   - `references/voice-gate-examples.md` 的「高曝光字段必扫清单」对应这一页的那一行
   - `references/voice-gate-examples.md` 的「7 类高频违反」对照反例
   - `references/voice-style-gate.md` 的完整检查清单（兜底抽查用）
@@ -233,7 +241,7 @@ editor pass before building the web app:
 - no page depends on another page to explain its first important term;
 - cross-links point to existing pages or anchors;
 - repeated paragraphs are removed instead of copied across pages;
-- **没有死的数据文件留下**：`web-app/assets/` 下除 `data.js / site.js / styles.css / diagrams/` 之外不应该有任何 JS 数据文件；`page-data/` 或 `web-app/page-data/` 这种目录不应该存在。如果有，说明 page agent 写了独立中间文件等主线程合并，但合并完忘了删——留着就会变成下一次跑这个 skill 时的「校准目标」，把后续 run 带歪。验证方法：在输出目录里查找 `page-data/*.js`、`assets/*-rest.js`、`assets/__*_rest.js`，应该零结果。
+- **没有死的数据文件留下**：`generation/<skill-slug>/assets/` 下除 `data.js / site.js / styles.css / diagrams/` 之外不应该有任何 JS 数据文件；`page-data/` 或 `generation/<skill-slug>/page-data/` 这种目录不应该存在。如果有，说明 page agent 写了独立中间文件等主线程合并，但合并完忘了删——留着就会变成下一次跑这个 skill 时的「校准目标」，把后续 run 带歪。验证方法：在输出目录里查找 `page-data/*.js`、`assets/*-rest.js`、`assets/__*_rest.js`，应该零结果。
 
 ### 6. Assemble web and Markdown
 
@@ -252,7 +260,7 @@ linear export:
 
 Before delivery, answer these checks explicitly:
 
-- Did `scripts/scaffold-web-app.sh` create `web-app/` before page prose was written?
+- Did `scripts/scaffold-web-app.sh` create `generation/<skill-slug>/` before page prose was written?
 - Were fixed shell files left alone unless the schema or page list changed?
 - Is `handbook.md` described as an export rather than the web source?
 - Is there a `handbook-brief.md` or equivalent source plan?
@@ -262,7 +270,7 @@ Before delivery, answer these checks explicitly:
 - Could two page agents work without editing the same packet?
 - 写完 anchor slice 之后是否真的停下来问了用户并行还是串行？（不要默默替用户决定，也不要默默全程串行到底）
 - 如果走了并行：page agent 是否能写文件和运行验证？prompt 是不是自包含了 brief + anchor slice 对应组件 + packet 模板？
-- 如果走了并行：page agent 是不是把产出直接 patch 进了 `web-app/assets/data.js` 的对应 key？有没有任何独立 JS 数据文件残留（`page-data/*.js`、`assets/*-rest.js`、`assets/__*_rest.js`）？
+- 如果走了并行：page agent 是不是把产出直接 patch 进了 `generation/<skill-slug>/assets/data.js` 的对应 key？有没有任何独立 JS 数据文件残留（`page-data/*.js`、`assets/*-rest.js`、`assets/__*_rest.js`）？
 - Does the walkthrough page still follow `references/stage-writing.md`?
 - Do design choices and patterns still follow `references/cards-patterns.md`?
 - Does every detail page still follow `references/web-app-structure.md` orientation rules?

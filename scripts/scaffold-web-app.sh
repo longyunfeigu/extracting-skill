@@ -6,6 +6,13 @@ usage() {
 Usage:
   bash scripts/scaffold-web-app.sh <target-dir> [--title=<title>] [--skill-name=<name>] [--source-path=<path>]
 
+Convention: each handbook lives under generation/<skill-slug>/ where
+<skill-slug> is the kebab-case name of the source skill. Example:
+  bash scripts/scaffold-web-app.sh generation/nuwa-skill \
+    --title="女娲 Skill 造人术 解剖手册" \
+    --skill-name="女娲 Skill 造人术" \
+    --source-path="/path/to/nuwa-skill"
+
 Creates the fixed static web handbook skeleton:
   index.html
   pages/{overview,walkthrough,glossary,file-map,design-choices,patterns,apply-it}.html
@@ -124,7 +131,8 @@ Created web handbook skeleton:
   $TARGET
 
 Next:
-  1. Fill $TARGET/assets/data.js from handbook-brief.md + page-packets/.
-  2. Draw real SVGs under $TARGET/assets/diagrams/ and reference them from data.js.
-  3. Serve with: python3 -m http.server --directory "$TARGET" 8000
+  1. Write $TARGET/handbook-brief.md and $TARGET/page-packets/*.md.
+  2. Fill $TARGET/assets/data.js from those source files.
+  3. Draw real SVGs under $TARGET/assets/diagrams/ and reference them from data.js.
+  4. Serve with: python3 -m http.server --directory "$TARGET" 8000
 EOF

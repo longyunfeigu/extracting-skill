@@ -93,7 +93,7 @@ Structure diagrams explain. Generated images invite and reinforce.
 所以硬规则：
 
 - `diagrams[]` 每个条目必须配 `image:` 字段指向真实存在的 SVG 文件。
-- 落盘前 `ls web-app/assets/diagrams/` 看每个 image 引用都对得上文件。
+- 落盘前 `ls generation/<skill-slug>/assets/diagrams/` 看每个 image 引用都对得上文件。
 - 起本地 http server 之后**逐个 curl 每个 SVG 文件**——HTTP 200 + 非零字节 = 渲染会出图。**只测页面 200 不够**，因为页面 200 时图可能完全是空的。
 - 验证方法：用浏览器打开页面，或者用 `curl -s url | wc -c` 看 SVG 字节数 > 1000。少于这个数说明 SVG 是空壳。
 

@@ -36,8 +36,9 @@ assert_not_grep() {
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-OUT="$TMP/web-app"
+OUT="$TMP/generation/demo-skill"
 "$SCRIPT" "$OUT" --title="Demo Skill Handbook" --source-path="/tmp/source-skill"
+assert_dir "$TMP/generation"
 
 assert_file "$OUT/index.html"
 for page in overview walkthrough glossary file-map design-choices patterns apply-it; do
@@ -74,7 +75,7 @@ if "$SCRIPT" "$NONEMPTY" >/tmp/scaffold-web-app-test.out 2>/tmp/scaffold-web-app
 fi
 assert_file "$NONEMPTY/existing.txt"
 
-QUOTED="$TMP/quoted-web-app"
+QUOTED="$TMP/generation/quoted-skill"
 "$SCRIPT" "$QUOTED" \
   --title='Demo "Quoted" & <Skill>' \
   --skill-name='Skill "Q"' \

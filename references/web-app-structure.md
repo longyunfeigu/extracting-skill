@@ -11,11 +11,16 @@ uses `handbook-brief.md` plus page packets as source material. A single
 Before writing page prose, create the fixed shell with:
 
 ```bash
-bash scripts/scaffold-web-app.sh web-app \
+bash scripts/scaffold-web-app.sh generation/<skill-slug> \
   --title="<Skill Name> 解剖手册" \
   --skill-name="<Skill Name>" \
   --source-path="<source skill path>"
 ```
+
+`<skill-slug>` is a kebab-case identifier of the source skill. The whole run
+lives under `generation/<skill-slug>/` — handbook brief, page packets, the
+rendered web app, and all diagrams sit together so a single run is self-
+contained.
 
 The generated `index.html`, `pages/*.html`, `assets/site.js`, and
 `assets/styles.css` are stable infrastructure. For a normal seven-page handbook,

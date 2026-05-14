@@ -71,16 +71,32 @@ important stage, pick a better example before writing long prose.
 
 ### 4. Create the web source plan
 
+Every run writes its artifacts into a per-skill directory under `generation/`:
+
+```text
+generation/
+└─ <skill-slug>/        # kebab-case slug of the source skill
+   ├─ handbook-brief.md
+   ├─ page-packets/
+   ├─ index.html
+   ├─ pages/
+   └─ assets/
+```
+
+`<skill-slug>` is a kebab-case identifier derived from the source skill's
+`name:` field (e.g. `nuwa-skill`, `web-video-presentation`). Use ASCII letters,
+digits, and hyphens only — no spaces, no CJK characters in the path.
+
 For web mode, scaffold the fixed web shell before writing full pages:
 
 ```bash
-bash scripts/scaffold-web-app.sh web-app \
+bash scripts/scaffold-web-app.sh generation/<skill-slug> \
   --title="<Skill Name> 解剖手册" \
   --skill-name="<Skill Name>" \
   --source-path="<source skill path>"
 ```
 
-Then create:
+Then create, all under `generation/<skill-slug>/`:
 
 - `handbook-brief.md`: package map, one running example, page map, shared IDs,
   terms, stages, design choices, patterns, diagrams, assumptions;
@@ -95,8 +111,9 @@ the pages.
 ### 5. Produce pages
 
 Write pages from `handbook-brief.md` and page packets, not from a finished
-Markdown report. For the standard web app, update `web-app/assets/data.js` and
-add SVG files under `web-app/assets/diagrams/`. Leave the scaffolded HTML,
+Markdown report. For the standard web app, update
+`generation/<skill-slug>/assets/data.js` and add SVG files under
+`generation/<skill-slug>/assets/diagrams/`. Leave the scaffolded HTML,
 renderer, and CSS alone unless the schema or page list actually changes.
 
 If the runtime supports safe parallel page work, pause after the anchor slice
@@ -115,7 +132,7 @@ image: "assets/diagrams/<name>.svg"
 
 Before delivery:
 
-- list `web-app/assets/diagrams/`;
+- list `generation/<skill-slug>/assets/diagrams/`;
 - verify every referenced SVG exists;
 - serve the web app locally and `curl` each SVG path for HTTP 200 and non-zero
   bytes;
@@ -174,7 +191,8 @@ After page gates, run the editor pass from `references/web-production-flow.md`:
   anti-AI-voice, teaching voice, and read-aloud checks.
 - `references/voice-gate-examples.md` — concrete reviewer examples for the most
   common voice-gate failures.
-- `scripts/scaffold-web-app.sh` — creates the static `web-app/` skeleton from
+- `scripts/scaffold-web-app.sh` — creates a static handbook skeleton at any
+  target directory (use `generation/<skill-slug>/`) from
   `assets/web-app-template/`.
 - `assets/web-app-template/` — fixed page shells, renderer, CSS, starter
   `data.js`, and empty `assets/diagrams/` directory.

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+  <title id="title">Nuwa main flow</title>
+  <desc id="desc">A high-level flow from user request to generated skill with two checkpoints.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f6f1e6}
+      .box{fill:#fffaf0;stroke:#8a1c0f;stroke-width:2}
+      .soft{fill:#ede6d4;stroke:#d8cdb6;stroke-width:2}
+      .gate{fill:#2d6e4e;stroke:#1e5238;stroke-width:2}
+      .gateText{fill:#fffaf0;font-weight:700}
+      .text{fill:#1a1410;font-family:"Noto Serif SC","Source Han Serif SC",serif;font-size:24px}
+      .small{fill:#4a3f33;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px}
+      .tiny{fill:#8a7a66;font-family:"JetBrains Mono",monospace;font-size:13px}
+      .arrow{stroke:#8a1c0f;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#8a1c0f"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1180" height="520"/>
+  <text class="tiny" x="50" y="44">NUWA FLOW / from request to installable skill</text>
+
+  <rect class="box" x="48" y="80" width="170" height="96" rx="8"/>
+  <text class="text" x="78" y="122">入口分流</text>
+  <text class="small" x="70" y="150">人名 / 模糊需求</text>
+
+  <rect class="box" x="270" y="80" width="170" height="96" rx="8"/>
+  <text class="text" x="300" y="122">需求确认</text>
+  <text class="small" x="292" y="150">用途、材料、更新</text>
+
+  <rect class="soft" x="492" y="80" width="170" height="96" rx="8"/>
+  <text class="text" x="522" y="122">建目录</text>
+  <text class="small" x="512" y="150">先有文件槽位</text>
+
+  <rect class="box" x="714" y="80" width="170" height="96" rx="8"/>
+  <text class="text" x="744" y="122">六路调研</text>
+  <text class="small" x="733" y="150">研究写入 01-06</text>
+
+  <rect class="gate" x="936" y="70" width="190" height="116" rx="12"/>
+  <text class="text gateText" x="974" y="120">检查点 1</text>
+  <text class="small gateText" x="968" y="151">研究质量够吗</text>
+
+  <rect class="box" x="165" y="290" width="170" height="96" rx="8"/>
+  <text class="text" x="195" y="332">框架提炼</text>
+  <text class="small" x="184" y="360">三重验证模型</text>
+
+  <rect class="gate" x="387" y="280" width="190" height="116" rx="12"/>
+  <text class="text gateText" x="425" y="330">检查点 2</text>
+  <text class="small gateText" x="420" y="361">方向抓对了吗</text>
+
+  <rect class="box" x="630" y="290" width="170" height="96" rx="8"/>
+  <text class="text" x="660" y="332">构建 Skill</text>
+  <text class="small" x="650" y="360">模板 + 协议</text>
+
+  <rect class="box" x="852" y="290" width="170" height="96" rx="8"/>
+  <text class="text" x="882" y="332">验证精炼</text>
+  <text class="small" x="875" y="360">已知题 / 边界题</text>
+
+  <path class="arrow" d="M218 128 H270"/>
+  <path class="arrow" d="M440 128 H492"/>
+  <path class="arrow" d="M662 128 H714"/>
+  <path class="arrow" d="M884 128 H936"/>
+  <path class="arrow" d="M1031 186 C1031 250 250 226 250 290"/>
+  <path class="arrow" d="M335 338 H387"/>
+  <path class="arrow" d="M577 338 H630"/>
+  <path class="arrow" d="M800 338 H852"/>
+
+  <text class="tiny" x="50" y="462">两个停顿点把返工放在便宜的位置：先看研究是否可信，再看提炼方向是否正确。</text>
+</svg>

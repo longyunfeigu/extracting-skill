@@ -22,7 +22,7 @@ reviewer **不需要扫全页**——只扫这些字段。它们决定读者第�
 | patterns | 每张卡的 prevents + therefore + antiExample |
 | apply-it | summary + 每题的 question + hint |
 
-其它字段（如 walkthrough 七字段速查、challenges 题目、relatedPatterns 的 relation）由 writer 自审，最终 editor pass 兜底——不进 reviewer 扫描范围。
+其它字段（如 walkthrough 阶段速查、challenges 题目、relatedPatterns 的 relation）由 writer 自审，最终 editor pass 兜底——不进 reviewer 扫描范围。
 
 ---
 

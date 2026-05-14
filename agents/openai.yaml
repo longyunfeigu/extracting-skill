@@ -1,4 +1,4 @@
 interface:
-  display_name: "Skill Handbook Generator"
-  short_description: "Turn an AI skill package into a multi-page web handbook."
-  default_prompt: "Study this skill package and produce a multi-page web handbook explaining how it makes the AI behave differently."
+  display_name: "Skill Pattern Extractor"
+  short_description: "Review AI skills and extract reusable design patterns."
+  default_prompt: "Study this skill package, explain how it changes agent behavior, identify what to keep or cut, and extract reusable design patterns."

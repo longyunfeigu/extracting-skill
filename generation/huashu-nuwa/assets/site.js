@@ -52,7 +52,7 @@
     switch (page) {
       case "overview":
         return [
-          { anchor: "scene", label: "先看默认会从哪里偏" },
+          { anchor: "scene", label: "先看默认会错在哪" },
           { anchor: "predict", label: "你先猜一遍" },
           { anchor: "primer", label: "Domain primer" },
           { anchor: "wow", label: "Wow moment" },
@@ -242,7 +242,7 @@
         </header>
 
         <section class="section opening" id="scene">
-          <p class="eyebrow">先看默认会从哪里开始偏</p>
+          <p class="eyebrow">先看 AI 默认会做坏成什么样</p>
           <div class="opening-body">${openingHtml}</div>
         </section>
 

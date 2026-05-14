@@ -115,20 +115,47 @@ Use structured cards for repeated shapes:
 
 Each page should be written from its own packet, not copied from a single
 Markdown chapter. The packet fixes what the page is responsible for and what
-voice it should use.
+voice it should use. It must also fix the page-specific standard: what proof
+this page needs before it counts as done.
 
-| Page | Responsibility | Voice |
-| --- | --- | --- |
-| Overview | why this skill matters, one example, high-level promise | **教科书章节标准**：experiential opening 让读者亲眼看到失败模式 + predict 钩子 + 多拍 primer 含 orientation 图 + wow 用真表格做对照 + before/after 卡。详见 `references/handbook-spec.md` 第 1 节。**不是** "short, concrete, inviting" 的工作笔记 voice。 |
-| Walkthrough | how the AI moves stage by stage | scene-based, first-person, evidence-heavy |
-| Glossary | explain terms that carry design weight | slow, precise, example-first |
-| File map | show which files own which decisions | operational, responsibility-focused |
-| Design choices | explain why rules exist and what they prevent | argumentative, tradeoff-aware |
-| Patterns | extract reusable moves | compact, reusable, cost-aware |
-| Apply it | help the reader write a similar skill | practical, checklist-like |
+| Page | Responsibility | Page-specific standard | Evidence shape | Failure mode |
+| --- | --- | --- | --- | --- |
+| Overview | why this skill matters, one example, high-level promise | **教科书章节标准**：experiential opening 让读者亲眼看到失败模式 + predict 钩子 + 多拍 primer 含 orientation 图 + wow 用真表格做对照 + before/after 卡。详见 `references/handbook-spec.md` 第 1 节。**不是** "short, concrete, inviting" 的工作笔记 voice。 | failed AI trace, orientation SVG, compare table, before/after cards | table of contents, abstract praise, or naming the skill before the reader sees the problem |
+| Walkthrough | how the AI moves stage by stage | every stage shows input, AI action, output, AI freedom, reusable move, and next-stage handoff | real prompt excerpts, stage traces, file snippets, commands, intermediate artifacts | a seven-field checklist without scenes or evidence |
+| Glossary | explain terms that carry design weight | each term starts from a concrete example value, not an abstract definition; each card links back to the walkthrough stage where the term is actually used | concrete value, stage link, confusion prevented, AI-use example, easy-to-confuse contrast | isolated dictionary entries, or definitions that explain jargon with jargon |
+| File map | show which files own which decisions | each file says who writes it, who reads it, what it owns, what it does not own, and what breaks if it drifts | file-role cards, ownership arrows, read/write paths, failure notes | a directory listing |
+| Design choices | explain why rules exist and what they prevent | each choice names the bad output it prevents, the rule that blocks it, and when the rule becomes too heavy | three-scenario comparison: saves the work, over-constrains, depends on context | generic best practices |
+| Patterns | extract reusable moves | each card is a reusable move with a problem-to-solution break, cost, reuse conditions, and related patterns | "bad result -> therefore -> reusable move" card, cross-links | renamed section headings from the source skill |
+| Apply it | help the reader write a similar skill | converts the handbook into executable skill-authoring steps and pressure scenarios | checklist, small packet template, pressure scenario, pass/fail signs | motivational advice |
 
 Different voices are expected. Consistency comes from the shared
 `handbook-brief.md`, IDs, running example, diagrams, and editor pass.
+
+### Glossary standard
+
+Glossary is the easiest page to fake because an abstract definition can sound
+complete while teaching almost nothing. A good glossary card makes the term
+visible through one concrete value before naming the general idea.
+
+Bad:
+
+```text
+心智模型：某人判断世界的认知框架。
+```
+
+Good:
+
+```text
+心智模型：塔勒布的反脆弱偏好。
+
+他判断一个系统时，不先看它现在多成功、多稳定、多高效，而是看它面对
+压力和不确定性时的反应：如果一点波动就毁掉它，那是脆弱；如果波动
+只让它疼一下但能逼它学习、进化、获得机会，那才是他真正偏好的结构。
+```
+
+After that concrete value, the card can explain where the term appears in the
+walkthrough, how I use it as the AI, what misunderstanding it prevents, and what
+nearby term it should not be confused with.
 
 ## Page self-check
 
@@ -141,4 +168,8 @@ Different voices are expected. Consistency comes from the shared
 - Can a reader land directly on this page and still know what pipeline they are
   looking at?
 - Does each page come from a page packet with a distinct job and voice?
+- Does each page packet include page-specific standard, evidence shape, and
+  failure mode rather than only the shared template?
+- Does the Glossary explain important terms with concrete values and links back
+  to the walkthrough stage where the term is used?
 - Is `handbook.md` treated as an export rather than the web source?

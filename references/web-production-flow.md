@@ -147,7 +147,12 @@ cross-link 断链都靠 editor pass 兜底。
 
 ### 3. Produce page packets
 
-Each page packet is a self-contained handoff for a page agent. It includes:
+Each page packet is a self-contained handoff for a page agent.
+
+The fields below are the shared spine. They are not enough by themselves:
+every packet must also fill the page-specific standard, evidence shape, and
+failure mode for that exact page. Do not clone one packet seven times and only
+change the page name.
 
 ```markdown
 # <page>.packet
@@ -155,6 +160,9 @@ Each page packet is a self-contained handoff for a page agent. It includes:
 **Page job:** <what this page helps the reader do>
 **Reader state:** <what the reader already knows or may not know>
 **Voice:** <how this page should sound>
+**Page-specific standard:** <what "good enough" means for this page, in concrete checks>
+**Evidence shape:** <the form of proof this page must use: examples, tables, file snippets, trace, cards, diagrams>
+**Failure mode:** <the most likely bad version of this page>
 **Inputs:** <brief fields, source files, stage IDs, pattern IDs>
 **Must include:** <orientation, diagrams, cards, tables, real material>
 **Must avoid:** <bad page-specific output>
@@ -168,15 +176,15 @@ Each page packet is a self-contained handoff for a page agent. It includes:
 
 ### 4. Page agent roles
 
-| Page | Writing style | Must not become |
-| --- | --- | --- |
-| Overview | short, concrete, high-level; starts with why the skill is worth studying | a table of contents |
-| Walkthrough | scene-by-scene; first-person AI voice; real inputs and outputs | a 7-field checklist list |
-| Glossary | slow, precise concept cards; examples before abstract labels | a dumping ground for unexplained terms |
-| File map | responsibility map; who writes, who reads, what breaks | a directory listing |
-| Design choices | argumentative; each choice names the bad scenario and tradeoff | generic best practices |
-| Patterns | reusable cards; problem, therefore break, reuse, cost, links | renamed section headings |
-| Apply it | practical authoring moves and pressure scenarios | motivational advice |
+| Page | Packet must force | Evidence shape | Failure mode |
+| --- | --- | --- | --- |
+| Overview | show the failure mode first, ask the reader to predict a fix, then build the map with an orientation diagram, a real comparison, and before/after cards | dialogue or trace from the failure, orientation SVG, compare table, before/after cards | table of contents, abstract praise, or a summary that names the skill before the reader sees the problem |
+| Walkthrough | every stage shows what I receive, what I do, what I produce, how much freedom I have, and what the next stage can now rely on | stage trace with real prompt excerpts, file snippets, commands, intermediate artifacts, or generated output | a seven-field checklist with no scene, no real material, and no handoff |
+| Glossary | each important term is explained through a concrete example value, links back to the walkthrough stage where it is used, and says what confusion it prevents | concept cards with concrete value, stage link, AI-use example, and easy-to-confuse contrast | an isolated dictionary of abstract definitions |
+| File map | each important file says who writes it, who reads it, what decision it owns, what it does not own, and what breaks if it drifts | file-role cards, ownership arrows, read/write paths, failure notes | a directory listing |
+| Design choices | each choice names the bad output it prevents, the rule that blocks it, and the case where that rule becomes too heavy | three-scenario comparison: saves the work, over-constrains, depends on context | generic best practices |
+| Patterns | each card is a reusable move with a problem-to-solution break, reuse conditions, cost, and related patterns | pattern cards with "bad result -> therefore -> reusable move" and cross-links | renamed section headings from the source skill |
+| Apply it | turn the handbook into small authoring moves, a short skill-writing sequence, and pressure scenarios that would fail without the move | checklist, mini packet template, pressure scenario, pass/fail signs | motivational advice |
 
 ### 4a. Page voice gate
 
@@ -265,6 +273,8 @@ Before delivery, answer these checks explicitly:
 - Is `handbook.md` described as an export rather than the web source?
 - Is there a `handbook-brief.md` or equivalent source plan?
 - Does each page have a page packet with job, voice, inputs, must-include, and self-check?
+- Does each page packet include page-specific standard, evidence shape, and
+  failure mode instead of using only the shared template?
 - Did every page pass the page voice gate before final editor pass?
 - Voice gate 的 reviewer 真的是**独立 reviewer**（不是 writer 自审）？如果当前环境不能启用独立 reviewer，是否至少用 `references/voice-gate-examples.md` 的「高曝光字段必扫清单」+「7 类高频违反」做了显式自检？writer 是不是真按 blocking issues 修了一轮？
 - Could two page agents work without editing the same packet?

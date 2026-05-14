@@ -101,7 +101,8 @@ Then create, all under `generation/<skill-slug>/`:
 - `handbook-brief.md`: package map, one running example, page map, shared IDs,
   terms, stages, design choices, patterns, diagrams, assumptions;
 - `page-packets/`: one packet per page with page job, reader state, inputs,
-  required material, voice, and self-check;
+  required material, voice, page-specific standard, evidence shape, failure
+  mode, and self-check;
 - one anchor slice: overview opening, one walkthrough stage, one pattern card,
   one file-role card, and one rendered page shell.
 
@@ -115,6 +116,9 @@ Markdown report. For the standard web app, update
 `generation/<skill-slug>/assets/data.js` and add SVG files under
 `generation/<skill-slug>/assets/diagrams/`. Leave the scaffolded HTML,
 renderer, and CSS alone unless the schema or page list actually changes.
+Do not treat page packets as a uniform form with different titles: each packet
+must state what counts as evidence for that page and what bad page shape it is
+blocking.
 
 If the runtime supports safe parallel page work, pause after the anchor slice
 and ask the user whether to continue serially or fan out page work. If parallel

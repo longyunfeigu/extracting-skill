@@ -39,5 +39,11 @@ assert_not_grep '^generation/' <(git ls-files)
 assert_max_lines references/web-app-visuals.md 120
 assert_max_lines references/web-production-flow.md 220
 assert_max_lines references/stage-writing.md 300
+assert_max_lines references/pain-dimensions.md 240
+assert_max_lines references/content-format.md 280
+assert_max_lines references/handbook-spec.md 300
+
+assert_grep 'data.js 是构建产物' SKILL.md
+assert_grep 'pain-dimensions' SKILL.md
 
 echo "skill structure tests passed"

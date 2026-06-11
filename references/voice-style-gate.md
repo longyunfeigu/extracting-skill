@@ -17,6 +17,56 @@ For each completed page:
 Do not treat this as a report-only step. If the gate finds a blocking issue,
 rewrite the affected sentence or paragraph.
 
+## Hard rules (non-negotiable)
+
+These seven rules block delivery. Rules marked [machine] are also enforced by
+`scripts/check-content.py`; the rest are checked here, by reading.
+
+### H1. Term after instance
+
+A term may be named only after a concrete instance has been shown. The reader
+meets the failing output, the file excerpt, or the scene first; the label
+comes second. Opening a section with a definition is a gate failure.
+
+### H2. Real material, no paraphrase [machine]
+
+When prose describes an input or output, paste the actual excerpt. "一份结构
+化的需求描述" is a violation; the violation is fixed by pasting ten lines of
+the actual file. Every mechanism explanation quotes the actual rule, gate
+text, or script lines.
+
+### H3. Minimal contrast per mechanism [machine]
+
+Every mechanism gets a bad/good pair, and the pair differs in exactly one
+variable. A pair that differs in three variables teaches nothing because the
+reader cannot attribute the difference.
+
+### H4. Definition chains must touch ground
+
+Explaining a new concept with another new concept is a violation. Every
+explanation chain ends at something already shown in this handbook or at
+everyday experience. Feynman test: a reader who has never written a skill can
+follow the paragraph.
+
+### H5. Explain in place
+
+The explanation sits next to the thing it explains. A load-bearing
+explanation may not be deferred with "见第 X 章" or "详见 Glossary". Glossary
+is a lookup appendix, not a place where understanding is parked.
+
+### H6. One new term per paragraph [machine]
+
+A paragraph in which two terms make their first appearance gets split and
+rewritten. First appearances are expensive; spend them one at a time.
+
+### H7. Conversational address
+
+Speak to the reader as "你" at predict points, challenges, and turns; use "我"
+for the agent's execution narrative. A page that never says 你 or 我们 has
+drifted into a status report. Formal textbook register is a failure mode, not
+a virtue: short sentences, natural turns, "注意，这里有个坑" is allowed and
+encouraged — as long as every claim is backed by real material.
+
 ## Anti-jargon checks
 
 ### 1. Do not give ordinary moves fancy names

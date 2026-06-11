@@ -42,12 +42,20 @@ repeated structures.
 
 ### 2. Find the Real Task Pain
 
-Before naming mechanisms, stand outside the skill:
+Read `references/pain-dimensions.md`, then run its item-driven sweep:
 
-- What does a normal user think the task is about?
-- Where does a default agent usually drift, fake progress, or skip checks?
-- What visible symptom appears first?
-- Which file, rule, script, checkpoint, or example catches that failure?
+1. Imagine doing the task bare (a human novice, then a default agent) and
+   list where each would fail.
+2. Inventory every rule, script, intermediate artifact, and checkpoint in
+   the package. List the intermediate artifacts completely.
+3. Run each item through the three-question pain test (counterfactual,
+   baseline, evidence grade) and tag it with one of the seven dimension
+   labels.
+4. Reconcile: pains the skill catches that you missed, pains you expected
+   that it ignores (blind spots), and residue that fits nowhere.
+
+"这一步很难" with no observable symptom is not a finding. Difficulty claims
+are made against a declared baseline and carry an evidence grade.
 
 For web handbooks, write the full `ordinary-view pain scan` described in
 `references/handbook-spec.md`. For shorter reviews, fold the same thinking into
@@ -101,10 +109,12 @@ cards.
 
 Use one running example through the whole handbook. Follow:
 
-1. `references/handbook-spec.md` for the content contract.
+1. `references/handbook-spec.md` for the content contract (五章 + 附录).
 2. `references/web-production-flow.md` for `generation/<skill-slug>/`,
-   `handbook-brief.md`, page packets, scaffold, and final checks.
-3. `references/stage-writing.md`, `references/cards-patterns.md`,
+   `handbook-brief.md`, page packets, scaffold, build, and final checks.
+3. `references/content-format.md` when writing `content/*.md` — the only
+   hand-written layer; `scripts/build-data.py` turns it into `data.js`.
+4. `references/stage-writing.md`, `references/cards-patterns.md`,
    `references/visuals-and-quality.md`, and `references/voice-style-gate.md`
    only for the sections that need them.
 
@@ -120,29 +130,39 @@ Before finishing, check:
 
 ## Non-Negotiables
 
-- Start from the bad AI behavior the skill is trying to prevent.
+- Start from the pains the skill overcomes — domain difficulties as well as
+  bad AI behavior. Every pain claim names an observable symptom, a baseline,
+  and an evidence grade (`references/pain-dimensions.md`).
 - Keep `SKILL.md` lean; move detailed writing rules, templates, and visual
   implementation notes to references or assets.
 - Do not rely on examples as specification.
 - Do not treat generated `generation/` output as reusable skill material.
 - Use scripts/assets for repeatable mechanics instead of re-explaining them in
   prose.
+- For web handbooks: data.js 是构建产物，禁止手写 — write `content/*.md` and
+  run `scripts/build-data.py` + `scripts/check-content.py`.
 - If producing a web handbook, use code-native diagrams for exact relationships
   and verify referenced SVG files exist.
 
 ## Resources
 
-- `references/handbook-spec.md` — content contract for multi-page handbooks and
-  the single source for the ordinary-view pain scan.
-- `references/web-production-flow.md` — concise web production flow, scaffold,
-  page packets, and verification.
+- `references/pain-dimensions.md` — the six-source dimension taxonomy, the
+  three-question pain test, evidence grades, and the item-driven sweep.
+- `references/handbook-spec.md` — content contract for multi-page handbooks
+  (五章 + 附录) and the ordinary-view pain scan format.
+- `references/web-production-flow.md` — concise web production flow: scaffold,
+  brief, packets, build, check, verification.
+- `references/content-format.md` — the `content/*.md` format contract shared
+  by the writing agent, the build script, and the renderer.
 - `references/stage-writing.md` — walkthrough-specific writing rules.
-- `references/cards-patterns.md` — design-choice and pattern-card rules.
+- `references/cards-patterns.md` — difficulty-archive card rules.
 - `references/visuals-and-quality.md` — diagram rules and final quality checks.
-- `references/voice-style-gate.md` — voice gate rules.
+- `references/voice-style-gate.md` — seven hard rules plus voice gate rules.
 - `references/voice-gate-examples.md` — reviewer examples for common voice
   failures.
 - `references/web-app-visuals.md` — short visual constraints for the static web
   template.
 - `scripts/scaffold-web-app.sh` — creates the static handbook skeleton from
   `assets/web-app-template/`.
+- `scripts/build-data.py` — builds `assets/data.js` from `content/*.md`.
+- `scripts/check-content.py` — machine half of the hard gate.

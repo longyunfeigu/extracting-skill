@@ -1,50 +1,66 @@
+// 构建产物 —— 由 scripts/build-data.py 从 content/*.md 生成，禁止手写。
+// 本起始文件仅保证空壳页面可渲染；跑过一次构建后会被整体覆盖。
 window.handbook = {
   meta: {
     title: __HANDBOOK_TITLE_JSON__,
     skillName: __SKILL_NAME_JSON__,
     audience: "想偷招的人 / 还没用过这个 skill 的 AI",
     sourcePath: __SOURCE_PATH_JSON__,
-    version: "draft"
+    version: "draft",
+    baseline: ""
   },
+
+  example: {
+    label: "贯穿例子",
+    userRequest: "",
+    whyThisExample: "",
+    expectedOutput: ""
+  },
+
+  diagrams: [],
 
   overview: {
     h1: "看见这个 skill 在做什么",
-    oneLiner: "TODO: 用一句话说明这个 skill 怎样改写 AI 的默认行为。",
+    oneLiner: "",
     openingScene: [],
     predictPrompt: "",
     primerBeats: [],
     wowSetup: "",
     wowDiagramId: "",
     wowMoment: "",
-    badResults: [],
+    painPreview: [],
+    panoramaDiagramId: "",
     shapeReason: "按读者意图排，不按源文件顺序",
     chapterLogic: []
   },
 
-  example: {
-    label: "贯穿例子",
-    userRequest: "TODO: 放一个会贯穿全书的小请求。",
-    whyThisExample: "TODO: 说明为什么这个例子能代表主路径。",
-    expectedOutput: "TODO: 说明跑完整个 skill 后会产出什么。"
+  walkthrough: [],
+
+  dataflow: {
+    flowDiagramId: "",
+    intro: "",
+    artifacts: []
   },
 
-  diagrams: [],
-  walkthrough: [],
-  glossary: [],
-  fileMap: [],
-  designChoices: [],
-  patterns: [],
+  archive: {
+    panoramaDiagramId: "",
+    cards: [],
+    residue: [],
+    blindSpots: []
+  },
 
   applyIt: {
-    h1: "拿这个形状写你自己的 skill",
-    summary: "TODO: 把这个 skill 的设计招数压成可操作的写作清单。",
-    checklistTitle: "起手清单",
-    checklistHeading: "从坏 AI 输出反推到 skill 形状",
-    checklist: [],
+    h1: "拿这套招，自己画一个骨架",
+    summary: "",
+    scenario: [],
+    tasks: [],
+    referenceAnswer: [],
     starterPrompt: "",
     nextSteps: {
       author: [],
       thief: []
     }
-  }
+  },
+
+  glossary: []
 };

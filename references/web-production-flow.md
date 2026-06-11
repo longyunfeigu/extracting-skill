@@ -1,32 +1,27 @@
 # Web production flow
 
-Use this reference only when the requested output is a multi-page web handbook
-or documentation app. It exists to prevent one bad result: writing a long
-`handbook.md` and then slicing it into pages that all sound the same.
+Use this reference only when the requested output is a multi-page web
+handbook. It exists to prevent two bad results: writing a long `handbook.md`
+and slicing it into pages that all sound the same, and hand-editing the build
+artifact until nothing is checkable.
 
 ## Core rule
 
-For web mode, `handbook.md` is an export. The source is:
+The hand-written layer is `content/*.md`. Everything below it is generated:
 
 ```text
 generation/<skill-slug>/
-  handbook-brief.md
-  page-packets/
-  index.html
-  pages/
-  assets/
-    data.js
-    site.js
-    styles.css
-    diagrams/
+  handbook-brief.md     # sweep output: pain scan, inventory, threads (hand-written)
+  page-packets/         # per-page writing instructions (hand-written)
+  content/              # the seven content files (hand-written, the deliverable)
+  assets/data.js        # BUILD ARTIFACT — never hand-edit
+  index.html  pages/  assets/{site.js,styles.css,diagrams/}   # scaffold-owned
 ```
 
-`<skill-slug>` is derived from the source skill's `name:` field. Use ASCII
+`<skill-slug>` is derived from the source skill's `name:` field. ASCII
 letters, digits, and hyphens only.
 
 ## 1. Scaffold first
-
-Run the scaffold before writing full page prose:
 
 ```bash
 bash scripts/scaffold-web-app.sh generation/<skill-slug> \
@@ -35,52 +30,51 @@ bash scripts/scaffold-web-app.sh generation/<skill-slug> \
   --source-path="<source skill path>"
 ```
 
-The scaffold owns the stable HTML shells, renderer, CSS, starter `data.js`, and
-empty `assets/diagrams/` directory. For normal runs, fill `assets/data.js` and
-add SVGs. Edit `site.js`, page shells, or CSS only when the schema, page list, or
-visual system actually changes.
+The scaffold owns the page shells (五章 + 附录: overview, walkthrough,
+dataflow, archive, apply-it, glossary), the renderer, the CSS, a starter
+`data.js`, and `assets/diagrams/`. Edit `site.js`, page shells, or CSS only
+when the schema, page list, or visual system actually changes.
 
 ## 2. Write `handbook-brief.md`
 
-Create a compact source plan before any long prose. Include:
+Run the item-driven sweep from `references/pain-dimensions.md` first. The
+brief is source material, not page copy. Include:
 
-- source path and package map;
-- ordinary-view pain scan from `references/handbook-spec.md`;
+- source path, package map, and the baseline declaration;
+- the ordinary-view pain scan table (dimension + evidence columns) from
+  `references/handbook-spec.md`;
+- the 全量盘点附录: intermediate-artifact inventory, risk mitigations,
+  residue, blind spots;
 - one running example;
 - total task in one sentence;
-- stage IDs and one-line summaries;
-- cross-stage mechanism threads;
-- term IDs and short explanations;
-- design choice IDs and bad scenarios;
-- pattern IDs and related links;
+- stage IDs and one-line summaries; cross-stage mechanism threads;
+- term IDs, archive-card IDs (A1...) with dimension and evidence grade;
 - required diagrams and where each appears;
-- page list and each page's job;
-- risks, missing evidence, and assumptions.
-
-Keep this factual. It is source material, not final page copy.
+- risks, missing evidence, assumptions.
 
 ## 3. Write one anchor slice
 
-Before producing every page, write a small anchor slice:
+Before producing every page, write a small anchor slice in `content/`:
 
-- overview opening;
-- one walkthrough stage;
-- one pattern card;
-- one file-role card;
-- one rendered page shell.
+- the overview opening scene;
+- one full walkthrough stage (all seven skeleton parts);
+- one archive card;
+- one artifact card.
 
-Use it to set voice, density, field names, and visual expectations. If the
-anchor exposes problems in the brief, fix the brief before continuing.
+Run `build-data.py` + `check-content.py` on it early — the parser is part of
+the contract, and the anchor is the cheapest place to discover format
+mistakes. If the anchor exposes problems in the brief, fix the brief before
+continuing.
 
-After the anchor slice, decide whether to continue serially or split page work.
-Choose serial work when the brief or voice is still moving. Choose parallel page
-work only when each page can update a disjoint key in `assets/data.js` without
-creating merge files.
+After the anchor slice, decide serial versus parallel. Choose serial while
+the brief or voice is still moving. Choose parallel page work only when each
+page maps to a disjoint `content/*.md` file — they do, which is the point of
+the split — and merge by file, never by editing data.js.
 
 ## 4. Produce page packets
 
-Each page packet is a self-contained handoff. Do not clone the same packet seven
-times with different titles.
+Each page packet is a self-contained handoff. Do not clone the same packet
+six times with different titles.
 
 ```markdown
 # <page>.packet
@@ -92,66 +86,78 @@ times with different titles.
 **Evidence shape:** <examples, tables, snippets, traces, cards, diagrams>
 **Failure mode:** <most likely bad version of this page>
 **Pain scan rows used:** <which rows from the brief this page consumes>
-**Inputs:** <brief fields, source files, stage IDs, pattern IDs>
+**Inputs:** <brief fields, source files, stage IDs, card IDs>
 **Must include:** <orientation, diagrams, cards, tables, real material>
 **Must avoid:** <page-specific bad output>
-**Packet output:** <structured data or prose blocks rendered by the web app>
+**Packet output:** <which content/*.md file and which sections>
 **Self-check:** <page-specific checks>
 ```
 
-Page jobs:
+Page jobs (details in `references/handbook-spec.md`):
 
 | Page | Must do | Common failure |
 | --- | --- | --- |
-| Overview | show the ordinary failure first, then explain the skill's map | table of contents or abstract praise |
-| Walkthrough | show what I receive, do, produce, constrain, and hand off at each stage | checklist with no scene or evidence |
-| Glossary | explain design-heavy terms through concrete values and links back to stages | isolated dictionary |
-| File map | show who writes, reads, owns, and can break each important file | directory listing |
-| Design choices | name the bad output, rule, solved problem, and counter-case | generic best practices |
-| Patterns | turn source moves into reusable cards with cost and counter-case | renamed section headings |
-| Apply it | turn the handbook into small skill-authoring moves | motivational advice |
+| Overview | ordinary failure first, baseline, panorama last | TOC or abstract praise |
+| Walkthrough | panorama, then the seven-part stage skeleton per stage | checklist with no scene or evidence |
+| Dataflow | follow the data; 为什么长这样 per artifact | directory listing |
+| Archive | three-question pain cards + residue + blind spots | renamed section headings |
+| Apply it | transfer exercise with collapsed reference answer | motivational summary |
+| Glossary | lookup appendix, 3-8 design-heavy terms | chapter-sized dictionary |
 
-For `walkthrough.packet`, add a short **Mechanism threads** block. Each relevant
-stage should say which thread it touches.
+For `walkthrough.packet`, add a short **Mechanism threads** block saying
+which thread each relevant stage touches.
 
-## 5. Page voice gate
+## 5. Build and machine-check
 
-After each page is drafted, run the voice gate before marking it done.
+```bash
+python3 scripts/build-data.py generation/<skill-slug>
+python3 scripts/check-content.py generation/<skill-slug>
+```
 
-- Use `references/voice-gate-examples.md` to scan high-exposure fields.
-- Use `references/voice-style-gate.md` for anti-jargon, teaching voice, and
-  read-aloud checks.
-- Fix blocking issues. Do not report them as unresolved work unless the user
-  explicitly asked for a review only.
+Both must pass with zero errors. The build rejects format violations
+(unknown fields, missing evidence grades, pain-carrying stages without a
+predict point). The checker rejects broken diagram references, empty
+contrast pairs, illegal effect values, and dangling card links. Fix the
+content, rebuild — never patch data.js.
 
-If an independent reviewer is available and appropriate, use it for high-
-exposure fields only. Otherwise run the same checklist yourself.
+## 6. Voice gate
 
-## 6. Editor pass
+After each page is drafted and building, run the voice gate before marking
+it done.
+
+- `references/voice-style-gate.md` — the seven hard rules (H1-H7), then
+  anti-jargon and teaching-voice checks.
+- `references/voice-gate-examples.md` — high-exposure field scan.
+
+Fix blocking issues. Do not report them as unresolved work unless the user
+explicitly asked for a review only. If an independent reviewer is available
+and appropriate, use it for high-exposure fields only.
+
+## 7. Editor pass
 
 Before delivery, verify:
 
 - one running example stays consistent;
-- stage, term, design-choice, and pattern IDs match the brief;
-- each detail page has orientation before detailed cards;
-- every diagram named in `data.js` points to a real SVG;
+- stage, term, and card IDs match the brief;
+- the panorama appears in Overview and Walkthrough before any detail;
+- every detail page orients before its first card;
 - every page has a distinct job and voice;
 - no page depends on another page to define its first important term;
-- cross-links point to existing pages or anchors;
 - repeated paragraphs are removed;
-- no extra JS data files remain under `generation/<skill-slug>/`.
+- `content/` is the only hand-written layer below the brief — no stray
+  edits in `assets/`.
 
-## 7. Build and verify
-
-Serve the generated directory locally. Check page load, then check diagram
-assets directly:
+## 8. Serve and verify
 
 ```bash
 python3 -m http.server --directory generation/<skill-slug> 8000
 ```
 
-For each `image: "assets/diagrams/<name>.svg"` in `data.js`, verify HTTP 200 and
-non-zero bytes. Page 200 is not enough; missing diagrams can fail silently.
+Open every page once. `check-content.py` already verified diagram files
+exist and are non-empty, but rendering is the only test of layout — check
+the panorama, one stage, one archive card, and the collapsed reference
+answer by eye.
 
-Only after the web app is coherent, generate `handbook.md` as a linear export if
-the user wants one. Do not use that export as the next run's source.
+Only after the web app is coherent, generate `handbook.md` as a linear
+export if the user wants one. Do not use that export as the next run's
+source.

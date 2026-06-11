@@ -1,44 +1,94 @@
 # Stage writing rules
 
-Use this reference when writing or reviewing the Walkthrough page: the part of
-the handbook that shows how the agent moves through the skill step by step.
+Use this reference when writing or reviewing the Walkthrough page.
+`references/handbook-spec.md` defines the fixed stage skeleton (我在哪 →
+场景再现 → 难点 → 预测点 → 机制 → 真实产出 → 可偷的招+交接). This file
+defines how to write each part well.
 
-## Core shape
+## Panorama before stage 1
 
-Each stage should teach before it lists metadata. The reader should be able to
-answer six questions after reading the stage:
+Walkthrough opens with the pipeline panorama: the same diagram Overview ends
+with, plus one line per stage. The reader must hold the whole chain before any
+stage detail. Do not start stage 1 with its own scene; start it with its
+position in the chain.
 
-1. What do I do here?
-2. What input do I have?
-3. What output do I produce?
-4. How much freedom do I have?
-5. What concrete mismatch or drift does this stage catch?
-6. Which later stage or mechanism relies on this?
+## 我在哪：mini-map
 
-In `handbook.walkthrough[]`, the metadata can look like:
+Every stage starts by locating itself. Reuse one artwork with the current
+stage highlighted, or a plain text breadcrumb:
 
-```js
-{
-  id: "stage-03",
-  title: "...",
-  summary: "...",
-  receives: "...",
-  reads: "...",
-  blockedShortcut: "...",
-  action: "...",
-  output: "...",
-  painPoint: "step、口播、mp3、录屏推进四条线容易漂开",
-  mechanismThread: "`narrations.ts` -> `audio-segments.json` -> mp3 -> Auto next()",
-  nextConsumer: "...",
-  freedom: "limited | creative | almost-none"
-}
+```text
+调研 → 取证 → 【提炼 DNA】 → 检查点 → 生成 → 测试
 ```
+
+Do not redraw the pipeline differently per stage; the reader should recognize
+the same map every time.
+
+## 场景再现：carry real material
+
+State what I hold entering the stage and what I must hand over. Each side gets
+a concrete excerpt — a source excerpt, a prompt sent to the user, a command or
+output trace, or a Markdown / JSON sample showing the artifact shape. Naming a
+file is not enough.
+
+The metadata rows (receives / reads / output / freedom / nextConsumer) belong
+in a collapsible "阶段速查" panel below the narrative. The default reading
+path is the story plus evidence.
+
+## 难点：two questions, pulled not invented
+
+Ask both, answer "确无" explicitly when empty:
+
+- **领域难点：** 这一站克服的任务固有难点。工程类（动作易错）还是认知类
+  （产出形态想错就全错）？
+- **行为难点：** 默认 agent 在这会怎么坏？
+
+Pull pains from the `handbook-brief.md` pain scan instead of inventing new
+ones per stage. Each pain is written as an observable symptom with its
+evidence grade. Overview and Walkthrough explain the same pains from
+different angles.
+
+Template:
+
+```markdown
+这一步表面是在 <动作>。真正挡住的是 <具体错位症状>。
+
+如果直接 <默认做法>，最先露出的症状会是 <可观察结果>。（证据：<等级>）
+```
+
+## 预测点：reader designs the fix first
+
+Between the pain and the mechanism, force a guess. Mandatory for stages that
+carry a pain. The reader learns more from one wrong guess than from ten clear
+explanations.
+
+```markdown
+**先猜一遍：** 设想你和我坐同一把椅子上。<当前状态>。
+默认 agent 在这会 <症状>。如果让你来写规则防住它，你会加什么？
+写下来再读下面 skill 实际怎么防。
+```
+
+Do not write "你是这个 AI"; that changes the point of view. Use direct "你"
+only in predict points and reader challenge blocks, not in the agent's main
+execution narrative.
+
+## 机制：quote, then map
+
+Quote the actual rule, gate text, or script lines — not a paraphrase. Then map
+each quoted piece to which half of the pain it blocks:
+
+```markdown
+skill 的处理是 <机制>：<文件 / 规则 / 脚本> 先钉住 <维度>，
+后面的 <stage / 文件 / 命令> 只读这一个来源。
+```
+
+Put the quote and its explanation side by side. Do not make the reader jump to
+another chapter to understand a load-bearing mechanism.
 
 ## Explain terms before names
 
-When a source-skill term first appears in walkthrough, design choices, patterns,
-or file map, add a short local explanation. Do not make the reader jump to
-Glossary just to keep reading.
+When a source-skill term first appears anywhere, add a short local
+explanation. Do not make the reader jump to Glossary just to keep reading.
 
 Good:
 
@@ -77,66 +127,10 @@ Bad:
 我作为 AI agent 在此阶段根据 skill protocol 执行 framework synthesis。
 ```
 
-Use neutral labels in quick-reference rows. Use direct "你" only in reader
-challenge blocks, not in the agent's main execution narrative.
-
-## Start with a pre-test
-
-Open important stages by asking the reader to guess the next move before seeing
-what the skill forces.
-
-```markdown
-**先猜一遍：** 设想你和我坐同一把椅子上。<当前状态>。
-你下一步的本能是 <X> 还是 <Y>？写下来再读下面我实际怎么走。
-```
-
-Do not write "你是这个 AI"; that changes the point of view.
-
-## Carry real material
-
-Each stage narrative must include at least one real artifact:
-
-- a source excerpt;
-- a prompt sent to the user;
-- a command or output trace;
-- a Markdown / JSON / TS sample showing the artifact shape.
-
-Input and output should usually each get a concrete excerpt. Naming a file is not
-enough.
-
-The metadata rows belong in a collapsible "阶段速查" panel below the narrative.
-The default reading path is the story plus evidence.
-
-## Name the pain, then show the mechanism
-
-Do not stop at "I did A, produced B, and handed it to C." Important stages need
-the mismatch they catch.
-
-Ask:
-
-- What would visibly go wrong first if I skipped this?
-- Which later rework does this step avoid?
-- Which file, rule, script, or checkpoint catches the mismatch?
-- Is this one part of a cross-stage mechanism thread?
-
-Template:
-
-```markdown
-这一步表面是在 <动作>。真正挡住的是 <具体错位症状>。
-
-如果直接 <默认做法>，最先露出的症状会是 <可观察结果>。
-
-skill 的处理是 <机制>：<文件 / 规则 / 脚本> 先钉住 <维度>，
-后面的 <stage / 文件 / 命令> 只读这一个来源。
-```
-
-Pull pain points from `handbook-brief.md` instead of inventing new ones per
-stage. Overview and Walkthrough should explain the same task pain from different
-angles.
-
 ## Show freedom level
 
-For creative stages, show default instinct versus constrained result.
+For creative stages, show default instinct versus constrained result as a
+minimal contrast — the two samples differ in exactly one variable.
 
 ````markdown
 默认本能会这样写：
@@ -165,16 +159,21 @@ Each stage should have a short opening and closing handoff.
 
 <stage narrative>
 
-**这里能偷的招：** <one reusable move>
+**这里能偷的招：** 当 <触发条件> → <动作一句话>
 
 **下一步靠这个：** <这一步让下一步不用重新判断什么>
 ```
 
-First stage uses `**从这里开始：**`. Last stage uses
-`**这里把账结清：**`.
+The move starts with its trigger condition. A bare action ("先把文件名定死")
+degrades into a noun once copied out of context; "当多个并行产出要被下游消费
+时 → 先钉死文件名" survives the copy. Full conditional knowledge (太重/反例)
+lives in the matching archive card — link it with **对应档案:**, do not
+restate it.
 
-The closing handoff for stage N and the opening handoff for stage N+1 should say
-the same thing from two sides.
+First stage uses `**从这里开始：**`. Last stage uses `**这里把账结清：**`.
+
+The closing handoff for stage N and the opening handoff for stage N+1 should
+say the same thing from two sides.
 
 ## End with reader challenges
 
@@ -190,12 +189,17 @@ Use 3-4 concrete questions from real edge cases:
 
 ## Self-check
 
-- Does the stage answer the six core questions?
+- Does the walkthrough open with the panorama before stage 1?
+- Does every stage locate itself on the same mini-map?
+- Are both pain questions asked, with "确无" written when empty?
+- Is every pain an observable symptom with an evidence grade, pulled from the
+  brief?
+- Does every pain-carrying stage have a predict point before its mechanism?
+- Is the mechanism quoted, not paraphrased, and explained in place?
+- Are input and output backed by real material?
 - Are important terms explained before use?
 - Does the narrative use first-person execution voice without repeating
   "我作为 AI"?
-- Are input and output backed by real material?
-- Does the stage name the visible mismatch it catches?
-- If creative, does it show default instinct versus constrained result?
-- If mechanical, does it say why there is little freedom?
+- If creative, does it show a minimal contrast? If mechanical, does it say why
+  there is little freedom?
 - Do the handoffs create a clear cause-and-effect chain?

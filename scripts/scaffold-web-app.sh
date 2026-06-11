@@ -13,13 +13,15 @@ Convention: each handbook lives under generation/<skill-slug>/ where
     --skill-name="女娲 Skill 造人术" \
     --source-path="/path/to/nuwa-skill"
 
-Creates the fixed static web handbook skeleton:
+Creates the fixed static web handbook skeleton (五章 + 附录):
   index.html
-  pages/{overview,walkthrough,glossary,file-map,design-choices,patterns,apply-it}.html
+  pages/{overview,walkthrough,dataflow,archive,apply-it,glossary}.html
+  content/                  <- write content/*.md here (the only hand-written layer)
   assets/{data.js,site.js,styles.css,diagrams/.gitkeep}
 
-The generated page shells and renderer are meant to stay stable. Fill
-assets/data.js and assets/diagrams/*.svg for each new handbook.
+The page shells and renderer are meant to stay stable. assets/data.js is a
+build artifact: write content/*.md per references/content-format.md, then run
+scripts/build-data.py. Never hand-edit data.js.
 USAGE
 }
 
@@ -84,6 +86,7 @@ fi
 
 mkdir -p "$TARGET"
 cp -R "$TEMPLATE_DIR"/. "$TARGET"/
+mkdir -p "$TARGET/content"
 
 sed_safe() {
   printf '%s' "$1" | sed -e 's/[\\&|]/\\&/g'
@@ -132,7 +135,9 @@ Created web handbook skeleton:
 
 Next:
   1. Write $TARGET/handbook-brief.md and $TARGET/page-packets/*.md.
-  2. Fill $TARGET/assets/data.js from those source files.
-  3. Draw real SVGs under $TARGET/assets/diagrams/ and reference them from data.js.
-  4. Serve with: python3 -m http.server --directory "$TARGET" 8000
+  2. Write $TARGET/content/*.md per references/content-format.md.
+  3. Draw real SVGs under $TARGET/assets/diagrams/ and register them in content/meta.md.
+  4. Build:  python3 scripts/build-data.py "$TARGET"
+  5. Check:  python3 scripts/check-content.py "$TARGET"
+  6. Serve:  python3 -m http.server --directory "$TARGET" 8000
 EOF

@@ -41,11 +41,15 @@ OUT="$TMP/generation/demo-skill"
 assert_dir "$TMP/generation"
 
 assert_file "$OUT/index.html"
-for page in overview walkthrough glossary file-map design-choices patterns apply-it; do
+for page in overview walkthrough dataflow archive apply-it glossary; do
   assert_file "$OUT/pages/$page.html"
   assert_grep "data-page=\"$page\"" "$OUT/pages/$page.html"
 done
+for page in file-map design-choices patterns; do
+  [[ ! -f "$OUT/pages/$page.html" ]] || fail "stale v1 page shell: $page.html"
+done
 
+assert_dir "$OUT/content"
 assert_file "$OUT/assets/site.js"
 assert_file "$OUT/assets/styles.css"
 assert_file "$OUT/assets/data.js"

@@ -1,9 +1,9 @@
 ---
-name: extracting-skill-patterns
-description: Use when studying, reverse-engineering, comparing, reviewing, or learning from AI skill packages, SKILL.md files, Claude/Codex skills, prompt workflows, or agent playbooks; use when the user wants reusable skill design patterns, a keep/cut review, Markdown report, structured pattern notes, or multi-page web handbook.
+name: paoding-skill
+description: Use when studying, reverse-engineering, comparing, reviewing, or learning from AI skill packages, SKILL.md files, Claude/Codex skills, prompt workflows, or agent playbooks; use when the user wants reusable skill design patterns, a keep/cut review, Markdown report, structured pattern notes, or multi-page web handbook. 触发词：「庖丁」「庖丁解 skill」「解剖这个 skill」「拆解 xx skill」「这个 skill 怎么实现的」.
 ---
 
-# Extracting Skill Patterns
+# 庖丁 · Skill 解剖术
 
 ## Purpose
 

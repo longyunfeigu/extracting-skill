@@ -1534,3 +1534,333 @@ body[data-page="design-choices"] .scene-why {
   .stage-head { grid-template-columns: 1fr; gap: 16px; }
   .stage-num { text-align: left; font-size: 88px; }
 }
+
+/* =========================================================
+   v2 additions — 五章+附录 协议升级新增组件
+   （基线声明 / 面包屑 / 难点块 / 证据签 / 迷你表 / 维度全景 / 残渣卡）
+   ========================================================= */
+
+.baseline-block {
+  margin-top: 28px;
+  padding: 20px 24px;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  background: var(--paper-2);
+  max-width: 64ch;
+  box-sizing: border-box;
+}
+.baseline-block .baseline-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.baseline-block p { margin: 0 0 6px; }
+.baseline-block small { color: var(--ink-mute); font-family: var(--sans); font-size: 12.5px; }
+
+.stage-breadcrumb {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 10px 14px;
+  margin: 18px 0 0;
+}
+.stage-breadcrumb .bc-label {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-right: 12px;
+}
+
+.pain-block {
+  margin: 26px 0;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 18px 22px;
+}
+.pain-block-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.pain-row { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding: 6px 0; }
+.pain-row .pain-label {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  padding-top: 2px;
+}
+.pain-row p { margin: 0; }
+.pain-row.pain-none p { color: var(--ink-mute); font-style: italic; }
+
+.evidence-pill {
+  display: inline-block;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 1px 10px;
+  margin-left: 6px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  margin: 14px 0;
+  font-family: var(--sans);
+}
+.mini-table th {
+  text-align: left;
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border-bottom: 2px solid var(--rule);
+  padding: 6px 10px;
+}
+.mini-table td {
+  border-bottom: 1px solid var(--rule);
+  padding: 10px;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.contrast-table th:first-child, .contrast-table td:first-child { color: var(--accent); }
+.contrast-table th:last-child, .contrast-table td:last-child { color: var(--green); }
+.scenes-table .effect-cell { font-weight: 600; white-space: nowrap; }
+.scenes-table tr[data-effect="管用"] .effect-cell { color: var(--green); }
+.scenes-table tr[data-effect="用不上"] .effect-cell,
+.scenes-table tr[data-effect="没必要"] .effect-cell,
+.scenes-table tr[data-effect="反而碍事"] .effect-cell { color: var(--ink-mute); }
+
+.dim-summary {
+  margin-top: 18px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 14px 18px;
+}
+.dim-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--rule);
+  font-family: var(--sans);
+  font-size: 13.5px;
+}
+.dim-row:last-child { border-bottom: none; }
+.dim-row .dim-name { font-weight: 600; color: var(--ink-2); }
+.dim-row .dim-cards a {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--accent);
+  margin-right: 10px;
+}
+.dim-row .dim-cards a:hover { text-decoration: underline; }
+
+.archive-card .mech-quote { margin-top: 4px; }
+.filemap-card .why-shape .label { color: var(--accent); }
+
+.residue-card h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.answer-details > summary { cursor: pointer; }
+
+/* ===== v2.1 — 难点预览卡 + 难点档案单列布局 ===== */
+
+.preview-card h4 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.preview-godeeper {
+  margin: 14px 0 0;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--accent);
+  border-top: 1px dashed var(--rule);
+  padding-top: 10px;
+}
+
+.archive-list { display: flex; flex-direction: column; gap: 40px; }
+.archive-list .archive-card {
+  max-width: 860px;
+  padding: 34px 38px;
+}
+.archive-list .archive-card .card-row { padding: 8px 0; }
+.archive-list .archive-card .mini-table { margin: 16px 0 20px; }
+.archive-list .archive-card .pattern-therefore { margin: 22px 0; }
+.archive-list .archive-card .related-patterns { margin-top: 24px; }
+
+/* ===== v2.2 — walkthrough 节奏系统：步标 / 站点胶囊链 / 预览回声 ===== */
+
+.walkthrough-page .stage { padding: 110px 0 36px; }
+
+.stage-part { margin: 0 0 46px; }
+.part-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 16px;
+}
+.part-label .part-no {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0;
+  color: var(--accent);
+  line-height: 1;
+}
+.part-label::after {
+  content: "";
+  width: 64px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.bc-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 36px;
+  font-family: var(--sans);
+}
+.bc-pill {
+  font-size: 12px;
+  color: var(--ink-mute);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 3px 13px;
+  background: var(--paper);
+  white-space: nowrap;
+}
+.bc-pill.current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  font-weight: 600;
+}
+.bc-sep { color: var(--ink-mute); font-size: 11px; }
+
+.preview-echo {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--accent);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--accent-line);
+}
+
+.stage-part .pain-block,
+.stage-part .pretest,
+.stage-part .move { margin-bottom: 0; }
+
+/* ===== v2.3 — 统一版心 / 预测点反白 / 步标字形 ===== */
+
+/* 一站一个版心：所有部件共享同一右边缘，消灭锯齿 */
+.walkthrough-page .stage-part,
+.walkthrough-page .stage .hook,
+.walkthrough-page .stage .bc-pills {
+  max-width: 700px;
+}
+.stage-part .narrative,
+.stage-part .pretest,
+.stage-part .pain-block,
+.stage-part .move {
+  max-width: none;
+}
+
+/* 步标序号：斜体罗马数字在小字号下像斜杠，改正体 */
+.part-label .part-no {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+/* 预测点反白：全页最强的「停下来想」信号 */
+.stage-part .pretest {
+  background: var(--night);
+  border-left: 3px solid var(--accent);
+  padding: 26px 32px;
+}
+.stage-part .pretest p {
+  color: var(--night-text);
+  font-size: 16.5px;
+}
+.stage-part .pretest .narrative-list li { color: var(--night-text); }
+.stage-part .pretest .narrative-list li::before { color: var(--accent); }
+
+/* ===== v2.4 — 重型读卡单列化 / 骨架模式升格 ===== */
+
+/* 难点预览卡：逐张精读的重卡，单列全宽行长 */
+.bad-results-grid {
+  grid-template-columns: 1fr;
+  max-width: 780px;
+}
+
+/* 数据流产物卡：同理单列（glossary 轻卡保持网格不受影响） */
+.card-grid.artifact-list {
+  grid-template-columns: 1fr;
+  max-width: 860px;
+}
+.card-grid.artifact-list .filemap-card { padding: 30px 36px; }
+
+/* 骨架模式：要带走的最大一件东西，配相称的视觉分量 */
+.skeleton-block {
+  border: 1px solid var(--accent-line);
+  border-left: 3px solid var(--accent);
+  background: var(--paper-2);
+  padding: 30px 36px;
+  max-width: 760px;
+}
+.skeleton-block .narrative-quote {
+  font-size: 17.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ===== v2.5 — 可读性修正：mute 对比度过 AA + 中文小字 12px 地板 ===== */
+
+/* ink-mute 3.69:1 不过 AA（小字需 4.5:1）→ 暗化一档至 ~5.0:1，暖灰气质不变 */
+:root { --ink-mute: #75654f; }
+
+/* 中文承载的标签类：10.5-11px 低于 CJK 可读下限，统一 12px 地板 */
+.eyebrow { font-size: 12.5px; }
+.part-label { font-size: 12px; }
+.ba-label { font-size: 12px; }
+.evidence-pill { font-size: 12px; }
+.brand-sub { font-size: 12px; }
+.chapter-link small { font-size: 12px; }
+.qr-label { font-size: 12px; }
+
+/* v2.6 — 同类宽度补漏：维度全景索引对齐档案卡版心 */
+.dim-summary { max-width: 860px; box-sizing: border-box; }
+
+/* v2.7 — 全站宽度清账（headless 实测后） */
+/* walkthrough 一柱版心：速查与练习也归队（原 64ch 旧约束） */
+.walkthrough-page .quickref,
+.walkthrough-page .challenges { max-width: 700px; }
+/* apply-it：参考答案面板与骨架面板同版心 */
+.answer-details { max-width: 760px; }

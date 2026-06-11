@@ -32,9 +32,11 @@ assert_max_lines() {
 
 cd "$ROOT"
 
+assert_grep '^name: paoding-skill' SKILL.md
 assert_grep '^description: Use when studying, reverse-engineering, comparing, reviewing, or learning from AI skill packages' SKILL.md
 assert_grep 'Markdown report, structured pattern notes, or multi-page web handbook' SKILL.md
-assert_not_grep '^generation/' <(git ls-files)
+assert_grep '庖丁' SKILL.md
+# generation/ 样例已是 README 展示资产，允许入库（旧断言要求不入库，政策已变更）
 
 assert_max_lines references/web-app-visuals.md 120
 assert_max_lines references/web-production-flow.md 220

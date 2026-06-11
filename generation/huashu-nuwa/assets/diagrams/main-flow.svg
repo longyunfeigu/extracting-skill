@@ -1,69 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
-  <title id="title">Nuwa main flow</title>
-  <desc id="desc">A high-level flow from user request to generated skill with two checkpoints.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" font-family="'PingFang SC','Microsoft YaHei',sans-serif">
   <defs>
-    <style>
-      .bg{fill:#f6f1e6}
-      .box{fill:#fffaf0;stroke:#8a1c0f;stroke-width:2}
-      .soft{fill:#ede6d4;stroke:#d8cdb6;stroke-width:2}
-      .gate{fill:#2d6e4e;stroke:#1e5238;stroke-width:2}
-      .gateText{fill:#fffaf0;font-weight:700}
-      .text{fill:#1a1410;font-family:"Noto Serif SC","Source Han Serif SC",serif;font-size:24px}
-      .small{fill:#4a3f33;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px}
-      .tiny{fill:#8a7a66;font-family:"JetBrains Mono",monospace;font-size:13px}
-      .arrow{stroke:#8a1c0f;stroke-width:3;fill:none;marker-end:url(#arrow)}
-    </style>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L9,3 L0,6 Z" fill="#8a1c0f"/>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a7a66"/>
     </marker>
   </defs>
-  <rect class="bg" width="1180" height="520"/>
-  <text class="tiny" x="50" y="44">NUWA FLOW / from request to installable skill</text>
+  <rect width="980" height="300" fill="#f6f1e6"/>
 
-  <rect class="box" x="48" y="80" width="170" height="96" rx="8"/>
-  <text class="text" x="78" y="122">入口分流</text>
-  <text class="small" x="70" y="150">人名 / 模糊需求</text>
+  <!-- input -->
+  <rect x="20" y="120" width="120" height="60" rx="4" fill="#ede6d4" stroke="#d8cdb6"/>
+  <text x="80" y="145" text-anchor="middle" font-size="13" fill="#4a3f33">用户一句话</text>
+  <text x="80" y="164" text-anchor="middle" font-size="11" fill="#8a7a66">「做一个乔布斯 skill」</text>
 
-  <rect class="box" x="270" y="80" width="170" height="96" rx="8"/>
-  <text class="text" x="300" y="122">需求确认</text>
-  <text class="small" x="292" y="150">用途、材料、更新</text>
+  <!-- stage 1 -->
+  <rect x="170" y="120" width="110" height="60" rx="4" fill="#fff" stroke="#8a1c0f" stroke-width="1.2"/>
+  <text x="225" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1410">① 分流澄清</text>
+  <text x="225" y="162" text-anchor="middle" font-size="10.5" fill="#8a7a66">人名 or 模糊需求</text>
 
-  <rect class="soft" x="492" y="80" width="170" height="96" rx="8"/>
-  <text class="text" x="522" y="122">建目录</text>
-  <text class="small" x="512" y="150">先有文件槽位</text>
+  <!-- stage 2 -->
+  <rect x="310" y="120" width="110" height="60" rx="4" fill="#fff" stroke="#8a1c0f" stroke-width="1.2"/>
+  <text x="365" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1410">② 建目录</text>
+  <text x="365" y="162" text-anchor="middle" font-size="10.5" fill="#8a7a66">先有住址再有居民</text>
 
-  <rect class="box" x="714" y="80" width="170" height="96" rx="8"/>
-  <text class="text" x="744" y="122">六路调研</text>
-  <text class="small" x="733" y="150">研究写入 01-06</text>
+  <!-- stage 3 -->
+  <rect x="450" y="105" width="120" height="90" rx="4" fill="#fff" stroke="#8a1c0f" stroke-width="1.2"/>
+  <text x="510" y="130" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1410">③ 六维取证</text>
+  <text x="510" y="149" text-anchor="middle" font-size="10.5" fill="#8a7a66">6 个并行 agent</text>
+  <text x="510" y="166" text-anchor="middle" font-size="10.5" fill="#8a7a66">著作·对话·表达</text>
+  <text x="510" y="182" text-anchor="middle" font-size="10.5" fill="#8a7a66">他评·决策·时间线</text>
 
-  <rect class="gate" x="936" y="70" width="190" height="116" rx="12"/>
-  <text class="text gateText" x="974" y="120">检查点 1</text>
-  <text class="small gateText" x="968" y="151">研究质量够吗</text>
+  <!-- checkpoint 1 (diamond) -->
+  <polygon points="640,150 680,115 720,150 680,185" fill="#fbf8f0" stroke="#94701f" stroke-width="1.4"/>
+  <text x="680" y="146" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94701f">检查点①</text>
+  <text x="680" y="162" text-anchor="middle" font-size="9.5" fill="#94701f">调研质量</text>
 
-  <rect class="box" x="165" y="290" width="170" height="96" rx="8"/>
-  <text class="text" x="195" y="332">框架提炼</text>
-  <text class="small" x="184" y="360">三重验证模型</text>
+  <!-- stage 5 -->
+  <rect x="750" y="120" width="110" height="60" rx="4" fill="#fff" stroke="#8a1c0f" stroke-width="1.2"/>
+  <text x="805" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1410">⑤ 提炼</text>
+  <text x="805" y="162" text-anchor="middle" font-size="10.5" fill="#8a7a66">三重验证筛模型</text>
 
-  <rect class="gate" x="387" y="280" width="190" height="116" rx="12"/>
-  <text class="text gateText" x="425" y="330">检查点 2</text>
-  <text class="small gateText" x="420" y="361">方向抓对了吗</text>
+  <!-- checkpoint 2 -->
+  <polygon points="805,230 845,265 805,300 765,265" transform="translate(0,-35)" fill="#fbf8f0" stroke="#94701f" stroke-width="1.4"/>
+  <text x="805" y="226" text-anchor="middle" font-size="11.5" font-weight="600" fill="#94701f">检查点②</text>
+  <text x="805" y="241" text-anchor="middle" font-size="9.5" fill="#94701f">提炼方向</text>
 
-  <rect class="box" x="630" y="290" width="170" height="96" rx="8"/>
-  <text class="text" x="660" y="332">构建 Skill</text>
-  <text class="small" x="650" y="360">模板 + 协议</text>
+  <!-- stage 6 -->
+  <rect x="560" y="225" width="160" height="60" rx="4" fill="#fff" stroke="#8a1c0f" stroke-width="1.2"/>
+  <text x="640" y="248" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1410">⑥ 构建 · 验证 · 精炼</text>
+  <text x="640" y="266" text-anchor="middle" font-size="10.5" fill="#8a7a66">子 agent 独立测试</text>
 
-  <rect class="box" x="852" y="290" width="170" height="96" rx="8"/>
-  <text class="text" x="882" y="332">验证精炼</text>
-  <text class="small" x="875" y="360">已知题 / 边界题</text>
+  <!-- output -->
+  <rect x="370" y="225" width="150" height="60" rx="4" fill="#2d6e4e" fill-opacity="0.08" stroke="#2d6e4e" stroke-width="1.2"/>
+  <text x="445" y="248" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2d6e4e">steve-jobs-perspective/</text>
+  <text x="445" y="266" text-anchor="middle" font-size="10.5" fill="#2d6e4e">自包含、可激活、有边界</text>
 
-  <path class="arrow" d="M218 128 H270"/>
-  <path class="arrow" d="M440 128 H492"/>
-  <path class="arrow" d="M662 128 H714"/>
-  <path class="arrow" d="M884 128 H936"/>
-  <path class="arrow" d="M1031 186 C1031 250 250 226 250 290"/>
-  <path class="arrow" d="M335 338 H387"/>
-  <path class="arrow" d="M577 338 H630"/>
-  <path class="arrow" d="M800 338 H852"/>
+  <!-- arrows -->
+  <line x1="140" y1="150" x2="166" y2="150" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="280" y1="150" x2="306" y2="150" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="420" y1="150" x2="446" y2="150" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="570" y1="150" x2="636" y2="150" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="720" y1="150" x2="746" y2="150" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="805" y1="180" x2="805" y2="191" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="765" y1="230" x2="724" y2="245" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
+  <line x1="560" y1="255" x2="524" y2="255" stroke="#8a7a66" stroke-width="1.3" marker-end="url(#arr)"/>
 
-  <text class="tiny" x="50" y="462">两个停顿点把返工放在便宜的位置：先看研究是否可信，再看提炼方向是否正确。</text>
+  <!-- loop back annotation -->
+  <text x="680" y="98" text-anchor="middle" font-size="10" fill="#94701f">不够 → 补充调研</text>
+  <text x="906" y="208" text-anchor="middle" font-size="10" fill="#94701f">方向错 → 回到提炼</text>
 </svg>
